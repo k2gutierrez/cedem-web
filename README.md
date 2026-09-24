@@ -97,6 +97,58 @@ En la carpeta del proyecto (un nivel arriba):
 | `python3 scripts/descargar-documentos.py` | Baja los PDF originales a `assets/documentos-metodo/` |
 | `python3 scripts/promover-admin.py correo@dominio` | Convierte una cuenta en administradora |
 
+## Publicar el sitio (despliegue)
+
+El proyecto se despliega desde GitHub. El camino recomendado es **Vercel**, que es
+de los creadores de Next.js: conectas el repositorio una vez, y a partir de ahí
+cada push publica solo.
+
+### 1 · Subir el repositorio
+
+```bash
+git remote add origin git@github.com:<organización>/<repositorio>.git
+git push -u origin main
+```
+
+El repositorio debe ser **privado**: lleva la lógica del negocio. Las llaves no
+están ni han estado en el historial (viven en `.env.local`, que está ignorado);
+para comprobarlo:
+
+```bash
+git log --all -p | grep -iE "service_role|sk-[a-zA-Z0-9]{20}|eyJhbGciOi"
+```
+
+### 2 · Conectar en Vercel
+
+1. **Add New → Project**, elegir el repositorio de GitHub.
+2. Vercel detecta Next.js solo: no hay que tocar la configuración de compilación.
+3. En **Settings → Environment Variables**, cargar las cinco variables de la tabla
+   de arriba (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
+   `SUPABASE_SERVICE_ROLE_KEY`, `DEEPSEEK_API_KEY`, `NEXT_PUBLIC_SITE_URL`).
+   `NEXT_PUBLIC_SITE_URL` apunta al dominio definitivo.
+4. **Deploy**. Cada push a `main` publica; cada propuesta de cambio genera una URL
+   de vista previa para revisarla antes.
+
+### 3 · Conectar el dominio
+
+En **Settings → Domains** se añade `cedem.com.mx` y `www.cedem.com.mx`, y Vercel
+indica los registros DNS que hay que crear. El día del corte, las 186 direcciones
+del WordPress actual redirigen solas a su artículo nuevo (`src/lib/redirecciones.json`),
+así que el posicionamiento no se pierde.
+
+### Lo que corre solo en cada push
+
+`.github/workflows/verificar.yml` ejecuta los tipos, el linter, las pruebas del
+motor del Camino, las del saneador de HTML y la compilación. Son las redes que ya
+han atrapado errores reales en este proyecto. Lo que necesita llaves —el muro de
+pago, los documentos, el flujo de invitación— se corre a mano:
+
+```bash
+python3 scripts/probar-documentos.py
+python3 scripts/probar-muro-pago.py
+node scripts/revisar-sistema.mjs      # 30 comprobaciones sobre el sitio levantado
+```
+
 ## Decisiones técnicas que conviene recordar
 
 - **Los colores se declaran una sola vez** en `src/app/globals.css`. Cambiar la marca es cambiar

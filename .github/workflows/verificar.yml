@@ -1,0 +1,57 @@
+# Comprobaciones que corren solas en cada cambio subido al repositorio.
+#
+# POR QUÉ EXISTE
+#
+# El proyecto tiene tres redes que han atrapado errores reales: los tipos, el
+# linter y las 33 pruebas del motor del Camino. Correrlas a mano funciona hasta
+# que un día no se corren. Aquí se ejecutan en cada push y en cada propuesta de
+# cambio, así que un error se ve antes de llegar a producción.
+#
+# Lo que NO se hace aquí: tocar la base de datos ni desplegar. El despliegue lo
+# hace Vercel por su cuenta al ver el push, y las pruebas que necesitan Supabase
+# (el muro de pago, los documentos) se corren a mano porque necesitan llaves que
+# no deben estar en el repositorio.
+name: Verificar
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Tipos
+        run: pnpm exec tsc --noEmit
+
+      - name: Linter
+        run: pnpm lint
+
+      - name: Pruebas del motor del Camino
+        run: pnpm probar:motor
+
+      - name: Pruebas del saneador de HTML
+        run: pnpm probar:sanear
+
+      - name: Compilar
+        run: pnpm build
+        env:
+          # Valores de mentira: la compilación no se conecta a nada. El sitio
+          # funciona sin Supabase (modo semilla), así que compila igual.
+          NEXT_PUBLIC_SUPABASE_URL: https://ejemplo.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: llave-de-ejemplo-para-compilar
