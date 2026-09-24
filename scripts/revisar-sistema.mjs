@@ -140,10 +140,13 @@ const PROTEGIDAS = [
     }
     if (paso === "CAPTURA") {
       await p.locator("#nombre").fill("Revisión");
-      /* Correo FIJO, no uno con marca de tiempo: el recorrido crea la cuenta al
-         dejar el correo, así que uno distinto por ejecución llenaba la base de
-         cuentas de ejemplo. Con uno fijo, la revisión reutiliza la misma. */
-      await p.locator("#correo").fill("revision@ejemplo.com");
+      /* Correo FIJO y en el dominio de pruebas. El recorrido crea la cuenta al
+         dejar el correo, así que uno distinto por ejecución llenaba la base; y uno
+         normal se mezclaría con las cuentas de verdad. Con este, la revisión
+         reutiliza la misma y se limpia con:
+             python3 scripts/cuenta-de-prueba.py borrar
+         que es también lo que retira la cuenta de administración temporal. */
+      await p.locator("#correo").fill("revision@pruebas.cedem.local");
       await p.getByRole("checkbox").check();
       await p.waitForTimeout(300);
       await p.getByRole("button", { name: /Ver mi lectura/ }).click();
