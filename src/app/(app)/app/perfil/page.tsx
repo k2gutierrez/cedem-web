@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { FormularioPerfil, type DatosPerfil } from "@/components/app/FormularioPerfil";
+import { CambiarContrasena } from "@/components/auth/CambiarContrasena";
 import { Container } from "@/components/ui/Container";
 import { obtenerSesion } from "@/lib/auth/sesion";
 import { crearClienteServidor } from "@/lib/supabase/cliente-servidor";
@@ -40,6 +41,19 @@ export default async function PaginaPerfil() {
           perfil={(perfil ?? {}) as DatosPerfil}
           paises={paises ?? [{ code: "MX", name_es: "México" }]}
         />
+      </div>
+
+      {/* La contraseña, en su propio bloque: quien entra aquí suele venir a otra
+          cosa, y mezclar ambas cosas hace que se cambie sin querer. */}
+      <div className="mt-6 rounded-3xl border border-border bg-bg p-7 sm:p-9">
+        <h2 className="font-display text-lg font-bold text-fg">Tu contraseña</h2>
+        <p className="mt-2 max-w-[52ch] text-sm leading-relaxed text-fg-muted">
+          Cámbiala cuando quieras. Si la olvidas, puedes pedir un enlace desde la pantalla
+          de acceso.
+        </p>
+        <div className="mt-6 max-w-[26rem]">
+          <CambiarContrasena />
+        </div>
       </div>
 
       <p className="mt-6 text-[12.5px] leading-relaxed text-fg-subtle">
