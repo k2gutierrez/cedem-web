@@ -38,6 +38,80 @@ const COLOR_ROL: Record<string, string> = {
   visitante: "border-border text-fg-subtle",
 };
 
+/**
+ * Los niveles de usuario, explicados donde se asignan.
+ *
+ * Es la respuesta a «que como admin yo pueda ver los niveles de usuario para
+ * definir qué es cada uno»: la misma pantalla donde se cambia el rol dice qué
+ * significa cada rol, quién lo tiene y cómo se obtiene. Sin esto, «consultor» y
+ * «admin» son dos palabras que cada quien interpreta a su manera.
+ */
+const NIVELES: {
+  rol: string;
+  titulo: string;
+  paraQuien: string;
+  puede: string;
+  comoSeObtiene: string;
+  paga: boolean;
+}[] = [
+  {
+    rol: "miembro_free",
+    titulo: "Miembro gratuito",
+    paraQuien: "Cualquiera que cree una cuenta, sin pagar nada.",
+    puede:
+      "Hacer el Camino del Dueño completo, ver el primer párrafo de todo el contenido reservado y guardar su avance.",
+    comoSeObtiene: "Se registra solo, desde /registro.",
+    paga: false,
+  },
+  {
+    rol: "miembro_premium",
+    titulo: "Miembro premium",
+    paraQuien: "El dueño que paga la membresía, o el cliente de la firma que entra por invitación.",
+    puede:
+      "Todo lo del nivel gratuito, más el archivo completo de CEDEM, los doce documentos del método en PDF y el seguimiento de su Camino.",
+    comoSeObtiene:
+      "Pagando la membresía, o por invitación de su consultor, o a mano desde esta pantalla.",
+    paga: true,
+  },
+  {
+    rol: "consultor",
+    titulo: "Consultor de CEDEM",
+    paraQuien: "El equipo de la firma que acompaña a los dueños.",
+    puede:
+      "Todo lo del nivel premium, más ver los diagnósticos de los dueños (Panel → Diagnósticos) y las notas que ellos comparten.",
+    comoSeObtiene: "A mano, desde esta pantalla. Nunca pagando.",
+    paga: false,
+  },
+  {
+    rol: "admin",
+    titulo: "Administrador",
+    paraQuien: "Quien lleva el contenido y la operación del día a día.",
+    puede:
+      "Publicar artículos, podcasts, videos y eventos; gestionar equipo, clientes, invitaciones y pagos; ver la auditoría y dar acceso a miembros.",
+    comoSeObtiene: "Solo un super administrador puede otorgarlo.",
+    paga: false,
+  },
+  {
+    rol: "super_admin",
+    titulo: "Super administrador",
+    paraQuien: "Quien responde por la plataforma. Conviene que sean pocos.",
+    puede:
+      "Todo lo del administrador, más nombrar administradores y cambiar la configuración del sistema.",
+    comoSeObtiene:
+      "A mano. Para la primera cuenta se usa `python3 scripts/promover-admin.py <correo>` desde el servidor.",
+    paga: false,
+  },
+  {
+    rol: "visitante",
+    titulo: "Visitante",
+    paraQuien: "Quien todavía no tiene cuenta.",
+    puede:
+      "Leer el sitio público, hacer el Camino del Dueño sin registrarse y leer el primer párrafo del contenido reservado.",
+    comoSeObtiene: "No se asigna: es el estado de quien no ha entrado. Por eso no aparece en el desplegable.",
+    paga: false,
+  },
+];
+
 const ESTADO_SUSCRIPCION: Record<string, string> = {
   activa: "Activa",
   en_prueba: "En prueba",
@@ -398,6 +472,58 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
           })}
         </ul>
       )}
+
+      {/* Los niveles, explicados */}
+      <details className="group mt-10 rounded-2xl border border-border bg-bg p-6">
+        <summary className="cursor-pointer font-display text-base font-bold text-fg">
+          Qué puede hacer cada nivel
+        </summary>
+        <p className="mt-3 max-w-[68ch] text-[13.5px] leading-relaxed text-fg-muted">
+          Nadie paga por ser consultor ni administrador: los permisos del equipo se dan a
+          mano desde esta pantalla. El pago solo decide el acceso al contenido reservado, y
+          los clientes de la firma lo reciben por invitación.
+        </p>
+
+        <ul className="mt-6 space-y-4">
+          {NIVELES.map((nivel) => (
+            <li key={nivel.rol} className="rounded-xl border border-border bg-bg-soft p-5">
+              <div className="flex flex-wrap items-center gap-3">
+                <span
+                  className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider ${
+                    COLOR_ROL[nivel.rol] ?? COLOR_ROL.miembro_free
+                  }`}
+                >
+                  {nivel.titulo}
+                </span>
+                <code className="font-mono text-[11.5px] text-fg-subtle">{nivel.rol}</code>
+                <span
+                  className={
+                    nivel.paga
+                      ? "rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-amber-900 dark:bg-amber-400/15 dark:text-amber-200"
+                      : "rounded-full border border-border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-fg-subtle"
+                  }
+                >
+                  {nivel.paga ? "Se paga" : "Sin pago"}
+                </span>
+              </div>
+              <dl className="mt-3 space-y-1.5 text-[13px] leading-relaxed">
+                <div>
+                  <dt className="inline font-semibold text-fg-muted">Para quién: </dt>
+                  <dd className="inline text-fg-muted">{nivel.paraQuien}</dd>
+                </div>
+                <div>
+                  <dt className="inline font-semibold text-fg-muted">Qué puede hacer: </dt>
+                  <dd className="inline text-fg-muted">{nivel.puede}</dd>
+                </div>
+                <div>
+                  <dt className="inline font-semibold text-fg-muted">Cómo se obtiene: </dt>
+                  <dd className="inline text-fg-muted">{nivel.comoSeObtiene}</dd>
+                </div>
+              </dl>
+            </li>
+          ))}
+        </ul>
+      </details>
 
       <p className="mt-10 text-[12.5px] leading-relaxed text-fg-subtle">
         Cada cambio de rol y cada membresía otorgada quedan registrados con su motivo en{" "}

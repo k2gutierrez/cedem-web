@@ -115,6 +115,85 @@ export async function registrar(
 }
 
 /* -------------------------------------------------------------------------- */
+/* Recuperar la contraseña                                                    */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Envía el correo para restablecer la contraseña.
+ *
+ * La respuesta es SIEMPRE la misma, exista o no la cuenta: si dijera «ese correo
+ * no está registrado», cualquiera podría averiguar quién es cliente de CEDEM
+ * probando direcciones. Es la práctica habitual y conviene mantenerla.
+ *
+ * El enlace del correo apunta a `/auth/confirmar`, que valida el token y deja al
+ * dueño en `/restablecer` con una sesión de recuperación.
+ */
+export async function pedirRecuperacion(
+  _estado: EstadoFormulario,
+  datos: FormData,
+): Promise<EstadoFormulario> {
+  if (!supabaseConfigurado()) return { error: SIN_CONFIGURAR };
+
+  const correo = String(datos.get("correo") ?? "").trim().toLowerCase();
+  if (!correoValido(correo)) return { error: "Escribe un correo válido." };
+
+  const sitio = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const supabase = await crearClienteServidor();
+
+  const { error } = await supabase.auth.resetPasswordForEmail(correo, {
+    redirectTo: `${sitio}/auth/confirmar?tipo=recovery&destino=/restablecer`,
+  });
+
+  if (error && !/not found|no user/i.test(error.message)) {
+    // Un fallo real (sin conexión, plantilla mal configurada) sí se cuenta.
+    console.error("[auth] recuperación:", error.message);
+    return { error: "No pudimos enviar el correo. Vuelve a intentarlo en un momento." };
+  }
+
+  return {
+    ok: true,
+    mensaje:
+      "Si ese correo tiene cuenta en CEDEM 2.0, te llegó un enlace para crear una contraseña nueva. Revisa también el correo no deseado.",
+  };
+}
+
+/** Cambia la contraseña de quien ya está dentro (por recuperación o por gusto). */
+export async function cambiarContrasena(
+  _estado: EstadoFormulario,
+  datos: FormData,
+): Promise<EstadoFormulario> {
+  if (!supabaseConfigurado()) return { error: SIN_CONFIGURAR };
+
+  const contrasena = String(datos.get("contrasena") ?? "");
+  const repetida = String(datos.get("repetida") ?? "");
+
+  if (contrasena.length < 8) {
+    return { error: "La contraseña necesita al menos 8 caracteres." };
+  }
+  if (contrasena !== repetida) return { error: "Las dos contraseñas no coinciden." };
+
+  const supabase = await crearClienteServidor();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      error:
+        "El enlace ya no es válido o pasó demasiado tiempo. Pide uno nuevo desde «Olvidé mi contraseña».",
+    };
+  }
+
+  const { error } = await supabase.auth.updateUser({ password: contrasena });
+  if (error) {
+    console.error("[auth] cambio de contraseña:", error.message);
+    return { error: "No pudimos guardar la contraseña. Pide un enlace nuevo." };
+  }
+
+  return { ok: true, mensaje: "Listo. Tu contraseña quedó guardada." };
+}
+
+/* -------------------------------------------------------------------------- */
 /* Salir                                                                      */
 /* -------------------------------------------------------------------------- */
 

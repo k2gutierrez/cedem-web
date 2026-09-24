@@ -40,7 +40,7 @@ function indicesVisibles(modo: "normal" | "express"): number[] {
   });
 }
 
-export function Recorrido() {
+export function Recorrido({ catalogo = {} }: { catalogo?: Record<string, string> }) {
   /* El avance, las respuestas y el modo viven en átomos con persistencia
      automática (ver src/lib/estado/camino.ts). El contacto NO se persiste:
      son datos personales y no tienen por qué quedar en el dispositivo. */
@@ -481,6 +481,7 @@ export function Recorrido() {
     <Marco progreso={1} etiqueta="Tu lectura" alVolver={null} ancho="ancho">
       <Resultado
         perfil={perfil}
+        catalogo={catalogo}
         comentario={comentario}
         nombre={contacto.nombre}
         segundos={segundos}

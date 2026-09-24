@@ -15,6 +15,7 @@ export default async function PaginaAcceso(props: PageProps<"/acceso">) {
   const parametros = await props.searchParams;
   const destino = typeof parametros.destino === "string" ? parametros.destino : "/app";
   const conectado = supabaseConfigurado();
+  const enlaceInvalido = parametros.aviso === "enlace-invalido";
 
   return (
     <section className="py-14 lg:py-20">
@@ -28,6 +29,20 @@ export default async function PaginaAcceso(props: PageProps<"/acceso">) {
           <p className="mt-3 text-center text-sm text-fg-muted">
             Tu Camino del Dueño, la biblioteca completa y el seguimiento de tu avance.
           </p>
+
+          {enlaceInvalido ? (
+            <p
+              role="status"
+              className="mt-8 rounded-2xl border border-amber-300/60 bg-amber-50 p-5 text-[13px] leading-relaxed text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200"
+            >
+              Ese enlace ya no sirve: los enlaces de recuperación caducan y solo se pueden
+              usar una vez. Pide uno nuevo desde{" "}
+              <a href="/recuperar" className="font-semibold underline underline-offset-4">
+                Olvidé mi contraseña
+              </a>
+              .
+            </p>
+          ) : null}
 
           {!conectado ? (
             <div

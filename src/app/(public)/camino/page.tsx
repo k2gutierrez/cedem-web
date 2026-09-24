@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Recorrido } from "@/components/camino/Recorrido";
+import { mapaDeCatalogo } from "@/lib/datos/recomendaciones";
 
 export const metadata: Metadata = {
   title: "Camino del Dueño · Diagnóstico gratuito de 5 minutos",
@@ -20,6 +21,13 @@ export const metadata: Metadata = {
  * TODO (Fase 4): llamar a DeepSeek al responder Q13 para que la lectura llegue
  * ya redactada, con los artículos elegidos entre los candidatos pre-filtrados.
  */
-export default function PaginaCamino() {
-  return <Recorrido />;
+/* Los artículos que el recorrido recomienda viven hoy en la plataforma. El mapa
+   que traduce las rutas del catálogo a slugs se resuelve aquí, en el servidor, y
+   viaja al componente de cliente: así las recomendaciones enlazan dentro del
+   sitio y no al WordPress actual. */
+export const revalidate = 3600;
+
+export default async function PaginaCamino() {
+  const catalogo = await mapaDeCatalogo();
+  return <Recorrido catalogo={catalogo} />;
 }

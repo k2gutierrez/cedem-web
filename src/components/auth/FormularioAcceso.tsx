@@ -57,6 +57,12 @@ export function FormularioAcceso({ destino }: { destino: string }) {
           className={campo}
           placeholder="••••••••"
         />
+        <Link
+          href="/recuperar"
+          className="mt-2 inline-block text-[12.5px] font-medium text-navy hover:text-cyan dark:text-sky"
+        >
+          Olvidé mi contraseña
+        </Link>
       </div>
 
       {estado.error ? (

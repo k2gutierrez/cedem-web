@@ -1,11 +1,5 @@
 import { agruparEnAreas, equipo as equipoSemilla } from "@/content/equipo";
-import {
-  articulosDestacados,
-  casos,
-  datosDeMercado,
-  servicios,
-  viajeDelDueno,
-} from "@/content/site";
+import { casos, datosDeMercado, servicios, viajeDelDueno } from "@/content/site";
 import { supabaseConfigurado } from "@/lib/supabase/configurado";
 
 /**
@@ -46,10 +40,66 @@ export async function obtenerCasos() {
   return casos;
 }
 
-export async function obtenerArticulosDestacados() {
-  // Fase 2: select * from contents where tipo = 'articulo' and destacado
-  //         and visibilidad = 'publico' order by publicado_at desc limit 3
-  return articulosDestacados;
+export type ArticuloDestacado = {
+  slug: string;
+  titulo: string;
+  extracto: string;
+  etiquetas: string[];
+  publicado: string | null;
+  minutos: number | null;
+};
+
+/**
+ * Los artículos que la home y /recursos muestran abiertos.
+ *
+ * Antes eran una lista escrita en `src/content/site.ts` que apuntaba con enlaces
+ * al WordPress actual: la página se veía bien, pero el contenido no vivía en la
+ * base y el equipo no podía cambiar la selección sin tocar código. Ahora se leen
+ * de `contents` por la marca `is_featured`, que el administrador pone desde el
+ * panel, y enlazan a `/recursos/{slug}` — dentro de la plataforma.
+ *
+ * El respaldo a la semilla se quedó fuera a propósito: si no hay base, el sitio
+ * no inventa artículos; sencillamente no muestra la selección.
+ */
+export async function obtenerArticulosDestacados(limite = 3): Promise<ArticuloDestacado[]> {
+  if (!supabaseConfigurado()) return [];
+
+  const { crearClienteServidor } = await import("@/lib/supabase/cliente-servidor");
+  const supabase = await crearClienteServidor();
+
+  const { data, error } = await supabase
+    .from("contents")
+    .select("slug, title, excerpt, summary, published_at, reading_minutes, content_tags(tags(label))")
+    .eq("content_type", "articulo")
+    .eq("status", "publicado")
+    .eq("is_featured", true)
+    .order("published_at", { ascending: false })
+    .limit(limite);
+
+  if (error || !data) return [];
+
+  return data.map((a) => {
+    // La relación llega como objeto o como arreglo según la cardinalidad que
+    // infiere PostgREST: se normaliza antes de leerla.
+    const etiquetas = ((a.content_tags ?? []) as unknown as {
+      tags: { label: string } | { label: string }[] | null;
+    }[])
+      .flatMap((t) => {
+        const etiqueta = t?.tags;
+        if (!etiqueta) return [];
+        return Array.isArray(etiqueta) ? etiqueta.map((e) => e.label) : [etiqueta.label];
+      })
+      .filter((l): l is string => Boolean(l));
+
+    return {
+      slug: a.slug as string,
+      titulo: a.title as string,
+      extracto: ((a.excerpt ?? a.summary ?? "") as string).slice(0, 240),
+      etiquetas,
+      publicado: a.published_at as string | null,
+      minutos: a.reading_minutes as number | null,
+    };
+  });
 }
 
 export async function obtenerDatosDeMercado() {

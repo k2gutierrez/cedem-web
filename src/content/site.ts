@@ -173,36 +173,10 @@ export const casos = [
   },
 ] as const;
 
-/** Artículos de la selección editorial (docs/08-seleccion-articulos.md). */
-export const articulosDestacados = [
-  {
-    titulo: "El rol que nadie te enseñó a ejercer",
-    original: "La Dueñez hace la diferencia",
-    extracto:
-      "Nadie puede sustituir al dueño en las tareas que le corresponden. La Dueñez se puede compartir, pero no es delegable.",
-    fecha: "2020-04-06",
-    url: "https://www.cedem.com.mx/2020/04/06/la-duenez-hace-la-diferencia/",
-    etiquetas: ["Dueñez", "Rol de dueño"],
-  },
-  {
-    titulo: "¿Estás creciendo o solo engordando?",
-    original: "Lastres del crecimiento",
-    extracto:
-      "Muchas empresas engordan en lugar de crecer: destruyen valor al aumentar de tamaño. Inercia, desenfoque, soledad y tolerancia.",
-    fecha: "2019-08-31",
-    url: "https://www.cedem.com.mx/2019/08/31/lastres-del-crecimiento/",
-    etiquetas: ["Crecimiento", "Valor"],
-  },
-  {
-    titulo: "Nadie te advirtió que dirigir se sentiría tan solo",
-    original: "¿Solitario yo?",
-    extracto:
-      "Pocos empresarios reconocen que su soledad es costosa y generada por ellos mismos.",
-    fecha: "2021-04-09",
-    url: "https://www.cedem.com.mx/2021/04/09/solitario-yo/",
-    etiquetas: ["Liderazgo", "Dueñez"],
-  },
-] as const;
+/* Los artículos de la selección editorial ya NO viven aquí: se leen de la base
+   (`obtenerArticulosDestacados()`), marcados como destacados desde el panel, y
+   enlazan a `/recursos/{slug}`. Esta lista era la última dependencia del
+   WordPress actual en el sitio público. */
 
 /** Cifras de mercado de terceros, para el discurso público. */
 export const datosDeMercado = [

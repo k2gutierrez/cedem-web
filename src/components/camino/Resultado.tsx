@@ -22,6 +22,7 @@ import { lecturaBase } from "@/lib/ia/lectura";
  */
 export function Resultado({
   perfil,
+  catalogo = {},
   comentario,
   nombre,
   segundos,
@@ -29,6 +30,8 @@ export function Resultado({
   sessionId,
 }: {
   perfil: Perfil;
+  /** Ruta antigua del artículo → slug en la plataforma (lo resuelve el servidor). */
+  catalogo?: Record<string, string>;
   comentario: string;
   nombre: string;
   segundos: number;
@@ -61,7 +64,15 @@ export function Resultado({
     };
   }, [sessionId]);
 
-  const articulos = articulosPara(ETIQUETAS_BASE[perfil.arquetipo] ?? []);
+  const articulos = articulosPara(ETIQUETAS_BASE[perfil.arquetipo] ?? []).map((articulo) => {
+    // Si el artículo ya vive en la plataforma, se enlaza aquí dentro; si no, se
+    // deja la ruta original, que la plataforma redirige igual.
+    const ruta = articulo.url
+      .replace(/^https?:\/\/(www\.)?cedem\.com\.mx/, "")
+      .replace(/\/$/, "");
+    const slug = catalogo[ruta];
+    return { ...articulo, href: slug ? `/recursos/${slug}` : articulo.url, interno: Boolean(slug) };
+  });
   const ejercicios = lectura.ejercicios?.length ? lectura.ejercicios : (EJERCICIOS_BASE[perfil.arquetipo] ?? []);
   const titular = TITULARES[perfil.arquetipo];
 
@@ -163,24 +174,41 @@ export function Resultado({
           Para leer esta semana
         </h2>
         <ul className="mt-4 space-y-3">
-          {articulos.map((articulo) => (
-            <li
-              key={articulo.url}
-              className="rounded-2xl border border-border p-5 transition-colors hover:border-cyan/60 dark:hover:border-sky/60"
-            >
-              <a
-                href={articulo.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-display text-[15px] font-semibold text-fg hover:text-cyan dark:hover:text-sky"
+          {articulos.map((articulo) =>
+            articulo.interno ? (
+              <li
+                key={articulo.href}
+                className="rounded-2xl border border-border p-5 transition-colors hover:border-cyan/60 dark:hover:border-sky/60"
               >
-                {articulo.titulo}
-              </a>
-              <p className="mt-1.5 text-[13px] text-fg-subtle">
-                Porque toca {articulo.etiquetas.slice(0, 2).join(" y ")}.
-              </p>
-            </li>
-          ))}
+                <Link
+                  href={articulo.href}
+                  className="font-display text-[15px] font-semibold text-fg hover:text-cyan dark:hover:text-sky"
+                >
+                  {articulo.titulo}
+                </Link>
+                <p className="mt-1.5 text-[13px] text-fg-subtle">
+                  Porque toca {articulo.etiquetas.slice(0, 2).join(" y ")}.
+                </p>
+              </li>
+            ) : (
+              <li
+                key={articulo.href}
+                className="rounded-2xl border border-border p-5 transition-colors hover:border-cyan/60 dark:hover:border-sky/60"
+              >
+                <a
+                  href={articulo.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-display text-[15px] font-semibold text-fg hover:text-cyan dark:hover:text-sky"
+                >
+                  {articulo.titulo}
+                </a>
+                <p className="mt-1.5 text-[13px] text-fg-subtle">
+                  Porque toca {articulo.etiquetas.slice(0, 2).join(" y ")}.
+                </p>
+              </li>
+            ),
+          )}
         </ul>
       </section>
 

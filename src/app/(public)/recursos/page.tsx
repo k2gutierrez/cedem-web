@@ -7,8 +7,11 @@ import { Container } from "@/components/ui/Container";
 import { EncabezadoSeccion } from "@/components/ui/EncabezadoSeccion";
 import { IconoFlecha, IconoYouTube } from "@/components/ui/Iconos";
 import { bibliotecaMiembros, canalYouTube, serieWebinars, webinars } from "@/content/recursos";
-import { articulosDestacados } from "@/content/site";
-import { buscarArticulos, obtenerArticulosPublicados } from "@/lib/datos/contenido";
+import {
+  buscarArticulos,
+  obtenerArticulosDestacados,
+  obtenerArticulosPublicados,
+} from "@/lib/datos/contenido";
 
 export const metadata: Metadata = {
   title: "Recursos · Artículos, webinars y documentos de CEDEM",
@@ -62,8 +65,11 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
 
   // Si hay búsqueda, se resuelve con el índice de texto completo en español y
   // el resto de la página pasa a segundo plano.
-  const resultados = consulta ? await buscarArticulos(consulta) : [];
-  const publicados = consulta ? [] : await obtenerArticulosPublicados();
+  const [resultados, publicados, articulosDestacados] = await Promise.all([
+    consulta ? buscarArticulos(consulta) : Promise.resolve([]),
+    consulta ? Promise.resolve([]) : obtenerArticulosPublicados(),
+    consulta ? Promise.resolve([]) : obtenerArticulosDestacados(),
+  ]);
 
   return (
     <>
@@ -262,7 +268,7 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {articulosDestacados.map((articulo) => (
               <article
-                key={articulo.url}
+                key={articulo.slug}
                 className="flex flex-col rounded-2xl border border-border bg-bg p-6 transition-shadow hover:shadow-lg hover:shadow-navy/5"
               >
                 <ul className="flex flex-wrap gap-2">
@@ -284,18 +290,17 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
                 </p>
 
                 <p className="mt-5 border-t border-border pt-4 text-[12.5px] leading-relaxed text-fg-subtle">
-                  Publicado como «{articulo.original}» · {fechaLegible(articulo.fecha)}
+                  {articulo.publicado ? fechaLegible(articulo.publicado.slice(0, 10)) : ""}
+                  {articulo.minutos ? ` · ${articulo.minutos} min de lectura` : ""}
                 </p>
 
-                <a
-                  href={articulo.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href={`/recursos/${articulo.slug}`}
                   className="mt-4 inline-flex items-center gap-2 font-display text-sm font-semibold text-navy hover:text-cyan dark:text-sky dark:hover:text-white"
                 >
                   Leer el artículo
                   <IconoFlecha className="h-4 w-4" />
-                </a>
+                </Link>
               </article>
             ))}
           </div>
