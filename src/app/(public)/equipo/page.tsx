@@ -5,7 +5,8 @@ import { BotonEnlace } from "@/components/ui/Boton";
 import { Container } from "@/components/ui/Container";
 import { EncabezadoSeccion } from "@/components/ui/EncabezadoSeccion";
 import { IconoFlecha } from "@/components/ui/Iconos";
-import { claustroMaster, equipo } from "@/content/equipo";
+import { claustroMaster } from "@/content/equipo";
+import { obtenerEquipo } from "@/lib/datos/contenido";
 
 export const metadata: Metadata = {
   title: "Equipo · Quién responde por el método",
@@ -13,10 +14,15 @@ export const metadata: Metadata = {
     "Los socios, consultores y equipos de dirección de CEDEM: quién acompaña a los dueños, quién supervisa cada cuenta y quién está detrás de la firma desde 1985.",
 };
 
-/** El total se cuenta solo: la lista cambia y el texto no miente. */
-const totalPersonas = equipo.reduce((suma, area) => suma + area.personas.length, 0);
+/**
+ * El equipo se lee de la base de datos: lo que el administrador carga en el
+ * panel aparece aquí. Si todavía no hay nadie registrado, se muestra el
+ * contenido semilla verificado con la firma.
+ */
+export default async function PaginaEquipo() {
+  const { areas, origen } = await obtenerEquipo();
+  const totalPersonas = areas.reduce((suma, area) => suma + area.personas.length, 0);
 
-export default function PaginaEquipo() {
   return (
     <>
       <EncabezadoPagina
@@ -54,7 +60,7 @@ export default function PaginaEquipo() {
       </EncabezadoPagina>
 
       {/* Las tres áreas */}
-      {equipo.map((area, i) => (
+      {areas.map((area, i) => (
         <section
           key={area.titulo}
           className={

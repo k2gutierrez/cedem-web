@@ -69,3 +69,54 @@ export const claustroMaster = {
     "Trend Watching",
   ],
 } as const;
+
+/**
+ * Áreas del equipo.
+ *
+ * El contenido semilla de arriba es el respaldo: se usa mientras la base de
+ * datos no tenga consultores registrados. En cuanto el administrador carga al
+ * equipo desde el panel, esa información manda.
+ */
+export function agruparEnAreas(
+  personas: { nombre: string; cargo: string }[],
+): AreaEquipo[] {
+  const socios: Persona[] = [];
+  const consultores: Persona[] = [];
+  const direccion: Persona[] = [];
+
+  for (const persona of personas) {
+    const cargo = persona.cargo.toLowerCase();
+    if (cargo.includes("fundador") || cargo.includes("consejo") || cargo.includes("socio")) {
+      socios.push(persona);
+    } else if (cargo.includes("coordinador") || cargo.includes("director")) {
+      // Esta comprobación va antes que "consultor" a propósito: una
+      // "coordinadora de consultoría" coordina el trabajo, no lo aplica en las
+      // empresas, y su lugar es la dirección.
+      direccion.push(persona);
+    } else if (cargo.includes("consultor")) {
+      consultores.push(persona);
+    } else {
+      direccion.push(persona);
+    }
+  }
+
+  return [
+    {
+      titulo: "Socios y consejo",
+      descripcion:
+        "Los fundadores, el consejo y los socios consultores que responden por la firma.",
+      personas: socios,
+    },
+    {
+      titulo: "Consultores",
+      descripcion:
+        "Quienes aplican el método en cada empresa, con un senior supervisando cada cuenta.",
+      personas: consultores,
+    },
+    {
+      titulo: "Dirección y coordinación",
+      descripcion: "La dirección de la firma y la coordinación de los proyectos.",
+      personas: direccion,
+    },
+  ].filter((area) => area.personas.length > 0);
+}

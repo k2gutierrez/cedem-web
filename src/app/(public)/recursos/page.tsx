@@ -8,6 +8,7 @@ import { EncabezadoSeccion } from "@/components/ui/EncabezadoSeccion";
 import { IconoFlecha, IconoYouTube } from "@/components/ui/Iconos";
 import { bibliotecaMiembros, canalYouTube, serieWebinars, webinars } from "@/content/recursos";
 import { articulosDestacados } from "@/content/site";
+import { obtenerArticulosPublicados } from "@/lib/datos/contenido";
 
 export const metadata: Metadata = {
   title: "Recursos · Artículos, webinars y documentos de CEDEM",
@@ -55,7 +56,11 @@ function fechaLegible(iso: string): string {
   return `${Number(dia)} de ${meses[Number(mes) - 1]} de ${anio}`;
 }
 
-export default function PaginaRecursos() {
+export default async function PaginaRecursos() {
+  // Los artículos que el equipo publicó desde el panel. Si todavía no hay
+  // ninguno, la sección no aparece y quedan solo los tres destacados.
+  const publicados = await obtenerArticulosPublicados();
+
   return (
     <>
       <EncabezadoPagina
@@ -111,6 +116,50 @@ export default function PaginaRecursos() {
           </ol>
         </Container>
       </section>
+
+      {/* Lo último publicado desde el panel */}
+      {publicados.length > 0 ? (
+        <section className="py-14 lg:py-20">
+          <Container>
+            <EncabezadoSeccion
+              antetitulo="Lo más reciente"
+              titulo="Recién salido del horno"
+              entrada="Lo que el equipo de CEDEM publicó desde la plataforma. Los marcados como premium muestran solo el primer párrafo."
+            />
+            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {publicados.map((articulo) => (
+                <article
+                  key={articulo.slug}
+                  className="flex flex-col rounded-2xl border border-border bg-bg p-6 transition-shadow hover:shadow-lg hover:shadow-navy/5"
+                >
+                  <ul className="flex flex-wrap gap-2">
+                    <li className="rounded-full bg-sky/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy dark:bg-sky/20 dark:text-sky">
+                      {articulo.visibilidad === "premium"
+                        ? "Solo miembros"
+                        : articulo.visibilidad === "free_registrado"
+                          ? "Con cuenta gratis"
+                          : "Abierto"}
+                    </li>
+                  </ul>
+                  <h3 className="mt-4 font-display text-lg font-bold leading-snug text-fg">
+                    {articulo.titulo}
+                  </h3>
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-fg-muted">
+                    {articulo.extracto}
+                  </p>
+                  <Link
+                    href={`/recursos/${articulo.slug}`}
+                    className="mt-5 inline-flex items-center gap-2 border-t border-border pt-4 font-display text-sm font-semibold text-navy hover:text-cyan dark:text-sky dark:hover:text-white"
+                  >
+                    Leer {articulo.esPremium ? "el inicio" : "completo"}
+                    <IconoFlecha className="h-4 w-4" />
+                  </Link>
+                </article>
+              ))}
+            </div>
+          </Container>
+        </section>
+      ) : null}
 
       {/* Artículos destacados */}
       <section className="py-14 lg:py-20">
