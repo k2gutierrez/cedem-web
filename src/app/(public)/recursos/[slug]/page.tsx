@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CuerpoContenido } from "@/components/app/CuerpoContenido";
 import { BotonEnlace } from "@/components/ui/Boton";
 import { Container } from "@/components/ui/Container";
 import { IconoFlecha } from "@/components/ui/Iconos";
@@ -27,6 +28,7 @@ type Articulo = {
   subtitle: string | null;
   excerpt: string | null;
   body_md: string | null;
+  body_format: "markdown" | "html" | null;
   is_body_truncated: boolean;
   visibility: "publico" | "free_registrado" | "premium";
   published_at: string | null;
@@ -43,7 +45,7 @@ async function traerArticulo(slug: string): Promise<Articulo | null> {
   const { data } = await supabase
     .from("v_contents_for_viewer")
     .select(
-      "id, slug, title, subtitle, excerpt, body_md, is_body_truncated, visibility, published_at, author_label, consultant_name, consultant_slug, reading_minutes, tags",
+      "id, slug, title, subtitle, excerpt, body_md, body_format, is_body_truncated, visibility, published_at, author_label, consultant_name, consultant_slug, reading_minutes, tags",
     )
     .eq("slug", slug)
     .eq("content_type", "articulo")
@@ -157,42 +159,11 @@ export default async function PaginaArticulo(props: PageProps<"/recursos/[slug]"
         <div className="regla-acento mt-8" />
 
         {/* Cuerpo: completo si hay derecho; si no, solo el primer párrafo */}
-        <div className="mt-8 space-y-5 text-[17px] leading-relaxed text-fg-muted [&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-h3 [&_h2]:text-fg [&_h3]:mt-8 [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-fg [&_li]:ml-5 [&_li]:list-disc [&_strong]:font-semibold [&_strong]:text-fg">
-          {(articulo.body_md ?? articulo.excerpt ?? "")
-            .split(/\n{2,}/)
-            .map((bloque, i) => {
-              const texto = bloque.trim();
-              if (!texto) return null;
-              if (texto.startsWith("## ")) {
-                return <h2 key={i}>{texto.replace(/^##\s+/, "")}</h2>;
-              }
-              if (texto.startsWith("### ")) {
-                return <h3 key={i}>{texto.replace(/^###\s+/, "")}</h3>;
-              }
-              if (/^[-*]\s/m.test(texto)) {
-                return (
-                  <ul key={i}>
-                    {texto
-                      .split("\n")
-                      .filter((l) => l.trim())
-                      .map((linea, j) => (
-                        <li key={j}>{linea.replace(/^[-*]\s+/, "")}</li>
-                      ))}
-                  </ul>
-                );
-              }
-              return (
-                <p
-                  key={i}
-                  dangerouslySetInnerHTML={{
-                    __html: texto.replace(
-                      /\*\*(.+?)\*\*/g,
-                      '<strong class="font-semibold text-fg">$1</strong>',
-                    ),
-                  }}
-                />
-              );
-            })}
+        <div className="mt-8">
+          <CuerpoContenido
+            texto={articulo.body_md ?? articulo.excerpt ?? ""}
+            formato={articulo.body_format}
+          />
         </div>
 
         {/* El muro */}

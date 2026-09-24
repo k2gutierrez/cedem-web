@@ -23,13 +23,14 @@ import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createClient } from "@supabase/supabase-js";
+import { sanearHtml } from "../src/lib/contenido/sanear-html";
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const RAIZ = resolve(AQUI, "..");
 
 /* --- Variables de entorno (sin dependencias) ------------------------------- */
 
-const env = {};
+const env: Record<string, string> = {};
 try {
   const texto = await readFile(resolve(RAIZ, ".env.local"), "utf8");
   for (const linea of texto.split("\n")) {
@@ -106,11 +107,22 @@ for (const [i, articulo] of lista.entries()) {
     continue;
   }
 
-  // 2. El cuerpo.
+  // 2. El cuerpo. La API de WordPress devuelve HTML, así que se declara el
+  //    formato: sin esto queda 'markdown' por omisión y el renderizador envuelve
+  //    el HTML en un párrafo propio (`<p><p>…</p></p>`), que es HTML inválido y
+  //    rompe la hidratación de React (error #418).
   const { error: errorCuerpo } = await supabase
     .from("content_bodies")
     .upsert(
-      { content_id: creado.id, body_md: articulo.cuerpo_html },
+      {
+        content_id: creado.id,
+        // El HTML de WordPress trae etiquetas sin cerrar (167 de los 186
+        // artículos tenían un `</a>` perdido en la firma del autor). Se sanea al
+        // entrar para que el cuerpo guardado ya esté bien formado; el
+        // renderizador lo vuelve a sanear por si alguien edita desde el panel.
+        body_md: sanearHtml(articulo.cuerpo_html),
+        body_format: "html",
+      },
       { onConflict: "content_id" },
     );
 

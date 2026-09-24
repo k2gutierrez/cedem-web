@@ -8,7 +8,12 @@
     "start": "next start",
     "lint": "eslint",
     "probar:motor": "tsx scripts/probar-puntuar.ts",
-    "importar:wordpress": "node scripts/importar-wordpress.mjs"
+    "importar:wordpress": "node scripts/importar-wordpress.mjs",
+    "importar:articulos": "tsx scripts/importar-articulos.mts",
+    "importar:documentos": "node scripts/importar-documentos.mjs",
+    "revisar": "node scripts/revisar-sistema.mjs",
+    "revisar:html": "tsx scripts/revisar-html-articulos.mts",
+    "probar:sanear": "tsx scripts/probar-sanear.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

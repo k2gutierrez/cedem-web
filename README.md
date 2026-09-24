@@ -59,6 +59,9 @@ src/
   de puntuación determinista verificado por pruebas automáticas.
 - ✅ **Fase 2 · Administración** — autenticación real con Supabase, panel del miembro y panel de
   administración de contenido con publicación, visibilidad y destacados.
+- ✅ **Biblioteca de miembros** — los 12 documentos del método publicados con texto completo en
+  pantalla, agrupados por eje, y descarga en PDF con URL firmada de cinco minutos. La ruta del
+  archivo no es pública (migración 18) y cada descarga queda en el registro de accesos.
 - ⏳ **Fase 3** — membresías y pagos: espera las decisiones comerciales (pasarela y precio).
 - ⏳ **Fase 4** — conectar el Camino del Dueño a la base y a la IA de DeepSeek.
 
@@ -71,7 +74,11 @@ src/
 | `pnpm probar:motor` | Pruebas del motor de puntuación del Camino del Dueño |
 | `pnpm importar:wordpress` | Descarga el archivo editorial a `supabase/datos/` |
 | `node scripts/revisar-sistema.mjs` | Revisión integral antes de publicar (28 comprobaciones) |
-| `node scripts/importar-articulos.mjs` | Carga el archivo editorial a la base |
+| `pnpm importar:articulos` | Carga el archivo editorial a la base |
+| `pnpm revisar:html` | Informa qué cuerpos tienen HTML mal formado (`--escribir` para corregirlos) |
+| `pnpm probar:sanear` | Pruebas del saneador de HTML (9 casos) |
+| `pnpm importar:documentos` | Publica los PDF del método en la biblioteca (`--revisar`, `--rehacer`) |
+| `pnpm revisar` | Igual que `node scripts/revisar-sistema.mjs` |
 | `node scripts/generar-redirecciones.mjs` | Regenera el mapa de redirecciones del sitio anterior |
 | `node scripts/extraer-migraciones.mjs` | Regenera `supabase/migrations/` desde el documento de diseño |
 
@@ -82,6 +89,8 @@ En la carpeta del proyecto (un nivel arriba):
 | `python3 scripts/base-datos.py verificar` | Estado de la base: tablas, reglas y contenido |
 | `python3 scripts/base-datos.py sembrar` | Aplica la semilla |
 | `python3 scripts/probar-muro-pago.py` | Comprueba que el contenido premium no se filtre |
+| `python3 scripts/probar-documentos.py` | Comprueba el muro de los 12 documentos del método |
+| `python3 scripts/descargar-documentos.py` | Baja los PDF originales a `assets/documentos-metodo/` |
 | `python3 scripts/promover-admin.py correo@dominio` | Convierte una cuenta en administradora |
 
 ## Decisiones técnicas que conviene recordar
