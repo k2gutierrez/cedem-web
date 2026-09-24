@@ -1,43 +1,61 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useAtom } from "jotai";
+import { useEffect } from "react";
 import { IconoLuna, IconoSol } from "@/components/ui/Iconos";
+import { aplicarTema, temaAtom, temaListoAtom } from "@/lib/estado/tema";
 
 /**
- * Alterna entre modo claro y oscuro y guarda la preferencia.
- * El tema inicial lo aplica el script del layout antes del primer pintado,
- * así que aquí solo se lee lo que ya está puesto.
+ * Conmutador de tema.
+ *
+ * El tema vive en un átomo con persistencia (Jotai), no en `localStorage` a mano.
+ *
+ * Detalle importante del arranque: el script del layout aplica el tema **antes
+ * del primer pintado** para que no haya destello, y lo hace sin pasar por el
+ * átomo. Por eso, al montar, se adopta lo que el documento ya tiene puesto: si
+ * no, el átomo creería que el tema es el de por defecto y el botón diría lo
+ * contrario de lo que se ve.
  */
 export function ThemeToggle({ className = "" }: { className?: string }) {
-  const [oscuro, setOscuro] = useState(false);
-  const [montado, setMontado] = useState(false);
+  const [tema, setTema] = useAtom(temaAtom);
+  const [listo, setListo] = useAtom(temaListoAtom);
 
   useEffect(() => {
-    setOscuro(document.documentElement.classList.contains("dark"));
-    setMontado(true);
+    const aplicado = document.documentElement.classList.contains("dark")
+      ? "oscuro"
+      : "claro";
+    if (aplicado !== tema) setTema(aplicado);
+    setListo(true);
+    // Solo al montar: después manda el átomo.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function alternar() {
-    const siguiente = !oscuro;
-    setOscuro(siguiente);
-    document.documentElement.classList.toggle("dark", siguiente);
-    document.documentElement.dataset.tema = siguiente ? "oscuro" : "claro";
-    try {
-      localStorage.setItem("cedem-tema", siguiente ? "oscuro" : "claro");
-    } catch {
-      /* modo privado del navegador: se ignora */
-    }
-  }
+  const oscuro = tema === "oscuro";
+
+  /**
+   * La etiqueta depende de `listo` para que el HTML del servidor y el primer
+   * render del cliente coincidan. Sin esto, React avisa de un desajuste de
+   * hidratación: el servidor no puede saber qué tema eligió la persona.
+   */
+  const etiqueta = !listo
+    ? "Cambiar de tema"
+    : oscuro
+      ? "Cambiar a modo claro"
+      : "Cambiar a modo oscuro";
 
   return (
     <button
       type="button"
-      onClick={alternar}
-      aria-label={oscuro ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
-      title={oscuro ? "Modo claro" : "Modo oscuro"}
+      onClick={() => {
+        const siguiente = oscuro ? "claro" : "oscuro";
+        setTema(siguiente);
+        aplicarTema(siguiente);
+      }}
+      aria-label={etiqueta}
+      title={listo && oscuro ? "Modo claro" : "Modo oscuro"}
       className={`grid h-9 w-9 place-items-center rounded-full border border-border text-fg-muted transition-colors hover:border-cyan hover:text-cyan dark:hover:border-sky dark:hover:text-sky ${className}`}
     >
-      {montado && oscuro ? (
+      {listo && oscuro ? (
         <IconoSol className="h-[18px] w-[18px]" />
       ) : (
         <IconoLuna className="h-[18px] w-[18px]" />

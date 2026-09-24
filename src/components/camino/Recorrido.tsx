@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { AnilloValor } from "@/components/camino/AnilloValor";
 import { Boton, BotonEnlace } from "@/components/ui/Boton";
 import { IconoFlecha } from "@/components/ui/Iconos";
@@ -14,17 +15,21 @@ import {
   type Pregunta,
 } from "@/content/camino/config";
 import { guardarDiagnostico } from "@/app/acciones/camino";
-import { calcularPerfil, type Respuestas } from "@/lib/camino/puntuar";
+import { calcularPerfil } from "@/lib/camino/puntuar";
+import {
+  canalAtom,
+  comentarioAtom,
+  consentimientoAtom,
+  contactoAtom,
+  inicioAtom,
+  modoAtom,
+  pasoAtom,
+  reiniciarAtom,
+  respuestasAtom,
+  segundosAtom,
+  sessionIdAtom,
+} from "@/lib/estado/camino";
 import { Resultado } from "@/components/camino/Resultado";
-
-const CLAVE_GUARDADO = "cedem-camino-progreso";
-
-type ProgresoGuardado = {
-  paso: number;
-  respuestas: Respuestas;
-  modo: "normal" | "express";
-  actualizado: string;
-};
 
 /** Descarta las pantallas que el modo express no muestra. */
 function indicesVisibles(modo: "normal" | "express"): number[] {
@@ -37,56 +42,42 @@ function indicesVisibles(modo: "normal" | "express"): number[] {
 }
 
 export function Recorrido() {
-  const [paso, setPaso] = useState(0);
-  const [respuestas, setRespuestas] = useState<Respuestas>({});
-  const [modo, setModo] = useState<"normal" | "express">("normal");
-  const [comentario, setComentario] = useState("");
-  const [contacto, setContacto] = useState({ nombre: "", correo: "", whatsapp: "" });
-  const [canal, setCanal] = useState<"correo" | "whatsapp">("correo");
-  const [consentimiento, setConsentimiento] = useState(false);
-  const [hayGuardado, setHayGuardado] = useState<ProgresoGuardado | null>(null);
-  const [mostrarReanudar, setMostrarReanudar] = useState(false);
+  /* El avance, las respuestas y el modo viven en átomos con persistencia
+     automática (ver src/lib/estado/camino.ts). El contacto NO se persiste:
+     son datos personales y no tienen por qué quedar en el dispositivo. */
+  const [paso, setPaso] = useAtom(pasoAtom);
+  const [respuestas, setRespuestas] = useAtom(respuestasAtom);
+  const [modo, setModo] = useAtom(modoAtom);
+  const [comentario, setComentario] = useAtom(comentarioAtom);
+  const [contacto, setContacto] = useAtom(contactoAtom);
+  const [canal, setCanal] = useAtom(canalAtom);
+  const [consentimiento, setConsentimiento] = useAtom(consentimientoAtom);
+  const [segundos, setSegundos] = useAtom(segundosAtom);
+  const [sessionId, setSessionId] = useAtom(sessionIdAtom);
+  const setInicio = useSetAtom(inicioAtom);
+  const reiniciar = useSetAtom(reiniciarAtom);
+  const inicioRecorrido = useAtomValue(inicioAtom);
+
   const [seleccion, setSeleccion] = useState<string | null>(null);
-  const [segundos, setSegundos] = useState(0);
   const [guardando, setGuardando] = useState(false);
   const [avisoGuardado, setAvisoGuardado] = useState<string | null>(null);
-  const [sessionId, setSessionId] = useState<string | undefined>(undefined);
+  /* Con el avance restaurado, el recorrido arranca en la pantalla donde iba.
+     `enApertura` permite mostrarle la portada con la opción de retomar. */
+  const [enApertura, setEnApertura] = useState(true);
+  /* El avance está guardado en el dispositivo y el servidor no puede saberlo.
+     Sin esta bandera, el HTML del servidor (portada) y el del cliente (pantalla
+     donde iba) no coinciden y React avisa de un desajuste de hidratación. */
+  const [montado, setMontado] = useState(false);
+
+  useEffect(() => {
+    setEnApertura(paso === 0 || paso >= RECORRIDO.length - 1);
+    setMontado(true);
+    // Solo al montar: después manda la navegación.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const hayProgreso = paso > 0 && paso < RECORRIDO.length - 1;
 
   const inicioPantalla = useRef(Date.now());
-  const inicioRecorrido = useRef<number | null>(null);
-
-  /* ------------------------------------------------------------------ */
-  /* Persistencia: el avance vive en el navegador hasta que haya cuenta   */
-  /* ------------------------------------------------------------------ */
-
-  useEffect(() => {
-    try {
-      const crudo = localStorage.getItem(CLAVE_GUARDADO);
-      if (!crudo) return;
-      const guardado = JSON.parse(crudo) as ProgresoGuardado;
-      if (guardado.paso > 0 && guardado.paso < RECORRIDO.length - 1) {
-        setHayGuardado(guardado);
-        setMostrarReanudar(true);
-      }
-    } catch {
-      /* datos corruptos: se ignora y se empieza de nuevo */
-    }
-  }, []);
-
-  useEffect(() => {
-    if (paso === 0) return;
-    const progreso: ProgresoGuardado = {
-      paso,
-      respuestas,
-      modo,
-      actualizado: new Date().toISOString(),
-    };
-    try {
-      localStorage.setItem(CLAVE_GUARDADO, JSON.stringify(progreso));
-    } catch {
-      /* modo privado: el recorrido sigue funcionando sin guardar */
-    }
-  }, [paso, respuestas, modo]);
 
   // Tiempo por pantalla: alimenta la telemetría del recorrido.
   useEffect(() => {
@@ -94,7 +85,7 @@ export function Recorrido() {
     return () => {
       setSegundos((s) => s + Math.round((Date.now() - inicioPantalla.current) / 1000));
     };
-  }, [paso]);
+  }, [paso, setSegundos]);
 
   /* ------------------------------------------------------------------ */
   /* Navegación                                                          */
@@ -144,29 +135,20 @@ export function Recorrido() {
   /* Reanudar                                                            */
   /* ------------------------------------------------------------------ */
 
+  /** El avance ya está restaurado: solo hay que salir de la portada. */
   function reanudar() {
-    if (!hayGuardado) return;
-    setRespuestas(hayGuardado.respuestas);
-    setModo(hayGuardado.modo);
-    setPaso(hayGuardado.paso);
-    setMostrarReanudar(false);
+    setEnApertura(false);
   }
 
   function empezarDeNuevo() {
-    try {
-      localStorage.removeItem(CLAVE_GUARDADO);
-    } catch {
-      /* sin acceso al almacenamiento */
-    }
-    setRespuestas({});
-    setModo("normal");
-    setPaso(0);
-    setMostrarReanudar(false);
+    reiniciar();
+    setEnApertura(false);
   }
 
   function empezar(express: boolean) {
     setModo(express ? "express" : "normal");
-    inicioRecorrido.current = Date.now();
+    setInicio(Date.now());
+    setEnApertura(false);
     avanzar();
   }
 
@@ -190,9 +172,7 @@ export function Recorrido() {
         consentimiento,
         // La duración se mide de principio a fin: el contador por pantalla se
         // pierde al desmontar el componente y llegaba a guardarse en cero.
-        segundos: inicioRecorrido.current
-          ? Math.round((Date.now() - inicioRecorrido.current) / 1000)
-          : segundos,
+        segundos: inicioRecorrido ? Math.round((Date.now() - inicioRecorrido) / 1000) : segundos,
         modo,
       });
       if (!resultado.ok) setAvisoGuardado(resultado.mensaje);
@@ -213,14 +193,24 @@ export function Recorrido() {
 
   const perfil = useMemo(() => calcularPerfil(respuestas), [respuestas]);
 
-  if (pantalla.tipo === "apertura") {
+  if (!montado) {
+    return (
+      <Marco progreso={0} etiqueta="Camino del Dueño" alVolver={null}>
+        <p className="tagline text-cyan dark:text-sky">{APERTURA.kicker}</p>
+        <h1 className="mt-4 text-h1 text-fg">{APERTURA.titulo}</h1>
+        <p className="mt-5 text-lead text-fg-muted">Preparando tu recorrido…</p>
+      </Marco>
+    );
+  }
+
+  if (pantalla.tipo === "apertura" || enApertura) {
     return (
       <Marco progreso={0} etiqueta="Empieza aquí" alVolver={null}>
-        {mostrarReanudar && hayGuardado ? (
+        {hayProgreso ? (
           <div className="rounded-2xl border border-cyan/40 bg-sky/10 p-5 text-sm dark:border-sky/40">
             <p className="font-semibold text-fg">Ya habías empezado este recorrido.</p>
             <p className="mt-1.5 text-fg-muted">
-              Ibas en la pantalla {hayGuardado.paso} de {TOTAL_PANTALLAS - 2}. ¿Seguimos?
+              Ibas en la pantalla {paso} de {TOTAL_PANTALLAS - 2}. ¿Seguimos?
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
               <Boton onClick={reanudar} tamano="md">
