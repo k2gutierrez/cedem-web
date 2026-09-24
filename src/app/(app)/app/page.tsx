@@ -5,6 +5,8 @@ import { BotonEnlace } from "@/components/ui/Boton";
 import { Container } from "@/components/ui/Container";
 import { IconoFlecha } from "@/components/ui/Iconos";
 import { nombreDe, obtenerSesion } from "@/lib/auth/sesion";
+import { obtenerMisDiagnosticos } from "@/lib/datos/camino";
+import { NOMBRE_VERBO_CORTO } from "@/components/app/TarjetaDiagnostico";
 
 export const metadata: Metadata = {
   title: "Mi panel",
@@ -14,13 +16,16 @@ export const metadata: Metadata = {
 /**
  * Panel del miembro.
  *
- * TODO (Fase 4): leer de `journey_sessions` el avance real del Camino del Dueño
- * y mostrar aquí el último diagnóstico, en lugar del estado vacío.
+ * La tarjeta del diagnóstico lee de `journey_sessions`: antes decía «todavía no
+ * has hecho tu Camino del Dueño» a todo el mundo, incluso a quien ya lo había
+ * hecho, porque el estado estaba escrito a mano en el marcado.
  */
 export default async function PaginaPanel() {
   const sesion = await obtenerSesion();
   const nombre = nombreDe(sesion);
   const perfilIncompleto = !sesion.perfil?.profile_completed_at;
+
+  const [ultimo] = await obtenerMisDiagnosticos(1);
 
   return (
     <Container>
@@ -40,20 +45,52 @@ export default async function PaginaPanel() {
         {/* Camino del Dueño */}
         <article className="flex flex-col rounded-2xl border border-border bg-bg p-7 lg:col-span-2">
           <p className="tagline text-fg-subtle">Tu diagnóstico</p>
-          <h2 className="mt-3 font-display text-xl font-bold text-fg">
-            Todavía no has hecho tu Camino del Dueño
-          </h2>
-          <p className="mt-3 flex-1 text-sm leading-relaxed text-fg-muted">
-            Cinco minutos, quince preguntas. Al terminar sabrás en qué verbo se te está
-            atorando el valor —generar, multiplicar o capturar— y te llevas tres cosas
-            para leer y tres para hacer esta semana.
-          </p>
-          <div className="mt-6">
-            <BotonEnlace href="/camino" tamano="lg">
-              Empezar ahora
-              <IconoFlecha className="h-4 w-4" />
-            </BotonEnlace>
-          </div>
+
+          {ultimo ? (
+            <>
+              <h2 className="mt-3 font-display text-xl font-bold text-fg">
+                Se te atora {NOMBRE_VERBO_CORTO[ultimo.perfil.verboCritico]}
+              </h2>
+              <p className="mt-3 flex-1 text-sm leading-relaxed text-fg-muted">
+                {ultimo.lectura.subtitulo}
+              </p>
+              <p className="mt-3 text-[13px] text-fg-subtle">
+                {ultimo.completadaEn
+                  ? `Lo hiciste el ${new Date(ultimo.completadaEn).toLocaleDateString("es-MX", {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    })}.`
+                  : ""}
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <BotonEnlace href="/app/camino" tamano="lg">
+                  Ver mi lectura
+                  <IconoFlecha className="h-4 w-4" />
+                </BotonEnlace>
+                <BotonEnlace href="/camino" variante="secundario" tamano="lg">
+                  Volver a hacerlo
+                </BotonEnlace>
+              </div>
+            </>
+          ) : (
+            <>
+              <h2 className="mt-3 font-display text-xl font-bold text-fg">
+                Todavía no has hecho tu Camino del Dueño
+              </h2>
+              <p className="mt-3 flex-1 text-sm leading-relaxed text-fg-muted">
+                Cinco minutos, quince preguntas. Al terminar sabrás en qué verbo se te está
+                atorando el valor —generar, multiplicar o capturar— y te llevas tres cosas
+                para leer y tres para hacer esta semana.
+              </p>
+              <div className="mt-6">
+                <BotonEnlace href="/camino" tamano="lg">
+                  Empezar ahora
+                  <IconoFlecha className="h-4 w-4" />
+                </BotonEnlace>
+              </div>
+            </>
+          )}
         </article>
 
         {/* Perfil */}

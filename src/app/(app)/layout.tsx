@@ -28,15 +28,12 @@ export default async function LayoutPlataforma({
     redirect("/acceso?destino=/app");
   }
 
-  /* El Camino vive en `/camino`, que es una página pública: se puede hacer sin
-     cuenta y el avance se guarda en el dispositivo. Antes este enlace apuntaba a
-     `/app/camino`, que no existe, y Next intentaba precargarlo en cada visita al
-     panel: dos 404 por carga en la consola y en los registros del servidor.
-     TODO (Fase 4): cuando el panel muestre el historial de diagnósticos del
-     miembro, este enlace apuntará a esa página. */
+  /* «Mi Camino» lleva al historial del miembro (sus diagnósticos), y desde ahí
+     se puede volver a hacer el recorrido, que vive en `/camino` porque es público
+     y funciona sin cuenta. */
   const enlaces = [
     { etiqueta: "Mi panel", href: "/app" },
-    { etiqueta: "Mi Camino", href: "/camino" },
+    { etiqueta: "Mi Camino", href: "/app/camino" },
     { etiqueta: "Mi membresía", href: "/app/membresia" },
     { etiqueta: "Biblioteca", href: "/app/biblioteca" },
   ];

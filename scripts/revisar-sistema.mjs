@@ -59,7 +59,14 @@ const PUBLICAS = [
 /* 2 · Rutas que deben exigir sesión                                          */
 /* -------------------------------------------------------------------------- */
 
-const PROTEGIDAS = ["/app", "/app/perfil", "/app/biblioteca", "/app/membresia", "/app/admin/contenido"];
+const PROTEGIDAS = [
+  "/app",
+  "/app/perfil",
+  "/app/camino",
+  "/app/biblioteca",
+  "/app/membresia",
+  "/app/admin/contenido",
+];
 
 {
   const ctx = await nav.newContext({ viewport: { width: 1280, height: 900 } });

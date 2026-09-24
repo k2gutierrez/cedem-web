@@ -62,6 +62,10 @@ src/
 - ✅ **Biblioteca de miembros** — los 12 documentos del método publicados con texto completo en
   pantalla, agrupados por eje, y descarga en PDF con URL firmada de cinco minutos. La ruta del
   archivo no es pública (migración 18) y cada descarga queda en el registro de accesos.
+- ✅ **Mi Camino (seguimiento)** — `/app/camino` es el historial del miembro: cada diagnóstico con
+  su verbo crítico, sus puntajes, las fuerzas que lo frenan, la lectura completa y las
+  recomendaciones. El perfil se recalcula con el motor actual desde las respuestas guardadas y
+  avisa si la versión del motor cambió. El panel resume el último.
 - ⏳ **Fase 3** — membresías y pagos: espera las decisiones comerciales (pasarela y precio).
 - ⏳ **Fase 4** — conectar el Camino del Dueño a la base y a la IA de DeepSeek.
 
