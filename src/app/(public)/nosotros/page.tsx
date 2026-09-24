@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { MapaClientes } from "@/components/marketing/MapaClientes";
 import { EncabezadoPagina } from "@/components/marketing/EncabezadoPagina";
 import { BotonEnlace } from "@/components/ui/Boton";
 import { Container } from "@/components/ui/Container";
@@ -229,6 +230,10 @@ export default function PaginaNosotros() {
                 </a>
               </article>
             ))}
+          </div>
+
+          <div className="mt-10">
+            <MapaClientes />
           </div>
 
           <div className="mt-10 rounded-2xl border border-border bg-bg p-7">

@@ -53,8 +53,21 @@ src/
 
 - ✅ **Fase 0 · Fundación** — Next.js 16 + TypeScript + Tailwind 4, sistema de diseño con la
   paleta del Brand Book, modo claro/oscuro, navbar y footer responsivos, home completa.
-- ⏳ **Fase 1-2** — páginas de servicio, recursos, equipo y panel de administración.
-- ⏳ **Fase 3-4** — cuentas, membresías, pagos y Camino del Dueño con IA.
+- ✅ **Fase 1 · Sitio público** — las tres puertas de servicio, recursos, equipo, nosotros (con
+  el mapa de presencia), contacto, únete, acceso y las páginas legales.
+- ✅ **Camino del Dueño (adelanto de la Fase 4)** — recorrido completo de 22 pantallas con motor
+  de puntuación determinista verificado por pruebas automáticas.
+- ⏳ **Fase 2** — panel de administración y contenido dinámico: espera el proyecto de Supabase.
+- ⏳ **Fase 3** — cuentas, membresías y pagos: espera las decisiones comerciales.
+
+## Comandos
+
+| Comando | Para qué |
+|---|---|
+| `pnpm dev` | Servidor de desarrollo en http://localhost:3000 |
+| `pnpm build` | Build de producción (incluye verificación de tipos) |
+| `pnpm probar:motor` | Pruebas del motor de puntuación del Camino del Dueño |
+| `pnpm importar:wordpress` | Descarga el archivo editorial a `supabase/datos/` |
 
 ## Decisiones técnicas que conviene recordar
 
