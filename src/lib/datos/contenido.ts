@@ -132,6 +132,8 @@ export type PersonaEquipo = {
   slug?: string | null;
   linkedin?: string | null;
   especialidades?: string[] | null;
+  /** Ruta de su foto en el bucket `avatars`. Sin ella se muestran las iniciales. */
+  foto?: string | null;
 };
 
 export type AreaPublica = {
@@ -169,7 +171,7 @@ export async function obtenerEquipo(): Promise<{
   const supabase = await crearClienteServidor();
   const { data, error } = await supabase
     .from("consultants")
-    .select("full_name, slug, headline, linkedin_url, specialties, sort_order, is_active")
+    .select("full_name, slug, headline, linkedin_url, specialties, photo_path, sort_order, is_active")
     .eq("is_active", true)
     .order("sort_order");
 
@@ -181,6 +183,7 @@ export async function obtenerEquipo(): Promise<{
     slug: c.slug as string,
     linkedin: c.linkedin_url as string | null,
     especialidades: (c.specialties as string[] | null) ?? null,
+    foto: (c.photo_path as string | null) ?? null,
   }));
 
   // `agruparEnAreas` viene del contenido semilla con arreglos de solo lectura:
@@ -192,6 +195,7 @@ export async function obtenerEquipo(): Promise<{
       nombre: p.nombre,
       cargo: p.cargo,
       slug: (p as { slug?: string }).slug ?? null,
+      foto: (p as { foto?: string | null }).foto ?? null,
     })),
   }));
 

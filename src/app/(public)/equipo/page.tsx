@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AvatarIniciales } from "@/components/marketing/AvatarIniciales";
+import { FotoPersona } from "@/components/marketing/FotoPersona";
 import { EncabezadoPagina } from "@/components/marketing/EncabezadoPagina";
 import { BotonEnlace } from "@/components/ui/Boton";
 import { Container } from "@/components/ui/Container";
@@ -82,8 +82,7 @@ export default async function PaginaEquipo() {
                 const ficha = persona.slug ? `/equipo/${persona.slug}` : null;
                 const contenido = (
                   <>
-                    {/* TODO: sustituir por la foto real cuando CEDEM entregue originales */}
-                    <AvatarIniciales nombre={persona.nombre} />
+                    <FotoPersona nombre={persona.nombre} ruta={persona.foto} tamano="md" />
                     <div className="min-w-0">
                       <h3 className="font-display text-base font-bold leading-snug text-fg">
                         {persona.nombre}

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { alternarConsultor } from "@/app/acciones/equipo";
+import { CuentaDeEquipo } from "@/components/admin/CuentaDeEquipo";
+import { SubirFoto } from "@/components/app/SubirFoto";
 import { FormularioConsultor, type Consultor } from "@/components/admin/FormularioConsultor";
 import { Container } from "@/components/ui/Container";
 import { obtenerSesion } from "@/lib/auth/sesion";
@@ -19,7 +21,7 @@ export default async function PaginaAdminEquipo() {
   const { data } = await supabase
     .from("consultants")
     .select(
-      "id, full_name, headline, location, bio_md, linkedin_url, x_url, email_public, specialties, is_founder, is_active, sort_order",
+      "id, full_name, headline, location, bio_md, linkedin_url, x_url, email_public, specialties, is_founder, is_active, sort_order, profile_id, photo_path",
     )
     .order("sort_order");
 
@@ -115,6 +117,36 @@ export default async function PaginaAdminEquipo() {
                 </summary>
                 <div className="mt-5 border-t border-border pt-5">
                   <FormularioConsultor consultor={persona} />
+                </div>
+              </details>
+
+              <details className="mt-3">
+                <summary className="cursor-pointer text-[13px] font-semibold text-navy dark:text-sky">
+                  Su acceso y su foto
+                </summary>
+                <div className="mt-5 space-y-5 border-t border-border pt-5">
+                  <CuentaDeEquipo
+                    consultorId={persona.id as string}
+                    nombre={persona.full_name as string}
+                    correo={(persona.email_public as string | null) ?? null}
+                    esSuperAdmin={sesion.perfil?.role === "super_admin"}
+                    tieneCuenta={Boolean(persona.profile_id)}
+                  />
+
+                  <div>
+                    <p className="text-[13px] font-semibold text-fg">Su foto</p>
+                    <p className="mt-1.5 text-[12.5px] leading-relaxed text-fg-muted">
+                      Se ve en la página de Equipo y en su perfil. Si no tiene, se muestran
+                      sus iniciales.
+                    </p>
+                    <div className="mt-4">
+                      <SubirFoto
+                        persona={(persona.profile_id as string) ?? (persona.id as string)}
+                        rutaActual={(persona.photo_path as string | null) ?? null}
+                        nombre={persona.full_name as string}
+                      />
+                    </div>
+                  </div>
                 </div>
               </details>
             </li>

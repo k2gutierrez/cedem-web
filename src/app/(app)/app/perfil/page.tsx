@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { FormularioPerfil, type DatosPerfil } from "@/components/app/FormularioPerfil";
+import { SubirFoto } from "@/components/app/SubirFoto";
 import { CambiarContrasena } from "@/components/auth/CambiarContrasena";
 import { Container } from "@/components/ui/Container";
-import { obtenerSesion } from "@/lib/auth/sesion";
+import { nombreDe, obtenerSesion } from "@/lib/auth/sesion";
 import { crearClienteServidor } from "@/lib/supabase/cliente-servidor";
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default async function PaginaPerfil() {
     supabase
       .from("profiles")
       .select(
-        "full_name, phone, company_name, job_title, company_country_code, company_city, company_sector, employees_count, annual_revenue_usd",
+        "full_name, phone, avatar_path, company_name, job_title, company_country_code, company_city, company_sector, employees_count, annual_revenue_usd",
       )
       .eq("id", sesion.usuario.id)
       .maybeSingle(),
@@ -37,6 +38,21 @@ export default async function PaginaPerfil() {
       </p>
 
       <div className="mt-10 rounded-3xl border border-border bg-bg p-7 sm:p-9">
+        <h2 className="font-display text-lg font-bold text-fg">Tu foto</h2>
+        <p className="mt-2 max-w-[52ch] text-sm leading-relaxed text-fg-muted">
+          Aparece en tu cuenta. Si eres consultor, la misma foto se ve en la página de
+          Equipo.
+        </p>
+        <div className="mt-6">
+          <SubirFoto
+            persona={sesion.usuario.id}
+            rutaActual={(perfil?.avatar_path as string | null) ?? null}
+            nombre={nombreDe(sesion)}
+          />
+        </div>
+      </div>
+
+      <div className="mt-6 rounded-3xl border border-border bg-bg p-7 sm:p-9">
         <FormularioPerfil
           perfil={(perfil ?? {}) as DatosPerfil}
           paises={paises ?? [{ code: "MX", name_es: "México" }]}

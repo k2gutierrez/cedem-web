@@ -38,6 +38,21 @@ export default async function LayoutPlataforma({
     { etiqueta: "Mi membresía", href: "/app/membresia" },
     { etiqueta: "Biblioteca", href: "/app/biblioteca" },
   ];
+
+  /* «Mi ficha» solo aparece para quien tiene ficha de consultor: se comprueba en
+     la base y no por el rol, porque un administrador puede no ser consultor y un
+     consultor puede no administrar nada. */
+  const { crearClienteServidor } = await import("@/lib/supabase/cliente-servidor");
+  const supabaseDelMenu = await crearClienteServidor();
+  const { data: miFicha } = await supabaseDelMenu
+    .from("consultants")
+    .select("id")
+    .eq("profile_id", sesion.usuario.id)
+    .maybeSingle();
+
+  if (miFicha) {
+    enlaces.splice(2, 0, { etiqueta: "Mi ficha", href: "/app/mi-ficha" });
+  }
   if (sesion.esAdmin) {
     enlaces.push({ etiqueta: "Contenido", href: "/app/admin/contenido" });
     enlaces.push({ etiqueta: "Diagnósticos", href: "/app/admin/camino" });

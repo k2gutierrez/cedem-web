@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AvatarIniciales } from "@/components/marketing/AvatarIniciales";
+import { FotoPersona } from "@/components/marketing/FotoPersona";
 import { BotonEnlace } from "@/components/ui/Boton";
 import { Container } from "@/components/ui/Container";
 import { IconoFlecha } from "@/components/ui/Iconos";
@@ -109,7 +109,7 @@ export default async function PaginaConsultor(props: PageProps<"/equipo/[slug]">
           {/* Ficha */}
           <div>
             <div className="flex items-center gap-5">
-              <AvatarIniciales nombre={consultor.full_name} />
+              <FotoPersona nombre={consultor.full_name} ruta={consultor.photo_path} tamano="lg" />
               <div>
                 <h1 className="font-display text-h2 text-fg">{consultor.full_name}</h1>
                 <p className="mt-1.5 text-[15px] text-fg-muted">

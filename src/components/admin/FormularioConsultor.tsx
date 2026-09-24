@@ -18,6 +18,10 @@ export type Consultor = {
   is_founder: boolean;
   is_active: boolean;
   sort_order: number;
+  /** Cuenta de acceso ligada a esta ficha. `null` si todavía no tiene. */
+  profile_id?: string | null;
+  /** Su foto en el bucket `avatars`. */
+  photo_path?: string | null;
 };
 
 const campo =
