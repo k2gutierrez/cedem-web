@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Datos generados por la migración de WordPress: es contenido de la firma y no
+# debe versionarse en el repositorio del frontend. Se regenera con:
+#   node scripts/importar-wordpress.mjs
+supabase/datos/
