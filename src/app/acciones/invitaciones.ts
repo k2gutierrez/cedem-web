@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { crearClienteServidor } from "@/lib/supabase/cliente-servidor";
 import { obtenerSesion } from "@/lib/auth/sesion";
+import { mensajeDeBase } from "@/lib/errores";
 
 export type EstadoInvitacion = { error?: string; ok?: string; codigo?: string };
 
@@ -110,13 +111,12 @@ export async function canjearInvitacion(
   const { error } = await supabase.rpc("redeem_invitation", { p_code: codigo });
 
   if (error) {
-    const mensaje = error.message || "";
-    // La base ya devuelve mensajes escritos para el dueño: se muestran tal cual.
-    const util = /invitaci|código|sesión|expir|revoc|canje/i.test(mensaje);
     return {
-      error: util
-        ? mensaje
-        : "No pudimos canjear la invitación. Escríbenos y lo revisamos contigo.",
+      error: mensajeDeBase(
+        error,
+        "No pudimos canjear la invitación. Escríbenos y lo revisamos contigo.",
+        "invitaciones",
+      ),
     };
   }
 

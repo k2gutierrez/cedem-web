@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { obtenerSesion } from "@/lib/auth/sesion";
+import { mensajeDeBase } from "@/lib/errores";
 import { crearClienteServidor } from "@/lib/supabase/cliente-servidor";
 
 /**
@@ -34,22 +35,12 @@ const ROLES: Record<string, string> = {
   super_admin: "Super administrador",
 };
 
-/** Traduce el error de Postgres a algo que el equipo pueda leer y accionar. */
-function mensajeDeError(mensaje: string): string {
-  if (mensaje.includes("Solo super_admin")) {
-    return "Solo un super administrador puede dar permisos de administración. Pídeselo a quien los tenga.";
-  }
-  if (mensaje.includes("No puedes quitarte a ti mismo")) {
-    return "No puedes quitarte tu propio permiso de administración.";
-  }
-  if (mensaje.includes("visitante")) {
-    return "Ese rol no se asigna a mano: es el estado de quien no tiene sesión.";
-  }
-  if (mensaje.includes("mayores a cero")) {
-    return "Los días de vigencia tienen que ser mayores a cero.";
-  }
-  return `No se pudo completar: ${mensaje}`;
-}
+/* Los errores de estas dos funciones ya vienen escritos para el equipo —«Solo
+   super_admin puede otorgar roles administrativos», «No puedes quitarte a ti
+   mismo el rol administrativo»—, así que se muestran tal cual y no se reescriben
+   aquí: sería mantener dos versiones del mismo texto. */
+const ALTERNO_ROL = "No se pudo cambiar el rol. Vuelve a intentarlo o revisa la auditoría.";
+const ALTERNO_MEMBRESIA = "No se pudo otorgar la membresía. Vuelve a intentarlo.";
 
 /** Cambia el rol de un miembro. Deja registro con el motivo. */
 export async function cambiarRol(datos: FormData): Promise<void> {
@@ -73,7 +64,9 @@ export async function cambiarRol(datos: FormData): Promise<void> {
   revalidatePath(destino);
 
   if (error) {
-    redirect(`${destino}?aviso=${encodeURIComponent(mensajeDeError(error.message))}`);
+    redirect(
+      `${destino}?aviso=${encodeURIComponent(mensajeDeBase(error, ALTERNO_ROL, "miembros.rol"))}`,
+    );
   }
   redirect(`${destino}?hecho=${encodeURIComponent(`Rol actualizado a ${ROLES[rol]}.`)}`);
 }
@@ -107,7 +100,11 @@ export async function otorgarMembresia(datos: FormData): Promise<void> {
   revalidatePath("/app/membresia");
 
   if (error) {
-    redirect(`${destino}?aviso=${encodeURIComponent(mensajeDeError(error.message))}`);
+    redirect(
+      `${destino}?aviso=${encodeURIComponent(
+        mensajeDeBase(error, ALTERNO_MEMBRESIA, "miembros.membresia"),
+      )}`,
+    );
   }
   redirect(
     `${destino}?hecho=${encodeURIComponent(`Membresía otorgada por ${Math.round(dias)} días.`)}`,
