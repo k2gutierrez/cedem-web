@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Revelar } from "@/components/fx/Efectos";
 import { Container } from "@/components/ui/Container";
 import { EncabezadoSeccion } from "@/components/ui/EncabezadoSeccion";
 import { IconoFlecha } from "@/components/ui/Iconos";
@@ -20,11 +21,16 @@ export function Puertas() {
         />
 
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
-          {servicios.map((servicio) => (
+          {servicios.map((servicio, i) => (
+            <Revelar key={servicio.clave} retraso={i * 0.1} className="flex">
             <article
-              key={servicio.clave}
-              className="flex flex-col rounded-3xl border border-border bg-bg p-7 transition-shadow hover:shadow-xl hover:shadow-navy/5"
+              className="group relative flex w-full flex-col overflow-hidden rounded-3xl border border-border bg-bg p-7 transition-all duration-300 hover:-translate-y-1.5 hover:border-cyan/50 hover:shadow-[var(--sombra-alta)] dark:hover:border-sky/50"
             >
+              {/* Filo de acento que aparece al pasar el ratón */}
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-gradient-to-r from-cyan via-blue to-sky transition-transform duration-500 group-hover:scale-x-100"
+              />
               <p className="tagline text-cyan dark:text-sky">{servicio.etiqueta}</p>
               <h3 className="mt-3 font-display text-2xl font-bold text-fg">
                 {servicio.nombre}
@@ -56,6 +62,7 @@ export function Puertas() {
                 <IconoFlecha className="h-4 w-4" />
               </Link>
             </article>
+            </Revelar>
           ))}
         </div>
       </Container>

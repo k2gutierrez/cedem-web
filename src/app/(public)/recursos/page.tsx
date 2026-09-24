@@ -290,6 +290,9 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
                 </p>
 
                 <p className="mt-5 border-t border-border pt-4 text-[12.5px] leading-relaxed text-fg-subtle">
+                  {articulo.titulo !== articulo.tituloOriginal
+                    ? `Publicado como «${articulo.tituloOriginal}» · `
+                    : ""}
                   {articulo.publicado ? fechaLegible(articulo.publicado.slice(0, 10)) : ""}
                   {articulo.minutos ? ` · ${articulo.minutos} min de lectura` : ""}
                 </p>

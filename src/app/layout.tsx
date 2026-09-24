@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
+import { ProveedorMovimiento } from "@/components/fx/ProveedorMovimiento";
 import { contacto, redes, sedes } from "@/content/site";
 
 const montserrat = Montserrat({
@@ -97,7 +98,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="flex min-h-full flex-col bg-bg text-fg antialiased">
-        {children}
+        {/* El proveedor envuelve todo: configura el movimiento (respetando la
+            preferencia del sistema) y monta una sola vez los avisos de sonner. */}
+        <ProveedorMovimiento>{children}</ProveedorMovimiento>
       </body>
     </html>
   );

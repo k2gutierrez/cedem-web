@@ -1,3 +1,4 @@
+import { Revelar } from "@/components/fx/Efectos";
 import { Container } from "@/components/ui/Container";
 import { EncabezadoSeccion } from "@/components/ui/EncabezadoSeccion";
 import { casos } from "@/content/site";
@@ -18,10 +19,10 @@ export function Casos() {
         />
 
         <div className="mt-12 space-y-6">
-          {casos.map((caso) => (
+          {casos.map((caso, i) => (
+            <Revelar key={caso.empresa} retraso={i * 0.08}>
             <article
-              key={caso.empresa}
-              className="grid gap-6 rounded-3xl border border-border bg-bg p-7 lg:grid-cols-[1fr_1.6fr] lg:gap-10 lg:p-9"
+              className="borde-vivo grid gap-6 rounded-3xl border border-border bg-bg p-7 lg:grid-cols-[1fr_1.6fr] lg:gap-10 lg:p-9"
             >
               <header className="lg:border-r lg:border-border lg:pr-8">
                 <h3 className="font-display text-xl font-bold text-fg">
@@ -55,6 +56,7 @@ export function Casos() {
                 </div>
               </dl>
             </article>
+            </Revelar>
           ))}
         </div>
 

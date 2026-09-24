@@ -57,6 +57,12 @@ export async function Recursos() {
                 {articulo.extracto}
               </p>
 
+              {articulo.titulo !== articulo.tituloOriginal ? (
+                <p className="mt-4 text-[11.5px] uppercase tracking-wider text-fg-subtle">
+                  Publicado como «{articulo.tituloOriginal}»
+                </p>
+              ) : null}
+
               <Link
                 href={`/recursos/${articulo.slug}`}
                 className="mt-5 inline-flex items-center gap-2 font-display text-sm font-semibold text-navy hover:text-cyan dark:text-sky dark:hover:text-white"

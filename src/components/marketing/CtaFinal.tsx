@@ -1,3 +1,4 @@
+import { Revelar } from "@/components/fx/Efectos";
 import { BotonEnlace } from "@/components/ui/Boton";
 import { Container } from "@/components/ui/Container";
 import { IconoFlecha } from "@/components/ui/Iconos";
@@ -10,7 +11,12 @@ export function CtaFinal() {
   return (
     <section className="py-16 lg:py-24">
       <Container>
+        <Revelar>
         <div className="relative overflow-hidden rounded-[32px] bg-navy px-7 py-14 text-white lg:px-16 lg:py-20">
+          <div
+            aria-hidden="true"
+            className="rejilla-tecnica pointer-events-none absolute inset-0 opacity-50 [--rejilla:rgba(255,255,255,0.06)]"
+          />
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -top-24 -right-16 h-[380px] w-[380px] rounded-full bg-cyan/25 blur-3xl"
@@ -47,6 +53,7 @@ export function CtaFinal() {
             </p>
           </div>
         </div>
+        </Revelar>
       </Container>
     </section>
   );

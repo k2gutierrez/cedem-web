@@ -1,3 +1,4 @@
+import { ContadorAnimado, PalabraRotativa, Revelar, TarjetaInclinada } from "@/components/fx/Efectos";
 import { MarcoFoto } from "@/components/marketing/MarcoFoto";
 import { BotonEnlace } from "@/components/ui/Boton";
 import { Container } from "@/components/ui/Container";
@@ -7,84 +8,137 @@ import { datosDeMercado, procedenciaDatos } from "@/content/site";
 /**
  * Hero de la home.
  *
- * Regla: en 5 segundos el dueño tiene que reconocer su problema. Por eso el
- * titular habla del rol (no de la empresa) y el subtítulo nombra la categoría
- * que CEDEM creó: la Dueñez.
+ * DOS REGLAS QUE NO SE NEGOCIAN
+ *
+ * 1 · En cinco segundos el dueño tiene que reconocer su problema. Por eso el
+ *    titular habla del rol y no de la empresa, y la palabra que rota mantiene la
+ *    misma pregunta con tres objetos distintos: patrimonio, legado, empresa.
+ * 2 · El movimiento es decorativo. Todo el texto se renderiza en el servidor y se
+ *    lee aunque el JavaScript no llegue; lo que añaden los efectos es jerarquía,
+ *    no contenido.
+ *
+ * El fondo es una rejilla técnica que se desplaza muy despacio y un halo de marca.
+ * Nada de vídeos ni de imágenes pesadas: la primera pintura sigue siendo texto.
  */
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-bg">
-      {/* Halo de marca: da profundidad sin ensuciar la legibilidad */}
+    <section className="relative isolate overflow-hidden bg-bg">
+      {/* Rejilla técnica con la deriva lenta del sistema de diseño */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-40 -right-32 h-[520px] w-[520px] rounded-full bg-sky/20 blur-3xl dark:bg-cyan/10"
+        className="rejilla-tecnica rejilla-viva pointer-events-none absolute inset-0 -z-10"
       />
 
-      <Container className="relative grid items-center gap-12 py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-24">
+      {/* Halos de marca: dan profundidad y sostienen la lectura */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-24 -top-40 -z-10 h-[560px] w-[560px] rounded-full bg-sky/25 blur-3xl dark:bg-cyan/12"
+      />
+      <div
+        aria-hidden="true"
+        className="latido pointer-events-none absolute -left-32 top-40 -z-10 h-[380px] w-[380px] rounded-full bg-blue/10 blur-3xl dark:bg-blue/20"
+      />
+
+      <Container className="relative grid items-center gap-14 py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-24">
         <div>
-          <p className="tagline text-cyan dark:text-sky">El valor de ser dueño</p>
+          <Revelar>
+            <p className="inline-flex items-center gap-3 rounded-full border border-border bg-bg/70 px-4 py-2 backdrop-blur">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan opacity-70" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan" />
+              </span>
+              <span className="tagline text-[11px] text-cyan dark:text-sky">
+                El valor de ser dueño · Desde 1985
+              </span>
+            </p>
+          </Revelar>
 
-          <h1 className="mt-5 text-display text-fg">
-            Diriges una empresa.
-            <br />
-            <span className="text-navy dark:text-sky">¿Gobiernas tu patrimonio?</span>
-          </h1>
+          <Revelar retraso={0.08}>
+            <h1 className="mt-6 text-display text-fg">
+              Diriges una empresa.
+              <br />
+              ¿Gobiernas tu{" "}
+              <PalabraRotativa
+                palabras={["patrimonio?", "legado?", "futuro?", "empresa?"]}
+              />
+            </h1>
+          </Revelar>
 
-          <p className="mt-6 max-w-[52ch] text-lead text-fg-muted">
-            La <strong className="font-semibold text-fg">Dueñez</strong> es el rol del
-            dueño: definir la razón de ser del negocio, decidir a qué se renuncia y
-            asegurar que se cree valor.{" "}
-            <strong className="font-semibold text-fg">
-              Se puede compartir, pero no se delega.
-            </strong>{" "}
-            Nadie te enseñó a ejercerlo. Desde 1985 acompañamos a dueños y dueñas a
-            hacerlo con método.
-          </p>
+          <Revelar retraso={0.16}>
+            <p className="mt-7 max-w-[52ch] text-lead text-fg-muted">
+              La <strong className="font-semibold text-fg">Dueñez</strong> es el rol del
+              dueño: definir la razón de ser del negocio, decidir a qué se renuncia y
+              asegurar que se cree valor.{" "}
+              <strong className="font-semibold text-fg">
+                Se puede compartir, pero no se delega.
+              </strong>{" "}
+              Nadie te enseñó a ejercerlo. Desde 1985 acompañamos a dueños y dueñas a
+              hacerlo con método.
+            </p>
+          </Revelar>
 
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <BotonEnlace href="/camino" tamano="lg">
-              Empieza tu Camino del Dueño
-              <IconoFlecha className="h-4 w-4" />
-            </BotonEnlace>
-            <BotonEnlace href="/consulting" variante="secundario" tamano="lg">
-              Ver Consulting
-            </BotonEnlace>
-          </div>
+          <Revelar retraso={0.24}>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <BotonEnlace href="/camino" tamano="lg" className="barrido">
+                Empieza tu Camino del Dueño
+                <IconoFlecha className="h-4 w-4" />
+              </BotonEnlace>
+              <BotonEnlace href="/consulting" variante="secundario" tamano="lg">
+                Ver Consulting
+              </BotonEnlace>
+            </div>
 
-          <p className="mt-4 text-sm text-fg-subtle">
-            Diagnóstico gratuito de 5 minutos · Sin registro para empezar
-          </p>
+            <p className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-fg-subtle">
+              <span>Diagnóstico gratuito de 5 minutos</span>
+              <span aria-hidden="true">·</span>
+              <span>Sin registro para empezar</span>
+              <span aria-hidden="true">·</span>
+              <span>Con lectura escrita para tu caso</span>
+            </p>
+          </Revelar>
 
           {/* Cifras de terceros: sostienen la urgencia sin autobombo */}
-          <dl className="mt-12 grid gap-6 border-t border-border pt-8 sm:grid-cols-3">
-            {datosDeMercado.map((dato) => (
-              <div key={dato.cifra}>
-                <dt className="font-display text-3xl font-bold text-navy dark:text-sky">
-                  {dato.cifra}
-                </dt>
-                <dd className="mt-1.5 text-[13px] leading-snug text-fg-muted">
-                  {dato.texto}
-                </dd>
-              </div>
-            ))}
-          </dl>
-          <p className="mt-3 text-[11px] uppercase tracking-wider text-fg-subtle">
-            {procedenciaDatos}
-          </p>
+          <Revelar retraso={0.32}>
+            <dl className="mt-12 grid gap-6 border-t border-border pt-8 sm:grid-cols-3">
+              {datosDeMercado.map((dato) => {
+                const numero = Number(dato.cifra.replace("%", ""));
+                return (
+                  <div key={dato.cifra} className="group">
+                    <dt className="font-display text-3xl font-bold text-navy transition-colors group-hover:text-cyan dark:text-sky">
+                      {Number.isFinite(numero) ? (
+                        <ContadorAnimado valor={numero} sufijo="%" />
+                      ) : (
+                        dato.cifra
+                      )}
+                    </dt>
+                    <dd className="mt-1.5 text-[13px] leading-snug text-fg-muted">
+                      {dato.texto}
+                    </dd>
+                  </div>
+                );
+              })}
+            </dl>
+            <p className="mt-3 text-[11px] uppercase tracking-wider text-fg-subtle">
+              {procedenciaDatos}
+            </p>
+          </Revelar>
         </div>
 
         {/* Fotografía. Hoy es un hueco de marca: CEDEM entregará foto propia.
             Ver `MarcoFoto` y docs/07-imagenes-y-fotografia.md. */}
-        <div className="relative">
-          <MarcoFoto
-            alt="Dueña de empresa dirigiendo una reunión de consejo"
-            prioridad
-            proporcion="aspect-[4/5] sm:aspect-[5/4] lg:aspect-[4/5]"
-            className="w-full shadow-2xl shadow-navy/25"
-          />
+        <Revelar retraso={0.2} className="relative">
+          <TarjetaInclinada>
+            <MarcoFoto
+              alt="Dueña de empresa dirigiendo una reunión de consejo"
+              prioridad
+              proporcion="aspect-[4/5] sm:aspect-[5/4] lg:aspect-[4/5]"
+              className="w-full shadow-2xl shadow-navy/25"
+            />
+          </TarjetaInclinada>
 
-          {/* Tarjeta flotante con la promesa del método */}
-          <figure className="absolute -bottom-6 -left-4 max-w-[290px] rounded-2xl border border-border bg-bg/95 p-5 shadow-xl backdrop-blur sm:left-6">
+          {/* Tarjeta de cristal con la promesa del método */}
+          <figure className="cristal absolute -bottom-6 -left-4 max-w-[300px] rounded-2xl p-5 shadow-[var(--sombra-alta)] sm:left-6">
+            <span className="brillo-borde absolute inset-x-5 -top-px h-px bg-gradient-to-r from-transparent via-cyan to-transparent" />
             <blockquote className="font-display text-[15px] font-semibold leading-snug text-fg">
               &ldquo;El éxito lo puede tener cualquiera con un poco de suerte, pero
               solo un buen dueño lo repite una y otra vez.&rdquo;
@@ -93,7 +147,7 @@ export function Hero() {
               Carlos A. Dumois · Presidente Fundador
             </figcaption>
           </figure>
-        </div>
+        </Revelar>
       </Container>
     </section>
   );

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/brand/Logo";
+import { EnlacesEscritorio } from "@/components/layout/EnlacesEscritorio";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { BotonEnlace } from "@/components/ui/Boton";
 import { IconoCerrar, IconoMenu } from "@/components/ui/Iconos";
@@ -44,7 +45,7 @@ export function Navbar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-bg/85 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-border bg-bg/80 backdrop-blur-xl">
       <nav
         aria-label="Navegación principal"
         className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-4 px-5 sm:px-8"
@@ -53,27 +54,9 @@ export function Navbar() {
           <Logo alto={30} prioridad />
         </Link>
 
-        {/* Escritorio */}
-        <ul className="hidden items-center gap-1 lg:flex">
-          {navegacion.map((item) => {
-            const activo = ruta === item.href || ruta.startsWith(`${item.href}/`);
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  aria-current={activo ? "page" : undefined}
-                  className={`rounded-full px-3 py-2 text-sm font-medium transition-colors ${
-                    activo
-                      ? "text-cyan dark:text-sky"
-                      : "text-fg-muted hover:text-fg"
-                  }`}
-                >
-                  {item.etiqueta}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        {/* Escritorio: en su propio componente porque el indicador activo se
+            anima y eso lo convierte en isla de cliente. */}
+        <EnlacesEscritorio />
 
         <div className="flex items-center gap-2">
           <ThemeToggle />

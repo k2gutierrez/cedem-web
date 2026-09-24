@@ -42,7 +42,10 @@ export async function obtenerCasos() {
 
 export type ArticuloDestacado = {
   slug: string;
+  /** El título que se muestra: el gancho editorial si lo hay, si no el real. */
   titulo: string;
+  /** El título con el que se publicó. Se cita debajo, para no confundir a nadie. */
+  tituloOriginal: string;
   extracto: string;
   etiquetas: string[];
   publicado: string | null;
@@ -69,7 +72,9 @@ export async function obtenerArticulosDestacados(limite = 3): Promise<ArticuloDe
 
   const { data, error } = await supabase
     .from("contents")
-    .select("slug, title, excerpt, summary, published_at, reading_minutes, content_tags(tags(label))")
+    .select(
+      "slug, title, subtitle, excerpt, summary, published_at, reading_minutes, content_tags(tags(label))",
+    )
     .eq("content_type", "articulo")
     .eq("status", "publicado")
     .eq("is_featured", true)
@@ -91,9 +96,18 @@ export async function obtenerArticulosDestacados(limite = 3): Promise<ArticuloDe
       })
       .filter((l): l is string => Boolean(l));
 
+    /* El gancho vive en `subtitle` y el título real en `title`. Los artículos
+       migrados traen el título de WordPress en mayúsculas ("LASTRES DEL
+       CRECIMIENTO"), que funciona en el archivo pero no como anzuelo en la
+       portada. Con esta separación, el artículo conserva su título para el
+       buscador y la ficha, y la portada puede usar una frase que invite a leer.
+       Los dos campos se editan desde el panel. */
+    const gancho = (a.subtitle ?? "").trim();
+
     return {
       slug: a.slug as string,
-      titulo: a.title as string,
+      titulo: gancho || (a.title as string),
+      tituloOriginal: a.title as string,
       extracto: ((a.excerpt ?? a.summary ?? "") as string).slice(0, 240),
       etiquetas,
       publicado: a.published_at as string | null,
