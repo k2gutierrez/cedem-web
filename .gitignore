@@ -44,3 +44,7 @@ next-env.d.ts
 # debe versionarse en el repositorio del frontend. Se regenera con:
 #   node scripts/importar-wordpress.mjs
 supabase/datos/
+
+# Temporales del CLI de Supabase
+supabase/.temp/
+supabase/.branches/

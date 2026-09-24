@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { MarcoFoto } from "@/components/marketing/MarcoFoto";
 import { BotonEnlace } from "@/components/ui/Boton";
 import { Container } from "@/components/ui/Container";
 import { IconoFlecha } from "@/components/ui/Iconos";
@@ -73,18 +73,15 @@ export function Hero() {
           </p>
         </div>
 
-        {/* Fotografía con el duotono de marca */}
+        {/* Fotografía. Hoy es un hueco de marca: CEDEM entregará foto propia.
+            Ver `MarcoFoto` y docs/07-imagenes-y-fotografia.md. */}
         <div className="relative">
-          <div className="duotono-marco aspect-[4/5] w-full rounded-[28px] shadow-2xl shadow-navy/25 sm:aspect-[5/4] lg:aspect-[4/5]">
-            <Image
-              src="/fotos/prueba-mujer-duotono.jpg"
-              alt="Dueña de empresa dirigiendo una reunión de consejo"
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 45vw"
-              className="object-cover"
-            />
-          </div>
+          <MarcoFoto
+            alt="Dueña de empresa dirigiendo una reunión de consejo"
+            prioridad
+            proporcion="aspect-[4/5] sm:aspect-[5/4] lg:aspect-[4/5]"
+            className="w-full shadow-2xl shadow-navy/25"
+          />
 
           {/* Tarjeta flotante con la promesa del método */}
           <figure className="absolute -bottom-6 -left-4 max-w-[290px] rounded-2xl border border-border bg-bg/95 p-5 shadow-xl backdrop-blur sm:left-6">
