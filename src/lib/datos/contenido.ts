@@ -64,6 +64,8 @@ export async function obtenerDatosDeMercado() {
 export type PersonaEquipo = {
   nombre: string;
   cargo: string;
+  /** Slug de su ficha pública. Sin él, la tarjeta no enlaza a ningún lado. */
+  slug?: string | null;
   linkedin?: string | null;
   especialidades?: string[] | null;
 };
@@ -103,7 +105,7 @@ export async function obtenerEquipo(): Promise<{
   const supabase = await crearClienteServidor();
   const { data, error } = await supabase
     .from("consultants")
-    .select("full_name, headline, linkedin_url, specialties, sort_order, is_active")
+    .select("full_name, slug, headline, linkedin_url, specialties, sort_order, is_active")
     .eq("is_active", true)
     .order("sort_order");
 
@@ -112,6 +114,7 @@ export async function obtenerEquipo(): Promise<{
   const personas = data.map((c) => ({
     nombre: c.full_name as string,
     cargo: (c.headline as string) ?? "Consultor",
+    slug: c.slug as string,
     linkedin: c.linkedin_url as string | null,
     especialidades: (c.specialties as string[] | null) ?? null,
   }));
@@ -121,7 +124,11 @@ export async function obtenerEquipo(): Promise<{
   const areas: AreaPublica[] = agruparEnAreas(personas).map((area) => ({
     titulo: area.titulo,
     descripcion: area.descripcion,
-    personas: area.personas.map((p) => ({ nombre: p.nombre, cargo: p.cargo })),
+    personas: area.personas.map((p) => ({
+      nombre: p.nombre,
+      cargo: p.cargo,
+      slug: (p as { slug?: string }).slug ?? null,
+    })),
   }));
 
   return { areas, origen: "base-de-datos" };
@@ -167,6 +174,48 @@ export async function obtenerArticulosPublicados(limite = 12): Promise<ArticuloP
     slug: a.slug as string,
     titulo: a.title as string,
     extracto: ((a.excerpt ?? a.summary ?? "") as string).slice(0, 260),
+    visibilidad: a.visibility as ArticuloPublicado["visibilidad"],
+    publicado: a.published_at as string | null,
+    esPremium: a.visibility === "premium",
+  }));
+}
+
+/* -------------------------------------------------------------------------- */
+/* Buscador                                                                   */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Busca en el archivo editorial.
+ *
+ * Usa el índice de texto completo de PostgreSQL en español (`search_vector`),
+ * no un `ilike`: así "sucesion" encuentra "sucesión", y "abandonar" encuentra
+ * los artículos que hablan de abandonar aunque no usen esa palabra exacta.
+ */
+export async function buscarArticulos(
+  consulta: string,
+  limite = 24,
+): Promise<ArticuloPublicado[]> {
+  const termino = consulta.trim();
+  if (!supabaseConfigurado() || termino.length < 2) return [];
+
+  const { crearClienteServidor } = await import("@/lib/supabase/cliente-servidor");
+  const supabase = await crearClienteServidor();
+
+  const { data, error } = await supabase
+    .from("contents")
+    .select("slug, title, excerpt, summary, visibility, published_at")
+    .eq("content_type", "articulo")
+    .eq("status", "publicado")
+    .textSearch("search_vector", termino, { config: "spanish", type: "websearch" })
+    .order("published_at", { ascending: false })
+    .limit(limite);
+
+  if (error || !data) return [];
+
+  return data.map((a) => ({
+    slug: a.slug as string,
+    titulo: a.title as string,
+    extracto: ((a.excerpt ?? a.summary ?? "") as string).slice(0, 240),
     visibilidad: a.visibility as ArticuloPublicado["visibilidad"],
     publicado: a.published_at as string | null,
     esPremium: a.visibility === "premium",

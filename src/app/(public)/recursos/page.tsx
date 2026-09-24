@@ -8,7 +8,7 @@ import { EncabezadoSeccion } from "@/components/ui/EncabezadoSeccion";
 import { IconoFlecha, IconoYouTube } from "@/components/ui/Iconos";
 import { bibliotecaMiembros, canalYouTube, serieWebinars, webinars } from "@/content/recursos";
 import { articulosDestacados } from "@/content/site";
-import { obtenerArticulosPublicados } from "@/lib/datos/contenido";
+import { buscarArticulos, obtenerArticulosPublicados } from "@/lib/datos/contenido";
 
 export const metadata: Metadata = {
   title: "Recursos · Artículos, webinars y documentos de CEDEM",
@@ -56,10 +56,14 @@ function fechaLegible(iso: string): string {
   return `${Number(dia)} de ${meses[Number(mes) - 1]} de ${anio}`;
 }
 
-export default async function PaginaRecursos() {
-  // Los artículos que el equipo publicó desde el panel. Si todavía no hay
-  // ninguno, la sección no aparece y quedan solo los tres destacados.
-  const publicados = await obtenerArticulosPublicados();
+export default async function PaginaRecursos(props: PageProps<"/recursos">) {
+  const parametros = await props.searchParams;
+  const consulta = typeof parametros.q === "string" ? parametros.q.trim() : "";
+
+  // Si hay búsqueda, se resuelve con el índice de texto completo en español y
+  // el resto de la página pasa a segundo plano.
+  const resultados = consulta ? await buscarArticulos(consulta) : [];
+  const publicados = consulta ? [] : await obtenerArticulosPublicados();
 
   return (
     <>
@@ -84,6 +88,91 @@ export default async function PaginaRecursos() {
           </a>
         </div>
       </EncabezadoPagina>
+
+      {/* Buscador del archivo */}
+      <section className="border-b border-border bg-bg-soft py-8">
+        <Container>
+          <form method="get" action="/recursos" className="flex flex-col gap-3 sm:flex-row">
+            <label htmlFor="q" className="sr-only">
+              Buscar en el archivo
+            </label>
+            <input
+              id="q"
+              name="q"
+              type="search"
+              defaultValue={consulta}
+              placeholder="Busca por tema: sucesión, gobierno, abandonar, querencia…"
+              className="w-full rounded-full border border-border bg-bg px-5 py-3 text-[15px] text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky"
+            />
+            <button
+              type="submit"
+              className="shrink-0 rounded-full bg-navy px-6 py-3 font-display text-sm font-semibold text-white transition-colors hover:bg-[#0b1856] dark:bg-cyan dark:text-[#04102e]"
+            >
+              Buscar
+            </button>
+          </form>
+          <p className="mt-3 text-[12.5px] text-fg-subtle">
+            Busca en los 186 artículos del archivo. Entiende el español: «sucesion»
+            encuentra «sucesión».
+          </p>
+        </Container>
+      </section>
+
+      {/* Resultados de la búsqueda */}
+      {consulta ? (
+        <section className="py-14 lg:py-20">
+          <Container>
+            <EncabezadoSeccion
+              antetitulo="Resultados"
+              titulo={
+                resultados.length === 0
+                  ? `No encontramos nada sobre «${consulta}»`
+                  : `${resultados.length} ${resultados.length === 1 ? "artículo" : "artículos"} sobre «${consulta}»`
+              }
+              entrada={
+                resultados.length === 0
+                  ? "Prueba con otra palabra o escríbenos: si no lo hemos escrito, es buena señal de que hace falta."
+                  : undefined
+              }
+            />
+            {resultados.length > 0 ? (
+              <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {resultados.map((articulo) => (
+                  <li key={articulo.slug}>
+                    <Link
+                      href={`/recursos/${articulo.slug}`}
+                      className="flex h-full flex-col rounded-2xl border border-border bg-bg p-6 transition-colors hover:border-cyan/60 dark:hover:border-sky/60"
+                    >
+                      <span className="font-display text-base font-bold leading-snug text-fg">
+                        {articulo.titulo}
+                      </span>
+                      <span className="mt-2.5 flex-1 text-[13px] leading-relaxed text-fg-muted">
+                        {articulo.extracto}
+                      </span>
+                      {articulo.publicado ? (
+                        <span className="mt-4 text-[12px] text-fg-subtle">
+                          {new Date(articulo.publicado).toLocaleDateString("es-MX", {
+                            year: "numeric",
+                            month: "long",
+                          })}
+                        </span>
+                      ) : null}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+            <p className="mt-8">
+              <Link
+                href="/recursos"
+                className="font-display text-sm font-semibold text-navy hover:text-cyan dark:text-sky"
+              >
+                Ver todo el archivo
+              </Link>
+            </p>
+          </Container>
+        </section>
+      ) : null}
 
       {/* El muro */}
       <section className="border-b border-border bg-bg-soft py-14 lg:py-20">

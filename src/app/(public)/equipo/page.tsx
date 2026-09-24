@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { AvatarIniciales } from "@/components/marketing/AvatarIniciales";
 import { EncabezadoPagina } from "@/components/marketing/EncabezadoPagina";
 import { BotonEnlace } from "@/components/ui/Boton";
@@ -77,23 +78,36 @@ export default async function PaginaEquipo() {
             />
 
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {area.personas.map((persona) => (
-                <article
-                  key={persona.nombre}
-                  className="flex items-center gap-4 rounded-2xl border border-border bg-bg p-5"
-                >
-                  {/* TODO: sustituir por la foto real cuando CEDEM entregue originales */}
-                  <AvatarIniciales nombre={persona.nombre} />
-                  <div className="min-w-0">
-                    <h3 className="font-display text-base font-bold leading-snug text-fg">
-                      {persona.nombre}
-                    </h3>
-                    <p className="mt-1 text-[13px] leading-relaxed text-fg-muted">
-                      {persona.cargo}
-                    </p>
-                  </div>
-                </article>
-              ))}
+              {area.personas.map((persona) => {
+                const ficha = persona.slug ? `/equipo/${persona.slug}` : null;
+                const contenido = (
+                  <>
+                    {/* TODO: sustituir por la foto real cuando CEDEM entregue originales */}
+                    <AvatarIniciales nombre={persona.nombre} />
+                    <div className="min-w-0">
+                      <h3 className="font-display text-base font-bold leading-snug text-fg">
+                        {persona.nombre}
+                      </h3>
+                      <p className="mt-1 text-[13px] leading-relaxed text-fg-muted">
+                        {persona.cargo}
+                      </p>
+                    </div>
+                  </>
+                );
+                const clases =
+                  "flex items-center gap-4 rounded-2xl border border-border bg-bg p-5" +
+                  (ficha ? " transition-colors hover:border-cyan/60 dark:hover:border-sky/60" : "");
+
+                return ficha ? (
+                  <Link key={persona.nombre} href={ficha} className={clases}>
+                    {contenido}
+                  </Link>
+                ) : (
+                  <article key={persona.nombre} className={clases}>
+                    {contenido}
+                  </article>
+                );
+              })}
             </div>
           </Container>
         </section>
