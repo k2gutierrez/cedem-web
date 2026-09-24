@@ -57,8 +57,10 @@ src/
   el mapa de presencia), contacto, únete, acceso y las páginas legales.
 - ✅ **Camino del Dueño (adelanto de la Fase 4)** — recorrido completo de 22 pantallas con motor
   de puntuación determinista verificado por pruebas automáticas.
-- ⏳ **Fase 2** — panel de administración y contenido dinámico: espera el proyecto de Supabase.
-- ⏳ **Fase 3** — cuentas, membresías y pagos: espera las decisiones comerciales.
+- ✅ **Fase 2 · Administración** — autenticación real con Supabase, panel del miembro y panel de
+  administración de contenido con publicación, visibilidad y destacados.
+- ⏳ **Fase 3** — membresías y pagos: espera las decisiones comerciales (pasarela y precio).
+- ⏳ **Fase 4** — conectar el Camino del Dueño a la base y a la IA de DeepSeek.
 
 ## Comandos
 
@@ -68,6 +70,16 @@ src/
 | `pnpm build` | Build de producción (incluye verificación de tipos) |
 | `pnpm probar:motor` | Pruebas del motor de puntuación del Camino del Dueño |
 | `pnpm importar:wordpress` | Descarga el archivo editorial a `supabase/datos/` |
+| `node scripts/extraer-migraciones.mjs` | Regenera `supabase/migrations/` desde el documento de diseño |
+
+En la carpeta del proyecto (un nivel arriba):
+
+| Comando | Para qué |
+|---|---|
+| `python3 scripts/base-datos.py verificar` | Estado de la base: tablas, reglas y contenido |
+| `python3 scripts/base-datos.py sembrar` | Aplica la semilla |
+| `python3 scripts/probar-muro-pago.py` | Comprueba que el contenido premium no se filtre |
+| `python3 scripts/promover-admin.py correo@dominio` | Convierte una cuenta en administradora |
 
 ## Decisiones técnicas que conviene recordar
 

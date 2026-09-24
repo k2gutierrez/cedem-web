@@ -106,7 +106,7 @@ export default function PaginaUnete() {
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <BotonEnlace href="/acceso" tamano="lg">
+            <BotonEnlace href="/registro" tamano="lg">
               Crear mi cuenta gratis
               <IconoFlecha className="h-4 w-4" />
             </BotonEnlace>
