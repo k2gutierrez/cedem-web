@@ -140,7 +140,10 @@ const PROTEGIDAS = [
     }
     if (paso === "CAPTURA") {
       await p.locator("#nombre").fill("Revisión");
-      await p.locator("#correo").fill(`revision-${Date.now()}@ejemplo.com`);
+      /* Correo FIJO, no uno con marca de tiempo: el recorrido crea la cuenta al
+         dejar el correo, así que uno distinto por ejecución llenaba la base de
+         cuentas de ejemplo. Con uno fijo, la revisión reutiliza la misma. */
+      await p.locator("#correo").fill("revision@ejemplo.com");
       await p.getByRole("checkbox").check();
       await p.waitForTimeout(300);
       await p.getByRole("button", { name: /Ver mi lectura/ }).click();
@@ -162,10 +165,25 @@ const PROTEGIDAS = [
   const completo = Object.values(resultado).every(Boolean);
   registrar("camino", "recorrido completo con resultado", completo, JSON.stringify(resultado));
 
-  // La lectura con IA llega después; se espera un poco
-  await p.waitForTimeout(12000);
-  const conIA = await p.evaluate(() => !/Estoy afinando/.test(document.body.innerText));
-  registrar("camino", "lectura afinada por IA", conIA, conIA ? "terminó" : "seguía afinando a los 12 s");
+  /* La lectura con IA llega después del resultado base. Se ESPERA a que termine
+     en lugar de dormir un tiempo fijo: la llamada al modelo tarda lo que tarde
+     —entre 5 y 30 segundos según la carga— y un plazo fijo convertía una tarde
+     lenta en un fallo del producto. Si algún día la lectura no llega, el plazo
+     largo lo detecta igual. */
+  const inicio = Date.now();
+  const conIA = await p
+    .waitForFunction(() => !/Estoy afinando/.test(document.body.innerText), null, {
+      timeout: 45000,
+    })
+    .then(() => true)
+    .catch(() => false);
+  const segundos = ((Date.now() - inicio) / 1000).toFixed(1);
+  registrar(
+    "camino",
+    "lectura afinada por IA",
+    conIA,
+    conIA ? `terminó en ${segundos} s` : "no terminó en 45 s",
+  );
 
   registrar("camino", "sin errores de consola", errores.length === 0, errores.slice(0, 2).join(" / "));
   await ctx.close();
