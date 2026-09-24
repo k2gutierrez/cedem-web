@@ -36,7 +36,7 @@ src/
 ├── app/
 │   ├── (public)/          Sitio público: home, servicios, recursos, equipo
 │   ├── (auth)/            Acceso y registro        (Fase 3)
-│   ├── (app)/app/         Plataforma CEDEM 2.0     (Fase 3-4)
+│   ├── (app)/app/         Plataforma CEDEM 2.0     (panel, biblioteca, Mi Camino, admin)
 │   ├── api/               Rutas de servidor: IA, webhooks (Fase 3-4)
 │   ├── layout.tsx         Layout raíz: fuentes, tema, metadatos
 │   └── globals.css        Sistema de diseño: tokens de marca

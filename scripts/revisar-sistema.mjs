@@ -66,6 +66,7 @@ const PROTEGIDAS = [
   "/app/biblioteca",
   "/app/membresia",
   "/app/admin/contenido",
+  "/app/admin/miembros",
 ];
 
 {
