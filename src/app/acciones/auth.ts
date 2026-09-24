@@ -157,7 +157,23 @@ export async function pedirRecuperacion(
   };
 }
 
-/** Cambia la contraseña de quien ya está dentro (por recuperación o por gusto). */
+/**
+ * Cambia la contraseña de quien ya está dentro.
+ *
+ * SE USA EN DOS SITIOS, Y NO SON LO MISMO
+ *
+ *   · Desde **Mi perfil**, con la sesión normal. Ahí se exige la contraseña actual:
+ *     sin eso, quien encuentre un equipo con la sesión abierta podría cambiar la
+ *     contraseña y quedarse con la cuenta. Es la precaución que hace todo el mundo,
+ *     y cuesta un campo.
+ *
+ *   · Desde `/restablecer`, con la sesión de recuperación que deja el enlace del
+ *     correo. Ahí NO se puede exigir la actual: precisamente se olvidó. Lo que
+ *     autoriza es el enlace, que es de un solo uso y caduca.
+ *
+ * El campo `actual` decide cuál de los dos caminos se está usando: si viene, se
+ * comprueba; si no viene, se asume el flujo de recuperación.
+ */
 export async function cambiarContrasena(
   _estado: EstadoFormulario,
   datos: FormData,
@@ -166,6 +182,7 @@ export async function cambiarContrasena(
 
   const contrasena = String(datos.get("contrasena") ?? "");
   const repetida = String(datos.get("repetida") ?? "");
+  const actual = String(datos.get("actual") ?? "");
 
   if (contrasena.length < 8) {
     return { error: "La contraseña necesita al menos 8 caracteres." };
@@ -184,10 +201,36 @@ export async function cambiarContrasena(
     };
   }
 
+  // Camino del perfil: hay que demostrar que es su cuenta.
+  if (actual) {
+    const { error: errorActual } = await supabase.auth.signInWithPassword({
+      email: user.email ?? "",
+      password: actual,
+    });
+
+    if (errorActual) {
+      return { error: "La contraseña actual no es la correcta." };
+    }
+  }
+
   const { error } = await supabase.auth.updateUser({ password: contrasena });
+
   if (error) {
     console.error("[auth] cambio de contraseña:", error.message);
-    return { error: "No pudimos guardar la contraseña. Pide un enlace nuevo." };
+
+    // Supabase rechaza repetir la misma contraseña, y el mensaje original no está
+    // en español. Traducirlo es la diferencia entre entenderlo y no entenderlo.
+    if (/different from the old|same password|should be different/i.test(error.message)) {
+      return { error: "Esa es la contraseña que ya tienes. Escribe una distinta." };
+    }
+    if (/weak|pwned|leaked/i.test(error.message)) {
+      return {
+        error:
+          "Esa contraseña aparece en filtraciones conocidas. Elige otra, más larga y menos común.",
+      };
+    }
+
+    return { error: `No pudimos guardar la contraseña: ${error.message}` };
   }
 
   return { ok: true, mensaje: "Listo. Tu contraseña quedó guardada." };

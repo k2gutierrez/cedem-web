@@ -35,6 +35,24 @@ export function CambiarContrasena() {
 
   return (
     <form action={accion} className="space-y-4">
+      {/* La actual se pide aquí, en el perfil: sin ella, quien encuentre un equipo
+          con la sesión abierta podría cambiar la contraseña y quedarse la cuenta.
+          En el enlace de recuperación no se pide, porque precisamente se olvidó. */}
+      <div>
+        <label htmlFor="perfil-actual" className={etiqueta}>
+          Tu contraseña actual
+        </label>
+        <input
+          id="perfil-actual"
+          name="actual"
+          type="password"
+          autoComplete="current-password"
+          required
+          className={campo}
+          placeholder="La que usas ahora"
+        />
+      </div>
+
       <div>
         <label htmlFor="perfil-contrasena" className={etiqueta}>
           Contraseña nueva
