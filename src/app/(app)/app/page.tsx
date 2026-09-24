@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AvisoDiagnosticos } from "@/components/app/AvisoDiagnosticos";
+import { Revelar } from "@/components/fx/Efectos";
 import { BotonEnlace } from "@/components/ui/Boton";
 import { Container } from "@/components/ui/Container";
 import { IconoFlecha } from "@/components/ui/Iconos";
@@ -43,7 +44,8 @@ export default async function PaginaPanel() {
 
       <div className="mt-10 grid gap-6 lg:grid-cols-3">
         {/* Camino del Dueño */}
-        <article className="flex flex-col rounded-2xl border border-border bg-bg p-7 lg:col-span-2">
+        <Revelar className="flex lg:col-span-2">
+        <article className="borde-vivo flex w-full flex-col rounded-2xl border border-border bg-bg p-7">
           <p className="tagline text-fg-subtle">Tu diagnóstico</p>
 
           {ultimo ? (
@@ -92,9 +94,11 @@ export default async function PaginaPanel() {
             </>
           )}
         </article>
+        </Revelar>
 
         {/* Perfil */}
-        <article className="flex flex-col rounded-2xl border border-border bg-bg p-7">
+        <Revelar retraso={0.08} className="flex">
+        <article className="borde-vivo flex w-full flex-col rounded-2xl border border-border bg-bg p-7">
           <p className="tagline text-fg-subtle">Tu perfil</p>
           <h2 className="mt-3 font-display text-lg font-bold text-fg">
             {perfilIncompleto ? "Falta completarlo" : "Completo"}
@@ -110,9 +114,11 @@ export default async function PaginaPanel() {
             </BotonEnlace>
           </div>
         </article>
+        </Revelar>
 
         {/* Biblioteca */}
-        <article className="rounded-2xl border border-border bg-bg p-7">
+        <Revelar retraso={0.12} className="flex">
+        <article className="borde-vivo w-full rounded-2xl border border-border bg-bg p-7">
           <p className="tagline text-fg-subtle">Biblioteca</p>
           <h2 className="mt-3 font-display text-lg font-bold text-fg">
             Artículos y webinars
@@ -128,9 +134,11 @@ export default async function PaginaPanel() {
             <IconoFlecha className="h-4 w-4" />
           </Link>
         </article>
+        </Revelar>
 
         {/* Membresía */}
-        <article className="rounded-2xl border border-border bg-bg p-7 lg:col-span-2">
+        <Revelar retraso={0.16} className="flex lg:col-span-2">
+        <article className="borde-vivo w-full rounded-2xl border border-border bg-bg p-7">
           <p className="tagline text-fg-subtle">Tu membresía</p>
           <h2 className="mt-3 font-display text-lg font-bold text-fg">
             {sesion.esPremium ? "Acceso completo" : "Cuenta gratuita"}
@@ -148,6 +156,7 @@ export default async function PaginaPanel() {
             </div>
           ) : null}
         </article>
+        </Revelar>
       </div>
 
       {sesion.esAdmin ? (

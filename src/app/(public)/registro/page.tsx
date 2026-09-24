@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { FormularioRegistro } from "@/components/auth/FormularioRegistro";
+import { MarcoAcceso } from "@/components/auth/MarcoAcceso";
+import { Revelar } from "@/components/fx/Efectos";
 import { Logo } from "@/components/brand/Logo";
-import { Container } from "@/components/ui/Container";
 
 export const metadata: Metadata = {
   title: "Crear cuenta en CEDEM 2.0",
@@ -21,40 +22,40 @@ export default async function PaginaRegistro(props: PageProps<"/registro">) {
   const destino = typeof parametros.destino === "string" ? parametros.destino : "/app";
 
   return (
-    <section className="py-14 lg:py-20">
-      <Container>
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
-          <div>
-            <Logo alto={32} />
-            <h1 className="mt-8 text-h1 text-fg">Crea tu cuenta</h1>
-            <p className="mt-4 max-w-[46ch] text-lead text-fg-muted">
-              Es gratis y sin compromiso. Sirve para guardar tu diagnóstico y darte
-              seguimiento: nada más.
-            </p>
+    <MarcoAcceso ancho="ancho" titulo="Crea tu cuenta">
+      <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+        <Revelar>
+          <Logo alto={32} />
+          <h1 className="mt-8 text-h1 text-fg">Crea tu cuenta</h1>
+          <p className="mt-4 max-w-[46ch] text-lead text-fg-muted">
+            Es gratis y sin compromiso. Sirve para guardar tu diagnóstico y darte
+            seguimiento: nada más.
+          </p>
 
-            <ul className="mt-8 space-y-4">
-              {beneficios.map((b) => (
-                <li key={b} className="flex gap-3 text-[15px] leading-relaxed text-fg-muted">
-                  <span
-                    aria-hidden="true"
-                    className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan dark:bg-sky"
-                  />
-                  {b}
-                </li>
-              ))}
-            </ul>
+          <ul className="mt-8 space-y-4">
+            {beneficios.map((b) => (
+              <li key={b} className="flex gap-3 text-[15px] leading-relaxed text-fg-muted">
+                <span
+                  aria-hidden="true"
+                  className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan dark:bg-sky"
+                />
+                {b}
+              </li>
+            ))}
+          </ul>
 
-            <p className="mt-8 text-[13px] leading-relaxed text-fg-subtle">
-              Si ya eres cliente de CEDEM, tu consultor puede darte una invitación con
-              acceso completo sin costo.
-            </p>
-          </div>
+          <p className="mt-8 text-[13px] leading-relaxed text-fg-subtle">
+            Si ya eres cliente de CEDEM, tu consultor puede darte una invitación con
+            acceso completo sin costo.
+          </p>
+        </Revelar>
 
-          <div className="rounded-3xl border border-border bg-bg p-7 sm:p-9">
+        <Revelar retraso={0.12}>
+          <div className="cristal rounded-3xl p-7 shadow-[var(--sombra-suave)] sm:p-9">
             <FormularioRegistro destino={destino} />
           </div>
-        </div>
-      </Container>
-    </section>
+        </Revelar>
+      </div>
+    </MarcoAcceso>
   );
 }

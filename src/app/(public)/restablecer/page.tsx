@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { FormularioRestablecer } from "@/components/auth/FormularioRecuperar";
-import { Logo } from "@/components/brand/Logo";
-import { Container } from "@/components/ui/Container";
+import { MarcoAcceso } from "@/components/auth/MarcoAcceso";
 import { obtenerSesion } from "@/lib/auth/sesion";
 
 export const metadata: Metadata = {
@@ -23,24 +22,11 @@ export default async function PaginaRestablecer() {
   if (!sesion.usuario) redirect("/recuperar?aviso=sin-sesion");
 
   return (
-    <section className="py-14 lg:py-20">
-      <Container size="estrecho">
-        <div className="mx-auto max-w-[26rem]">
-          <div className="flex justify-center">
-            <Logo alto={34} />
-          </div>
-
-          <h1 className="mt-8 text-center text-h2 text-fg">Elige tu contraseña nueva</h1>
-          <p className="mt-3 text-center text-sm leading-relaxed text-fg-muted">
-            Ya validamos tu enlace. Escribe la contraseña que quieras usar de ahora en
-            adelante.
-          </p>
-
-          <div className="mt-8">
-            <FormularioRestablecer />
-          </div>
-        </div>
-      </Container>
-    </section>
+    <MarcoAcceso
+      titulo="Elige tu contraseña nueva"
+      entrada="Ya validamos tu enlace. Escribe la contraseña que quieras usar de ahora en adelante."
+    >
+      <FormularioRestablecer />
+    </MarcoAcceso>
   );
 }

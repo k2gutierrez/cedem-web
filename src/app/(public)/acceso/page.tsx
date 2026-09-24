@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { FormularioAcceso } from "@/components/auth/FormularioAcceso";
-import { Logo } from "@/components/brand/Logo";
-import { Container } from "@/components/ui/Container";
+import { MarcoAcceso } from "@/components/auth/MarcoAcceso";
 import { supabaseConfigurado } from "@/lib/supabase/configurado";
 
 export const metadata: Metadata = {
@@ -18,48 +17,39 @@ export default async function PaginaAcceso(props: PageProps<"/acceso">) {
   const enlaceInvalido = parametros.aviso === "enlace-invalido";
 
   return (
-    <section className="py-14 lg:py-20">
-      <Container size="estrecho">
-        <div className="mx-auto max-w-[26rem]">
-          <div className="flex justify-center">
-            <Logo alto={34} />
-          </div>
+    <MarcoAcceso
+      titulo="Entra a CEDEM 2.0"
+      entrada="Tu Camino del Dueño, la biblioteca completa y el seguimiento de tu avance."
+    >
+      {enlaceInvalido ? (
+        <p
+          role="status"
+          className="mb-6 rounded-2xl border border-amber-300/60 bg-amber-50 p-4 text-[13px] leading-relaxed text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200"
+        >
+          Ese enlace ya no sirve: los enlaces de recuperación caducan y solo se pueden
+          usar una vez. Pide uno nuevo desde{" "}
+          <a href="/recuperar" className="font-semibold underline underline-offset-4">
+            Olvidé mi contraseña
+          </a>
+          .
+        </p>
+      ) : null}
 
-          <h1 className="mt-8 text-center text-h2 text-fg">Entra a CEDEM 2.0</h1>
-          <p className="mt-3 text-center text-sm text-fg-muted">
-            Tu Camino del Dueño, la biblioteca completa y el seguimiento de tu avance.
-          </p>
-
-          {enlaceInvalido ? (
-            <p
-              role="status"
-              className="mt-8 rounded-2xl border border-amber-300/60 bg-amber-50 p-5 text-[13px] leading-relaxed text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200"
-            >
-              Ese enlace ya no sirve: los enlaces de recuperación caducan y solo se pueden
-              usar una vez. Pide uno nuevo desde{" "}
-              <a href="/recuperar" className="font-semibold underline underline-offset-4">
-                Olvidé mi contraseña
-              </a>
-              .
-            </p>
-          ) : null}
-
-          {!conectado ? (
-            <div
-              role="status"
-              className="mt-8 rounded-2xl border border-cyan/40 bg-sky/10 p-5 text-[13px] leading-relaxed text-fg-muted dark:border-sky/40"
-            >
-              <strong className="font-semibold text-fg">Falta conectar la base de datos.</strong>{" "}
-              Mientras tanto, el <a href="/camino" className="font-semibold underline underline-offset-4">Camino del Dueño</a>{" "}
-              funciona completo y sin registro.
-            </div>
-          ) : (
-            <div className="mt-8">
-              <FormularioAcceso destino={destino} />
-            </div>
-          )}
+      {!conectado ? (
+        <div
+          role="status"
+          className="rounded-2xl border border-cyan/40 bg-sky/10 p-5 text-[13px] leading-relaxed text-fg-muted dark:border-sky/40"
+        >
+          <strong className="font-semibold text-fg">Falta conectar la base de datos.</strong>{" "}
+          Mientras tanto, el{" "}
+          <a href="/camino" className="font-semibold underline underline-offset-4">
+            Camino del Dueño
+          </a>{" "}
+          funciona completo y sin registro.
         </div>
-      </Container>
-    </section>
+      ) : (
+        <FormularioAcceso destino={destino} />
+      )}
+    </MarcoAcceso>
   );
 }

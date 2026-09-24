@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { EnlacesPlataforma } from "@/components/app/EnlacesPlataforma";
 import { Logo } from "@/components/brand/Logo";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { BotonEnlace } from "@/components/ui/Boton";
@@ -49,8 +50,15 @@ export default async function LayoutPlataforma({
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-bg-soft">
-      <header className="border-b border-border bg-bg">
+    <div className="relative flex min-h-screen flex-col bg-bg-soft">
+      {/* La misma rejilla del sitio público, muy tenue: la plataforma se siente
+          parte de CEDEM y no una herramienta aparte. */}
+      <div
+        aria-hidden="true"
+        className="rejilla-tecnica pointer-events-none fixed inset-0 -z-10 opacity-60"
+      />
+
+      <header className="border-b border-border bg-bg/85 backdrop-blur-xl">
         <Container className="flex h-16 items-center justify-between gap-6">
           <div className="flex items-center gap-6">
             <Link href="/app" aria-label="CEDEM 2.0, ir al panel">
@@ -88,21 +96,11 @@ export default async function LayoutPlataforma({
         </Container>
 
         <Container>
-          <nav aria-label="Navegación de la plataforma" className="-mb-px flex gap-1 overflow-x-auto">
-            {enlaces.map((enlace) => (
-              <Link
-                key={enlace.href}
-                href={enlace.href}
-                className="whitespace-nowrap border-b-2 border-transparent px-3 py-3 text-sm font-medium text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
-              >
-                {enlace.etiqueta}
-              </Link>
-            ))}
-          </nav>
+          <EnlacesPlataforma enlaces={enlaces} />
         </Container>
       </header>
 
-      <main className="flex-1 py-10">{children}</main>
+      <main className="relative flex-1 py-10">{children}</main>
 
       <footer className="border-t border-border bg-bg py-6">
         <Container className="flex flex-wrap items-center justify-between gap-4">
