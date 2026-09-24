@@ -19,7 +19,7 @@ function Enviar() {
   );
 }
 
-export function FormularioRegistro() {
+export function FormularioRegistro({ destino = "/app" }: { destino?: string }) {
   const [estado, accion] = useActionState(registrar, inicial);
 
   const campo =
@@ -43,6 +43,7 @@ export function FormularioRegistro() {
 
   return (
     <form action={accion} className="space-y-5">
+      <input type="hidden" name="destino" value={destino} />
       <div>
         <label htmlFor="nombre" className={etiqueta}>
           Tu nombre

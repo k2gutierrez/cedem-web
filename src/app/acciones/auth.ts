@@ -68,6 +68,7 @@ export async function registrar(
   const correo = String(datos.get("correo") ?? "").trim().toLowerCase();
   const contrasena = String(datos.get("contrasena") ?? "");
   const acepta = datos.get("acepto") === "on";
+  const destino = String(datos.get("destino") ?? "/app");
 
   if (nombre.length < 2) return { error: "Escribe tu nombre." };
   if (!correoValido(correo)) return { error: "Escribe un correo válido." };
@@ -82,7 +83,7 @@ export async function registrar(
     password: contrasena,
     options: {
       data: { full_name: nombre },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/app`,
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}${destino.startsWith("/") ? destino : "/app"}`,
     },
   });
 
@@ -110,7 +111,7 @@ export async function registrar(
   }
 
   revalidatePath("/", "layout");
-  redirect("/app");
+  redirect(destino.startsWith("/") ? destino : "/app");
 }
 
 /* -------------------------------------------------------------------------- */

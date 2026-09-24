@@ -16,7 +16,10 @@ const beneficios = [
   "Seguimiento: puedes retomar donde lo dejaste desde cualquier dispositivo.",
 ];
 
-export default function PaginaRegistro() {
+export default async function PaginaRegistro(props: PageProps<"/registro">) {
+  const parametros = await props.searchParams;
+  const destino = typeof parametros.destino === "string" ? parametros.destino : "/app";
+
   return (
     <section className="py-14 lg:py-20">
       <Container>
@@ -48,7 +51,7 @@ export default function PaginaRegistro() {
           </div>
 
           <div className="rounded-3xl border border-border bg-bg p-7 sm:p-9">
-            <FormularioRegistro />
+            <FormularioRegistro destino={destino} />
           </div>
         </div>
       </Container>
