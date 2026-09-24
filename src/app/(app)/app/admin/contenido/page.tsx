@@ -119,7 +119,12 @@ export default async function PaginaAdminContenido(
               {lista.map((contenido) => (
                 <tr key={contenido.id} className="border-b border-border last:border-0">
                   <td className="px-5 py-4">
-                    <span className="font-medium text-fg">{contenido.title}</span>
+                    <Link
+                      href={`/app/admin/contenido/${contenido.id}`}
+                      className="font-medium text-fg hover:text-cyan dark:hover:text-sky"
+                    >
+                      {contenido.title}
+                    </Link>
                     {contenido.is_featured ? (
                       <span className="ml-2 rounded-full bg-sky/20 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-navy dark:text-sky">
                         Destacado
@@ -145,6 +150,12 @@ export default async function PaginaAdminContenido(
                   </td>
                   <td className="px-5 py-4">
                     <div className="flex flex-wrap items-center justify-end gap-2">
+                      <Link
+                        href={`/app/admin/contenido/${contenido.id}`}
+                        className="rounded-full border border-border px-3 py-1.5 text-[12px] font-medium text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
+                      >
+                        Editar
+                      </Link>
                       <form action={alternarDestacado}>
                         <input type="hidden" name="id" value={contenido.id} />
                         <input

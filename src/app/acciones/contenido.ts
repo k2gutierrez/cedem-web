@@ -154,3 +154,159 @@ export async function alternarDestacado(formData: FormData) {
   revalidatePath("/app/admin/contenido");
   revalidatePath("/");
 }
+
+/* -------------------------------------------------------------------------- */
+/* Editar un contenido que ya existe                                          */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Guarda los cambios de un contenido publicado o en borrador.
+ *
+ * QUÉ FALTABA
+ *
+ * El panel permitía crear, publicar, archivar y destacar, pero **no editar**: una
+ * vez creado un contenido, su título, su cuerpo, su visibilidad y su tipo quedaban
+ * congelados. Corregir una errata o pasar un artículo de público a premium exigía
+ * tocar la base a mano.
+ *
+ * EL CAMBIO DE TIPO ES LO DELICADO
+ *
+ * Un contenido no es solo su fila en `contents`: cada tipo tiene su tabla —los
+ * artículos su autoría, los documentos su archivo, los eventos su fecha, los videos
+ * su proveedor—. Cambiar el tipo sin más dejaría la fila vieja apuntando a un
+ * contenido que ya no es de ese tipo, y el panel mostraría datos fantasma.
+ *
+ * Por eso, al cambiar de tipo se retira la fila del tipo anterior y se crea la del
+ * nuevo. Es lo que hace que un artículo pueda convertirse en documento sin dejar
+ * basura por debajo.
+ */
+export async function guardarContenido(
+  _estado: EstadoContenido,
+  datos: FormData,
+): Promise<EstadoContenido> {
+  const sesion = await obtenerSesion();
+  if (!sesion.esAdmin) return { error: "No tienes permisos para editar contenido." };
+
+  const id = String(datos.get("id") ?? "");
+  if (!id) return { error: "No sé qué contenido guardar." };
+
+  const titulo = String(datos.get("titulo") ?? "").trim();
+  const resumen = String(datos.get("resumen") ?? "").trim();
+  const extracto = String(datos.get("extracto") ?? "").trim();
+  const cuerpo = String(datos.get("cuerpo") ?? "").trim();
+  const tipo = String(datos.get("tipo") ?? "articulo");
+  const visibilidad = String(datos.get("visibilidad") ?? "publico");
+
+  if (titulo.length < 4) return { error: "El título necesita al menos 4 caracteres." };
+
+  const supabase = await crearClienteServidor();
+
+  const { data: antes } = await supabase
+    .from("contents")
+    .select("content_type, slug, status")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (!antes) return { error: "Ese contenido ya no existe." };
+
+  const tipoAnterior = antes.content_type as string;
+  const cambioDeTipo = tipoAnterior !== tipo;
+
+  // 1 · La ficha. El slug NO se recalcula al cambiar el título: cambiarlo rompería
+  //     la dirección que ya se compartió y el posicionamiento en Google. Si hace
+  //     falta otra dirección, se decide a conciencia y con una redirección.
+  const { error: errorFicha } = await supabase
+    .from("contents")
+    .update({
+      title: titulo,
+      summary: resumen || null,
+      excerpt: extracto || null,
+      content_type: tipo,
+      visibility: visibilidad,
+    })
+    .eq("id", id);
+
+  if (errorFicha) return { error: `No se pudo guardar: ${errorFicha.message}` };
+
+  // 2 · El cuerpo.
+  const { error: errorCuerpo } = await supabase
+    .from("content_bodies")
+    .upsert(
+      { content_id: id, body_md: cuerpo, word_count: cuerpo ? cuerpo.split(/\s+/).length : 0 },
+      { onConflict: "content_id" },
+    );
+
+  if (errorCuerpo) {
+    return { error: `La ficha se guardó, pero el cuerpo no: ${errorCuerpo.message}` };
+  }
+
+  // 3 · Los datos del tipo. Si cambió, se retira lo viejo y se prepara lo nuevo.
+  if (cambioDeTipo) {
+    const satelites: Record<string, string> = {
+      articulo: "articles",
+      documento: "documents",
+      evento: "events",
+      podcast: "podcasts",
+      video: "videos",
+    };
+
+    const tablaAnterior = satelites[tipoAnterior];
+    if (tablaAnterior) {
+      await supabase.from(tablaAnterior).delete().eq("content_id", id);
+    }
+
+    if (tipo === "articulo") {
+      const autorId = String(datos.get("autor") ?? "");
+      await supabase.from("articles").upsert(
+        {
+          content_id: id,
+          consultant_id: autorId && autorId !== "cedem" ? autorId : null,
+          authored_by_cedem: !autorId || autorId === "cedem",
+        },
+        { onConflict: "content_id" },
+      );
+    }
+
+    if (tipo === "documento") {
+      // La fila del documento nace sin archivo: el PDF se sube después, y hasta
+      // entonces la biblioteca muestra el texto pero no ofrece descarga.
+      await supabase
+        .from("documents")
+        .upsert(
+          { content_id: id, file_mime: null, is_downloadable: true },
+          { onConflict: "content_id" },
+        );
+    }
+
+    if (tipo === "video") {
+      await supabase
+        .from("videos")
+        .upsert({ content_id: id, provider: "externo" }, { onConflict: "content_id" });
+    }
+  } else if (tipo === "articulo") {
+    // Aunque el tipo no cambie, la autoría puede cambiar.
+    const autorId = String(datos.get("autor") ?? "");
+    if (autorId) {
+      await supabase.from("articles").upsert(
+        {
+          content_id: id,
+          consultant_id: autorId !== "cedem" ? autorId : null,
+          authored_by_cedem: autorId === "cedem",
+        },
+        { onConflict: "content_id" },
+      );
+    }
+  }
+
+  revalidatePath("/app/admin/contenido");
+  revalidatePath(`/app/admin/contenido/${id}`);
+  revalidatePath("/app/biblioteca");
+  revalidatePath("/recursos");
+  revalidatePath("/");
+
+  const aviso = cambioDeTipo
+    ? `Guardado. Pasó de ${tipoAnterior} a ${tipo}: revisa que sus datos del nuevo tipo estén completos.`
+    : "Cambios guardados.";
+
+  return { ok: aviso };
+}

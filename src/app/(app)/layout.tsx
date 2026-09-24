@@ -52,6 +52,7 @@ export default async function LayoutPlataforma({
 
   if (miFicha) {
     enlaces.splice(2, 0, { etiqueta: "Mi ficha", href: "/app/mi-ficha" });
+    enlaces.splice(3, 0, { etiqueta: "Mis artículos", href: "/app/mis-articulos" });
   }
   if (sesion.esAdmin) {
     enlaces.push({ etiqueta: "Contenido", href: "/app/admin/contenido" });
