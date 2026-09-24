@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CEDEM · Aplicación web
 
-## Getting Started
+Sitio público y plataforma **CEDEM 2.0**. La documentación del proyecto (plan, arquitectura,
+modelo de datos, identidad de marca) vive **fuera** de esta carpeta, en `../docs/`.
 
-First, run the development server:
+## Requisitos
+
+- Node.js 22+
+- pnpm 10+
+
+## Puesta en marcha
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+cp .env.local.example .env.local   # y rellena las llaves (ver más abajo)
+pnpm dev                            # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Variables de entorno
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Todas viven en `.env.local`, que **está ignorado por git**. La plantilla comentada está en
+`.env.local.example` y el procedimiento paso a paso, en `../docs/10-supabase-puesta-en-marcha.md`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Para qué |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | URL del proyecto de Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Llave pública (puede llegar al navegador) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Llave maestra — **solo servidor** |
+| `DATABASE_URL` | Conexión directa a Postgres, para aplicar migraciones |
+| `DEEPSEEK_API_KEY` | IA del Camino del Dueño (Fase 4) |
 
-## Learn More
+## Estructura
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/
+│   ├── (public)/          Sitio público: home, servicios, recursos, equipo
+│   ├── (auth)/            Acceso y registro        (Fase 3)
+│   ├── (app)/app/         Plataforma CEDEM 2.0     (Fase 3-4)
+│   ├── api/               Rutas de servidor: IA, webhooks (Fase 3-4)
+│   ├── layout.tsx         Layout raíz: fuentes, tema, metadatos
+│   └── globals.css        Sistema de diseño: tokens de marca
+├── components/
+│   ├── brand/             Logotipo y elementos de marca
+│   ├── layout/            Navbar, Footer, selector de tema
+│   ├── marketing/         Secciones del sitio público
+│   └── ui/                Primitivas: botón, contenedor, iconos
+├── content/site.ts        Contenido semilla (pasará a Supabase en la Fase 2)
+└── types/                 Tipos de dominio y de la base de datos
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Estado
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- ✅ **Fase 0 · Fundación** — Next.js 16 + TypeScript + Tailwind 4, sistema de diseño con la
+  paleta del Brand Book, modo claro/oscuro, navbar y footer responsivos, home completa.
+- ⏳ **Fase 1-2** — páginas de servicio, recursos, equipo y panel de administración.
+- ⏳ **Fase 3-4** — cuentas, membresías, pagos y Camino del Dueño con IA.
 
-## Deploy on Vercel
+## Decisiones técnicas que conviene recordar
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Los colores se declaran una sola vez** en `src/app/globals.css`. Cambiar la marca es cambiar
+  ese archivo, no 200 clases.
+- **Tipografía:** Montserrat + Source Sans 3 como sustituto libre de Proxima Nova, que es
+  comercial. Si CEDEM licencia Proxima Nova, se cambia en `layout.tsx`.
+- **Las imágenes no se reprocesan para el duotono:** el tratamiento de marca se aplica por CSS
+  (`.duotono-marco`), así se puede cambiar sin volver a exportar archivos.
+- **`devIndicators: false`** en `next.config.ts`: el indicador flotante de desarrollo se
+  superponía al contenido en las capturas de verificación en móvil.

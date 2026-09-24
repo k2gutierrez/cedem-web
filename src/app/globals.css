@@ -1,26 +1,170 @@
 @import "tailwindcss";
 
+/* ============================================================================
+   CEDEM · Sistema de diseño
+   Paleta oficial del Brand Book 2019. Los colores se declaran UNA sola vez aquí:
+   cambiar la marca debe ser cambiar este archivo, no 200 clases.
+   ========================================================================== */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Marca */
+  --cedem-navy: #0f206c; /* Pantone 2756 C — primario */
+  --cedem-navy-deep: #0a1650; /* navy profundo para modo oscuro */
+  --cedem-blue: #0071ce; /* Pantone 285 C  — enlaces y estados */
+  --cedem-cyan: #00a1e0; /* Pantone 299 C  — acento */
+  --cedem-sky: #6cc5e9; /* Pantone 297 C  — apoyos y tagline sobre navy */
+  --cedem-neutral: #f1f1f1; /* superficie del manual */
+
+  /* Semánticos — modo claro */
+  --bg: #ffffff;
+  --bg-soft: #f7f8fb;
+  --bg-inset: var(--cedem-neutral);
+  --fg: #0d1424;
+  --fg-muted: #52607a;
+  --fg-subtle: #7b879e;
+  --border: #e3e7ef;
+  --border-strong: #cdd4e2;
+  --accent: var(--cedem-blue);
+}
+
+.dark {
+  /* Semánticos — modo oscuro (navy profundo, nunca negro puro) */
+  --bg: #070d2a;
+  --bg-soft: #0b1436;
+  --bg-inset: #101b45;
+  --fg: #f4f7ff;
+  --fg-muted: #a9b8d6;
+  --fg-subtle: #8394b8;
+  --border: #1d2b5c;
+  --border-strong: #2b3c73;
+  --accent: var(--cedem-sky);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Colores de marca expuestos como utilidades: bg-navy, text-cyan, etc. */
+  --color-navy: var(--cedem-navy);
+  --color-navy-deep: var(--cedem-navy-deep);
+  --color-blue: var(--cedem-blue);
+  --color-cyan: var(--cedem-cyan);
+  --color-sky: var(--cedem-sky);
+  --color-neutral: var(--cedem-neutral);
+
+  /* Colores semánticos: bg-bg, text-fg, border-border… */
+  --color-bg: var(--bg);
+  --color-bg-soft: var(--bg-soft);
+  --color-bg-inset: var(--bg-inset);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+
+  /* Tipografía: Montserrat (títulos) + Source Sans 3 (texto) como sustituto
+     libre de Proxima Nova hasta que se defina la licencia. */
+  --font-display: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-source-sans), ui-sans-serif, system-ui, sans-serif;
+
+  /* Escala tipográfica fluida */
+  --text-display: clamp(2.25rem, 1.2rem + 4.2vw, 4.25rem);
+  --text-display--line-height: 1.05;
+  --text-h1: clamp(1.9rem, 1.2rem + 2.6vw, 3rem);
+  --text-h1--line-height: 1.12;
+  --text-h2: clamp(1.55rem, 1.15rem + 1.6vw, 2.2rem);
+  --text-h2--line-height: 1.2;
+  --text-h3: clamp(1.2rem, 1.05rem + 0.7vw, 1.5rem);
+  --text-h3--line-height: 1.3;
+  --text-lead: clamp(1.05rem, 0.98rem + 0.4vw, 1.3rem);
+  --text-lead--line-height: 1.6;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--cedem-cyan);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--cedem-sky) 40%, transparent);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================================
+   Utilidades de marca
+   ========================================================================== */
+
+/* Tagline oficial: mayúsculas y tracking amplio (Brand Book pág. 11) */
+@utility tagline {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: clamp(0.7rem, 0.64rem + 0.3vw, 0.9rem);
+}
+
+/* Regla fina de acento cian, como en las aplicaciones del manual */
+@utility regla-acento {
+  height: 3px;
+  width: 56px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--cedem-cyan), var(--cedem-sky));
+}
+
+/* Fotografía con el duotono navy/celeste del manual, aplicado por CSS:
+   se puede cambiar el tratamiento sin volver a exportar las imágenes. */
+.duotono-marco {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(150deg, var(--cedem-navy) 0%, var(--cedem-blue) 100%);
+}
+
+.duotono-marco > img {
+  mix-blend-mode: luminosity;
+  opacity: 0.92;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
