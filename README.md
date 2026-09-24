@@ -70,6 +70,9 @@ src/
 | `pnpm build` | Build de producción (incluye verificación de tipos) |
 | `pnpm probar:motor` | Pruebas del motor de puntuación del Camino del Dueño |
 | `pnpm importar:wordpress` | Descarga el archivo editorial a `supabase/datos/` |
+| `node scripts/revisar-sistema.mjs` | Revisión integral antes de publicar (28 comprobaciones) |
+| `node scripts/importar-articulos.mjs` | Carga el archivo editorial a la base |
+| `node scripts/generar-redirecciones.mjs` | Regenera el mapa de redirecciones del sitio anterior |
 | `node scripts/extraer-migraciones.mjs` | Regenera `supabase/migrations/` desde el documento de diseño |
 
 En la carpeta del proyecto (un nivel arriba):
