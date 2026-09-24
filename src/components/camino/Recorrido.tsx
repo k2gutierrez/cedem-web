@@ -1,9 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { AnilloValor } from "@/components/camino/AnilloValor";
-import { Boton, BotonEnlace } from "@/components/ui/Boton";
+import { Boton } from "@/components/ui/Boton";
 import { IconoFlecha } from "@/components/ui/Iconos";
 import {
   APERTURA,
@@ -45,7 +44,7 @@ export function Recorrido() {
   /* El avance, las respuestas y el modo viven en átomos con persistencia
      automática (ver src/lib/estado/camino.ts). El contacto NO se persiste:
      son datos personales y no tienen por qué quedar en el dispositivo. */
-  const [paso, setPaso] = useAtom(pasoAtom);
+  const [pasoCrudo, setPaso] = useAtom(pasoAtom);
   const [respuestas, setRespuestas] = useAtom(respuestasAtom);
   const [modo, setModo] = useAtom(modoAtom);
   const [comentario, setComentario] = useAtom(comentarioAtom);
@@ -58,26 +57,45 @@ export function Recorrido() {
   const reiniciar = useSetAtom(reiniciarAtom);
   const inicioRecorrido = useAtomValue(inicioAtom);
 
-  const [seleccion, setSeleccion] = useState<string | null>(null);
   const [guardando, setGuardando] = useState(false);
   const [avisoGuardado, setAvisoGuardado] = useState<string | null>(null);
-  /* Con el avance restaurado, el recorrido arranca en la pantalla donde iba.
-     `enApertura` permite mostrarle la portada con la opción de retomar. */
-  const [enApertura, setEnApertura] = useState(true);
-  /* El avance está guardado en el dispositivo y el servidor no puede saberlo.
-     Sin esta bandera, el HTML del servidor (portada) y el del cliente (pantalla
-     donde iba) no coinciden y React avisa de un desajuste de hidratación. */
-  const [montado, setMontado] = useState(false);
 
-  useEffect(() => {
-    setEnApertura(paso === 0 || paso >= RECORRIDO.length - 1);
-    setMontado(true);
-    // Solo al montar: después manda la navegación.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  /* El avance está guardado en el dispositivo y el servidor no puede saberlo: en
+     el HTML del servidor no hay nada restaurado. `useSyncExternalStore` resuelve
+     exactamente eso —falso en el servidor y en la hidratación, verdadero después—
+     sin el `useEffect(() => setMontado(true))` de antes, que provocaba un render
+     en cascada y React marcaba como error. */
+  const montado = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+
+  /* Portada: se muestra mientras el dueño no haya decidido. Si venía con avance
+     guardado, la portada le ofrece seguir donde iba; si no, le presenta el
+     recorrido. Antes esto se resolvía con un `useEffect` que solo corría al
+     montar, y tenía un efecto colateral: la pantalla de "¿Seguimos?" era
+     inalcanzable, porque la misma condición que la habilitaba la saltaba. */
+  const [decision, setDecision] = useState<"seguir" | "nuevo" | null>(null);
+
+  /* El avance está guardado en el dispositivo y puede quedar FUERA del recorrido:
+     basta con quitar o reordenar una pantalla para que quien iba por la 20 se
+     quede con un índice que ya no existe. Sin acotarlo, `RECORRIDO[paso].tipo`
+     reventaba y el dueño veía «This page couldn't load» en lugar del Camino.
+     Se corrige aquí, en un solo sitio, en vez de repartir comprobaciones por todo
+     el render; a partir de este valor todo lo demás ya es válido. */
+  const paso = Number.isFinite(pasoCrudo)
+    ? Math.min(Math.max(pasoCrudo, 0), RECORRIDO.length - 1)
+    : 0;
+
+  const pantalla = RECORRIDO[paso];
   const hayProgreso = paso > 0 && paso < RECORRIDO.length - 1;
+  const enApertura = pantalla.tipo === "apertura" || (hayProgreso && decision === null);
 
-  const inicioPantalla = useRef(Date.now());
+  /* El cronómetro por pantalla se inicializa en el efecto, no en el render:
+     `Date.now()` es impuro y llamarlo al renderizar da resultados distintos en
+     cada pasada. */
+  const inicioPantalla = useRef(0);
 
   // Tiempo por pantalla: alimenta la telemetría del recorrido.
   useEffect(() => {
@@ -92,12 +110,10 @@ export function Recorrido() {
   /* ------------------------------------------------------------------ */
 
   const visibles = useMemo(() => indicesVisibles(modo), [modo]);
-  const pantalla = RECORRIDO[paso];
   const posicionVisible = visibles.indexOf(paso);
   const progreso = posicionVisible / (visibles.length - 1);
 
   const avanzar = useCallback(() => {
-    setSeleccion(null);
     setPaso((p) => {
       let siguiente = p + 1;
       if (modo === "express") {
@@ -113,15 +129,13 @@ export function Recorrido() {
       }
       return Math.min(siguiente, RECORRIDO.length - 1);
     });
-  }, [modo]);
+  }, [modo, setPaso]);
 
   const retroceder = useCallback(() => {
-    setSeleccion(null);
     setPaso((p) => Math.max(0, p - 1));
-  }, []);
+  }, [setPaso]);
 
   function responderOpcion(pregunta: Pregunta, opcion: Opcion) {
-    setSeleccion(opcion.id);
     setRespuestas((previas) => ({ ...previas, [pregunta.id]: opcion.id }));
     // Pequeña pausa para que se vea la selección antes de avanzar.
     window.setTimeout(avanzar, 260);
@@ -137,18 +151,18 @@ export function Recorrido() {
 
   /** El avance ya está restaurado: solo hay que salir de la portada. */
   function reanudar() {
-    setEnApertura(false);
+    setDecision("seguir");
   }
 
   function empezarDeNuevo() {
     reiniciar();
-    setEnApertura(false);
+    setDecision("nuevo");
   }
 
   function empezar(express: boolean) {
     setModo(express ? "express" : "normal");
     setInicio(Date.now());
-    setEnApertura(false);
+    setDecision("nuevo");
     avanzar();
   }
 
@@ -467,7 +481,6 @@ export function Recorrido() {
     <Marco progreso={1} etiqueta="Tu lectura" alVolver={null} ancho="ancho">
       <Resultado
         perfil={perfil}
-        respuestas={respuestas}
         comentario={comentario}
         nombre={contacto.nombre}
         segundos={segundos}

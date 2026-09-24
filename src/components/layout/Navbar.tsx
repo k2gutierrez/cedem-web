@@ -14,13 +14,18 @@ import { navegacion } from "@/content/site";
  * En móvil se convierte en un panel a pantalla completa.
  */
 export function Navbar() {
-  const [abierto, setAbierto] = useState(false);
   const ruta = usePathname();
 
-  // Cierra el panel al cambiar de página
-  useEffect(() => {
-    setAbierto(false);
-  }, [ruta]);
+  // El panel se cierra al cambiar de página SIN un efecto: se guarda en qué ruta
+  // se abrió y basta con comparar. Si la ruta cambia —da igual si fue un clic, el
+  // botón de atrás o un enlace compartido— el panel deja de estar abierto por sí
+  // solo. Antes había un `useEffect(() => setAbierto(false), [ruta])`, que además
+  // de provocar un render extra, fallaba justo en el caso del botón de atrás.
+  const [abiertoEn, setAbiertoEn] = useState<string | null>(null);
+  const abierto = abiertoEn === ruta;
+
+  const abrir = () => setAbiertoEn(ruta);
+  const cerrar = () => setAbiertoEn(null);
 
   // Bloquea el scroll del fondo mientras el panel está abierto
   useEffect(() => {
@@ -32,7 +37,7 @@ export function Navbar() {
 
   useEffect(() => {
     function alEscape(e: KeyboardEvent) {
-      if (e.key === "Escape") setAbierto(false);
+      if (e.key === "Escape") setAbiertoEn(null);
     }
     window.addEventListener("keydown", alEscape);
     return () => window.removeEventListener("keydown", alEscape);
@@ -83,7 +88,7 @@ export function Navbar() {
           </BotonEnlace>
           <button
             type="button"
-            onClick={() => setAbierto((v) => !v)}
+            onClick={() => (abierto ? cerrar() : abrir())}
             aria-expanded={abierto}
             aria-controls="menu-movil"
             aria-label={abierto ? "Cerrar menú" : "Abrir menú"}
@@ -109,6 +114,7 @@ export function Navbar() {
             <li key={item.href}>
               <Link
                 href={item.href}
+                onClick={cerrar}
                 className="block border-b border-border py-3.5 font-display text-lg font-semibold text-fg"
               >
                 {item.etiqueta}

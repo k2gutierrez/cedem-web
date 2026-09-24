@@ -21,7 +21,7 @@ export const metadata: Metadata = {
  * contenido semilla verificado con la firma.
  */
 export default async function PaginaEquipo() {
-  const { areas, origen } = await obtenerEquipo();
+  const { areas } = await obtenerEquipo();
   const totalPersonas = areas.reduce((suma, area) => suma + area.personas.length, 0);
 
   return (

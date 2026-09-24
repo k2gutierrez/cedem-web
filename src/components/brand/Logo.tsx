@@ -39,8 +39,12 @@ export function Logo({
   className?: string;
 }) {
   const claseAlto = CLASES_ALTO[alto] ?? "h-10";
+  /* `alt` y las dimensiones van explícitos en cada `<Image>` y no dentro de un
+     objeto que se esparce: además de ser más legible, el linter de accesibilidad
+     no puede seguir un `{...props}` y avisaba de tres imágenes sin texto
+     alternativo que sí lo tenían. */
+  const ALT = "CEDEM · Centro de Dueñez Empresaria";
   const props = {
-    alt: "CEDEM · Centro de Dueñez Empresaria",
     width: ANCHO_BASE,
     height: ALTO_BASE,
     priority: prioridad,
@@ -55,18 +59,20 @@ export function Logo({
           ? "/brand/cedem-logo-negro.png"
           : "/brand/cedem-logo-navy.png";
 
-    return <Image src={archivo} {...props} className={clases} />;
+    return <Image src={archivo} alt={ALT} {...props} className={clases} />;
   }
 
   return (
     <>
       <Image
         src="/brand/cedem-logo-navy.png"
+        alt={ALT}
         {...props}
         className={`dark:hidden ${clases}`}
       />
       <Image
         src="/brand/cedem-logo-blanco.png"
+        alt={ALT}
         {...props}
         className={`hidden dark:block ${clases}`}
       />

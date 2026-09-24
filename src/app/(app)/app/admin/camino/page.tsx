@@ -123,7 +123,14 @@ export default async function PaginaDiagnosticos() {
             </thead>
             <tbody>
               {filas.map((fila) => {
-                const s = (fila.segment_scores ?? {}) as Record<string, any>;
+                // `segment_scores` es el JSON que escribe el motor. Se tipa lo que
+                // esta tabla usa —y se deja abierto el resto— en vez de un `any`,
+                // que apagaría la comprobación también aquí.
+                const s = (fila.segment_scores ?? {}) as {
+                  temperatura_etiqueta?: string;
+                  whatsapp?: string;
+                  [clave: string]: unknown;
+                };
                 const temperatura = (s.temperatura_etiqueta as string) ?? "frio";
                 const etiqueta = ETIQUETA_TEMPERATURA[temperatura] ?? ETIQUETA_TEMPERATURA.frio;
                 const contacto =

@@ -14,6 +14,17 @@ import { supabaseConfigurado } from "@/lib/supabase/configurado";
  * proveedor de envío (Resend o el de Supabase) y el destinatario.
  */
 
+/**
+ * El corte de «últimos treinta días», en milisegundos.
+ *
+ * Fuera del componente: `Date.now()` en el cuerpo de un componente es impuro y el
+ * compilador de React lo marca como error. El nombre, además, explica la resta.
+ */
+function haceTreintaDias(): number {
+  return Date.now() - 30 * 24 * 60 * 60 * 1000;
+}
+
+
 export async function AvisoDiagnosticos() {
   const sesion = await obtenerSesion();
   if (!sesion.esAdmin || !supabaseConfigurado()) return null;
@@ -27,7 +38,7 @@ export async function AvisoDiagnosticos() {
     .order("completed_at", { ascending: false })
     .limit(50);
 
-  const hace30 = Date.now() - 30 * 24 * 60 * 60 * 1000;
+  const hace30 = haceTreintaDias();
 
   const pendientes = (data ?? []).filter((s) => {
     const p = (s.segment_scores ?? {}) as Record<string, unknown>;

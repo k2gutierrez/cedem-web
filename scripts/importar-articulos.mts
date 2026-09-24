@@ -67,7 +67,7 @@ let creados = 0;
 let saltados = 0;
 let fallos = 0;
 
-for (const [i, articulo] of lista.entries()) {
+for (const articulo of lista) {
   const titulo = articulo.titulo.slice(0, 200);
   const slug = articulo.slug;
 

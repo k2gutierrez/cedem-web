@@ -5,18 +5,12 @@ import Link from "next/link";
 import { AnilloValor } from "@/components/camino/AnilloValor";
 import { pedirLectura } from "@/app/acciones/camino";
 import { BotonEnlace } from "@/components/ui/Boton";
-import { IconoFlecha } from "@/components/ui/Iconos";
 import {
   EJERCICIOS_BASE,
   ETIQUETAS_BASE,
   articulosPara,
 } from "@/content/camino/catalogo";
-import {
-  ETIQUETA_NIVEL,
-  TITULARES,
-  textoDispersante,
-  type Perfil,
-} from "@/lib/camino/puntuar";
+import { ETIQUETA_NIVEL, TITULARES, type Perfil } from "@/lib/camino/puntuar";
 import { lecturaBase } from "@/lib/ia/lectura";
 
 /**
@@ -28,7 +22,6 @@ import { lecturaBase } from "@/lib/ia/lectura";
  */
 export function Resultado({
   perfil,
-  respuestas,
   comentario,
   nombre,
   segundos,
@@ -36,7 +29,6 @@ export function Resultado({
   sessionId,
 }: {
   perfil: Perfil;
-  respuestas: Record<string, string | undefined>;
   comentario: string;
   nombre: string;
   segundos: number;

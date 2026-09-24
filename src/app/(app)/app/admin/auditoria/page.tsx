@@ -10,6 +10,18 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+/**
+ * El corte de «última semana».
+ *
+ * Vive fuera del componente a propósito: `Date.now()` dentro del cuerpo de un
+ * componente es una llamada impura —el mismo componente daría un resultado
+ * distinto en cada pasada— y el compilador de React lo rechaza. Aquí, además,
+ * el nombre dice qué significa la resta, que es lo que se quería leer.
+ */
+function haceUnaSemana(): string {
+  return new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+}
+
 /** Las acciones que conviene mirar primero si algo no cuadra. */
 const SENSIBLES = ["cambio_rol", "canje_invitacion", "delete", "revocacion", "inicio_sesion"];
 
@@ -56,7 +68,7 @@ export default async function PaginaAuditoria(props: PageProps<"/app/admin/audit
   const { data } = await consulta;
   const movimientos = (data ?? []) as Movimiento[];
 
-  const hace7 = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  const hace7 = haceUnaSemana();
   const { count: total } = await supabase
     .from("audit_logs")
     .select("id", { count: "exact", head: true });
