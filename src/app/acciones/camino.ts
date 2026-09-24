@@ -5,6 +5,7 @@ import { crearClienteAdmin } from "@/lib/supabase/cliente-admin";
 import { crearClienteServidor } from "@/lib/supabase/cliente-servidor";
 import { supabaseConfigurado } from "@/lib/supabase/configurado";
 import { calcularPerfil, type Perfil, type Respuestas } from "@/lib/camino/puntuar";
+import { avisarAlEquipo, avisarDelCamino } from "@/lib/correo/correos";
 import { generarLectura, type Lectura } from "@/lib/ia/lectura";
 import { VERSION_MOTOR } from "@/content/camino/config";
 
@@ -238,7 +239,73 @@ export async function guardarDiagnostico(datos: {
   }
 
   revalidatePath("/app/admin/camino");
+
+  /* El correo con la lectura. Se manda DESPUÉS de guardar y sin bloquear: el dueño
+     ya tiene su diagnóstico en pantalla, y un problema con el correo no puede
+     impedirle verlo. Si no hay proveedor configurado, queda en la cola del panel
+     para mandarlo a mano. */
+  if (correo) {
+    try {
+      await avisarDelCamino({
+        correo,
+        nombre: datos.nombre,
+        perfil,
+        sessionId: sesion.id,
+      });
+    } catch (e) {
+      console.error("[camino] el correo no salió:", e instanceof Error ? e.message : e);
+    }
+  }
+
+  // Y el aviso al equipo, solo cuando el dueño pide que lo contacten.
+  const avisar =
+    (perfil.temperaturaEtiqueta === "urgente" || perfil.temperaturaEtiqueta === "caliente") &&
+    datos.consentimiento;
+
+  if (avisar) {
+    try {
+      const destinatarios = await correosDelEquipo();
+      if (destinatarios.length) {
+        await avisarAlEquipo({
+          destinatarios,
+          nombre: datos.nombre,
+          correo: correo ?? "(sin correo)",
+          temperatura: perfil.temperaturaEtiqueta,
+          verbo: perfil.verboCritico,
+          sessionId: sesion.id,
+          comentario: datos.comentario ?? null,
+        });
+      }
+    } catch (e) {
+      console.error("[camino] el aviso al equipo no salió:", e instanceof Error ? e.message : e);
+    }
+  }
+
   return { ok: true, mensaje: "Listo, guardamos tu lectura.", sessionId: sesion.id };
+}
+
+/**
+ * A quién se avisa cuando un dueño pide que lo contacten.
+ *
+ * Se lee de la configuración del sitio (`site_settings`), así que se cambia desde
+ * el panel sin tocar código. Si no hay nada configurado, no se avisa a nadie: es
+ * preferible a mandar el aviso a una dirección inventada.
+ */
+async function correosDelEquipo(): Promise<string[]> {
+  const { crearClienteAdmin } = await import("@/lib/supabase/cliente-admin");
+  const admin = crearClienteAdmin();
+
+  const { data } = await admin
+    .from("site_settings")
+    .select("value")
+    .eq("key", "camino.correos_aviso")
+    .maybeSingle();
+
+  const valor = data?.value as unknown;
+  if (Array.isArray(valor)) return valor.filter((v): v is string => typeof v === "string");
+  if (typeof valor === "string") return valor.split(/[,;\s]+/).filter(Boolean);
+
+  return [];
 }
 
 /* -------------------------------------------------------------------------- */

@@ -62,6 +62,7 @@ export default async function LayoutPlataforma({
     enlaces.push({ etiqueta: "Miembros", href: "/app/admin/miembros" });
     enlaces.push({ etiqueta: "Invitaciones", href: "/app/admin/invitaciones" });
     enlaces.push({ etiqueta: "Pagos", href: "/app/admin/planes" });
+    enlaces.push({ etiqueta: "Correos", href: "/app/admin/correos" });
     enlaces.push({ etiqueta: "Auditoría", href: "/app/admin/auditoria" });
   }
 
