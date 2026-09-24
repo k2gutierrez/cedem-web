@@ -13,6 +13,7 @@ import {
   type Opcion,
   type Pregunta,
 } from "@/content/camino/config";
+import { guardarDiagnostico } from "@/app/acciones/camino";
 import { calcularPerfil, type Respuestas } from "@/lib/camino/puntuar";
 import { Resultado } from "@/components/camino/Resultado";
 
@@ -47,8 +48,11 @@ export function Recorrido() {
   const [mostrarReanudar, setMostrarReanudar] = useState(false);
   const [seleccion, setSeleccion] = useState<string | null>(null);
   const [segundos, setSegundos] = useState(0);
+  const [guardando, setGuardando] = useState(false);
+  const [avisoGuardado, setAvisoGuardado] = useState<string | null>(null);
 
   const inicioPantalla = useRef(Date.now());
+  const inicioRecorrido = useRef<number | null>(null);
 
   /* ------------------------------------------------------------------ */
   /* Persistencia: el avance vive en el navegador hasta que haya cuenta   */
@@ -161,7 +165,44 @@ export function Recorrido() {
 
   function empezar(express: boolean) {
     setModo(express ? "express" : "normal");
+    inicioRecorrido.current = Date.now();
     avanzar();
+  }
+
+  /**
+   * Guarda el diagnóstico y muestra la lectura.
+   *
+   * El guardado NO puede impedir que el dueño vea su resultado: si falla, se
+   * avisa con discreción y el recorrido termina igual. Nunca se pierde el valor
+   * entregado por un problema técnico.
+   */
+  async function enviarYVerLectura() {
+    setGuardando(true);
+    setAvisoGuardado(null);
+    try {
+      const resultado = await guardarDiagnostico({
+        respuestas,
+        nombre: contacto.nombre,
+        correo: canal === "correo" ? contacto.correo : undefined,
+        whatsapp: canal === "whatsapp" ? contacto.whatsapp : undefined,
+        comentario,
+        consentimiento,
+        // La duración se mide de principio a fin: el contador por pantalla se
+        // pierde al desmontar el componente y llegaba a guardarse en cero.
+        segundos: inicioRecorrido.current
+          ? Math.round((Date.now() - inicioRecorrido.current) / 1000)
+          : segundos,
+        modo,
+      });
+      if (!resultado.ok) setAvisoGuardado(resultado.mensaje);
+    } catch {
+      setAvisoGuardado(
+        "No pudimos guardar tu lectura, pero aquí la tienes. Escríbenos si quieres que la revisemos contigo.",
+      );
+    } finally {
+      setGuardando(false);
+      avanzar();
+    }
   }
 
   /* ------------------------------------------------------------------ */
@@ -317,7 +358,6 @@ export function Recorrido() {
         alVolver={retroceder}
       >
         <h2 className="text-h3 text-fg">Ya casi. ¿A dónde te mando tu lectura?</h2>
-
         <div className="mt-6 flex gap-2">
           {(["correo", "whatsapp"] as const).map((c) => (
             <button
@@ -408,17 +448,22 @@ export function Recorrido() {
 
         <div className="mt-7">
           <Boton
-            onClick={avanzar}
+            onClick={enviarYVerLectura}
             tamano="lg"
-            disabled={!puedeEnviar}
+            disabled={!puedeEnviar || guardando}
             className="w-full sm:w-auto"
           >
-            Ver mi lectura
-            <IconoFlecha className="h-4 w-4" />
+            {guardando ? "Guardando…" : "Ver mi lectura"}
+            {!guardando ? <IconoFlecha className="h-4 w-4" /> : null}
           </Boton>
           <p className="mt-4 text-[12.5px] text-fg-subtle">
             Nada de spam. Un correo, y si quieres hablamos.
           </p>
+          {avisoGuardado ? (
+            <p className="mt-3 text-[12.5px] text-amber-700 dark:text-amber-300">
+              {avisoGuardado}
+            </p>
+          ) : null}
         </div>
       </Marco>
     );

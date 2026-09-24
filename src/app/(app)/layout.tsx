@@ -34,7 +34,8 @@ export default async function LayoutPlataforma({
     { etiqueta: "Biblioteca", href: "/recursos" },
   ];
   if (sesion.esAdmin) {
-    enlaces.push({ etiqueta: "Administración", href: "/app/admin/contenido" });
+    enlaces.push({ etiqueta: "Contenido", href: "/app/admin/contenido" });
+    enlaces.push({ etiqueta: "Diagnósticos", href: "/app/admin/camino" });
   }
 
   return (
