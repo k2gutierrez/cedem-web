@@ -27,7 +27,10 @@ Todas viven en `.env.local`, que **está ignorado por git**. La plantilla coment
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Llave pública (puede llegar al navegador) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Llave maestra — **solo servidor** |
 | `DATABASE_URL` | Conexión directa a Postgres, para aplicar migraciones |
-| `DEEPSEEK_API_KEY` | IA del Camino del Dueño (Fase 4) |
+| `DEEPSEEK_API_KEY` | IA del Camino del Dueño |
+| `STRIPE_SECRET_KEY` | Cobro de la membresía con tarjeta (opcional) |
+| `STRIPE_WEBHOOK_SECRET` | Verificación de la firma de Stripe (opcional) |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Clave pública de Stripe (opcional) |
 
 ## Estructura
 
@@ -135,6 +138,34 @@ En **Settings → Domains** se añade `cedem.com.mx` y `www.cedem.com.mx`, y Ver
 indica los registros DNS que hay que crear. El día del corte, las 186 direcciones
 del WordPress actual redirigen solas a su artículo nuevo (`src/lib/redirecciones.json`),
 así que el posicionamiento no se pierde.
+
+### Cobro con tarjeta (Stripe)
+
+La integración está construida y **se enciende sola** cuando las tres variables de
+Stripe están cargadas: sin ellas, la página de membresía sigue ofreciendo la
+transferencia con confirmación manual, que es como opera hoy.
+
+1. **Llaves.** En el panel de Stripe → *Developers → API keys*, copiar la llave
+   publicable y la secreta (empezando por las de **prueba**, `pk_test_` y `sk_test_`).
+2. **Webhook.** En *Developers → Webhooks → Add endpoint*, con la URL
+   `https://TU-DOMINIO/api/webhooks/stripe` y los eventos
+   `checkout.session.completed` y `charge.refunded`. El *signing secret* que genera
+   va en `STRIPE_WEBHOOK_SECRET`.
+3. **Precio en Stripe.** No hace falta crear el producto a mano: el precio se toma
+   de la base (`plan_prices`) y se manda a Stripe al abrir el pago.
+
+Para probar sin cobrar de verdad:
+
+```bash
+stripe listen --forward-to localhost:3000/api/webhooks/stripe   # reenvía los eventos
+stripe trigger checkout.session.completed                        # simula un pago
+node scripts/probar-firma-stripe.mjs                             # firma correcta y falsa
+```
+
+> **La membresía se activa por webhook, no por la vuelta del navegador.** Si se
+> activara al volver, cerrar el navegador después de pagar dejaría al dueño sin
+> acceso, y escribir la dirección a mano lo dejaría entrar sin pagar. El webhook
+> llega firmado por Stripe y es la única fuente de verdad.
 
 ### Lo que corre solo en cada push
 

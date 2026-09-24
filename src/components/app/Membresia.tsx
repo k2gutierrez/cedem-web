@@ -1,8 +1,10 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
+import { iniciarPago } from "@/app/acciones/pagos";
 import { Boton } from "@/components/ui/Boton";
+import { IconoFlecha } from "@/components/ui/Iconos";
 import {
   guardarPrecio,
   solicitarMembresia,
@@ -84,6 +86,49 @@ export function FormularioSolicitud({
       {estado.error ? <p role="alert" className={avisoError}>{estado.error}</p> : null}
 
       <Enviar texto="Solicitar mi membresía" cargando="Registrando…" />
+    </form>
+  );
+
+  /* Cuando la pasarela está conectada, el mismo formulario ofrece las dos vías:
+     pagar con tarjeta aquí mismo, o pedir la referencia para transferir. Se
+     mantienen las dos a propósito: hay dueños que prefieren transferencia, y
+     mientras el cobro con tarjeta se prueba conviene no cerrar la otra puerta. */
+}
+
+/** Botón de pago con tarjeta. Solo se muestra si Stripe está configurado. */
+export function PagoConTarjeta({ precios }: { precios: { id: string; etiqueta: string }[] }) {
+  const [precio, setPrecio] = useState(precios[0]?.id ?? "");
+
+  return (
+    <form action={iniciarPago} className="space-y-4">
+      <div>
+        <label htmlFor="precio-tarjeta" className={etiqueta}>
+          Pagar con tarjeta
+        </label>
+        <select
+          id="precio-tarjeta"
+          name="precio"
+          value={precio}
+          onChange={(e) => setPrecio(e.target.value)}
+          className={campo}
+        >
+          {precios.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.etiqueta}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <Boton type="submit" tamano="lg" className="barrido w-full">
+        Pagar ahora
+        <IconoFlecha className="h-4 w-4" />
+      </Boton>
+
+      <p className="text-[12.5px] leading-relaxed text-fg-subtle">
+        El cobro lo procesa Stripe. Tus datos de tarjeta no pasan por CEDEM en ningún
+        momento, y el acceso se activa en cuanto el pago se confirma.
+      </p>
     </form>
   );
 }

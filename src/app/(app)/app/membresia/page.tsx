@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { FormularioSolicitud } from "@/components/app/Membresia";
+import { FormularioSolicitud, PagoConTarjeta } from "@/components/app/Membresia";
+import { AvisoDeUrl } from "@/components/fx/AvisoDeUrl";
 import { BotonEnlace } from "@/components/ui/Boton";
 import { Container } from "@/components/ui/Container";
 import { IconoFlecha } from "@/components/ui/Iconos";
 import { obtenerSesion } from "@/lib/auth/sesion";
+import { stripeConfigurado } from "@/lib/pagos/stripe";
 import { crearClienteServidor } from "@/lib/supabase/cliente-servidor";
 import { contacto } from "@/content/site";
 
@@ -162,6 +164,21 @@ export default async function PaginaMembresia() {
             </div>
           ) : (
             <div className="mt-8 rounded-3xl border border-border bg-bg p-7 sm:p-9">
+              {stripeConfigurado() ? (
+                <>
+                  <PagoConTarjeta
+                    precios={opciones.map((o) => ({ id: o.id, etiqueta: o.etiqueta }))}
+                  />
+                  <div className="my-8 flex items-center gap-4">
+                    <span className="h-px flex-1 bg-border" />
+                    <span className="text-[12px] uppercase tracking-wider text-fg-subtle">
+                      o por transferencia
+                    </span>
+                    <span className="h-px flex-1 bg-border" />
+                  </div>
+                </>
+              ) : null}
+
               <FormularioSolicitud precios={opciones} />
               <p className="mt-6 text-[12.5px] leading-relaxed text-fg-subtle">
                 Al solicitar no se te cobra nada automáticamente. Recibes una referencia para
@@ -181,6 +198,8 @@ export default async function PaginaMembresia() {
           )}
         </>
       )}
+
+      <AvisoDeUrl />
 
       <p className="mt-8 text-[12.5px] leading-relaxed text-fg-subtle">
         ¿Ya eres cliente de CEDEM? No necesitas pagar la membresía: pídele a tu consultor tu

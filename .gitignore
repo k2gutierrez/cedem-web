@@ -32,6 +32,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# …pero la PLANTILLA sí se versiona: es la lista de lo que hay que configurar y
+# no lleva ningún valor. Sin ella, quien clone el repositorio no sabe qué falta.
+!.env.local.example
 
 # vercel
 .vercel
