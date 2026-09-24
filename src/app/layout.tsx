@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
+import { contacto, redes, sedes } from "@/content/site";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -60,15 +61,40 @@ const themeScript = `
 })();
 `;
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "CEDEM · Centro de Dueñez Empresaria",
+  url: "https://www.cedem.com.mx",
+  logo: "https://www.cedem.com.mx/brand/cedem-logo-navy.png",
+  foundingDate: "1985",
+  description:
+    "Escuela de formación de dueños y firma de consultoría en gestión de valor. Metodología de Dueñez Empresaria.",
+  telephone: contacto.telefono,
+  address: sedes.map((sede) => ({
+    "@type": "PostalAddress",
+    streetAddress: sede.direccion,
+  })),
+  sameAs: redes.map((red) => red.href),
+};
+
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es-MX"
+      // Next 16 pide declarar el desplazamiento suave para gestionarlo durante
+      // las transiciones de ruta (si no, avisa por consola).
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={`${montserrat.variable} ${sourceSans.variable} h-full`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="flex min-h-full flex-col bg-bg text-fg antialiased">
         {children}

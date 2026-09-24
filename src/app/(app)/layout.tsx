@@ -31,7 +31,7 @@ export default async function LayoutPlataforma({
   const enlaces = [
     { etiqueta: "Mi panel", href: "/app" },
     { etiqueta: "Mi Camino", href: "/app/camino" },
-    { etiqueta: "Biblioteca", href: "/recursos" },
+    { etiqueta: "Biblioteca", href: "/app/biblioteca" },
   ];
   if (sesion.esAdmin) {
     enlaces.push({ etiqueta: "Contenido", href: "/app/admin/contenido" });
@@ -39,6 +39,7 @@ export default async function LayoutPlataforma({
     enlaces.push({ etiqueta: "Equipo", href: "/app/admin/equipo" });
     enlaces.push({ etiqueta: "Clientes", href: "/app/admin/clientes" });
     enlaces.push({ etiqueta: "Invitaciones", href: "/app/admin/invitaciones" });
+    enlaces.push({ etiqueta: "Auditoría", href: "/app/admin/auditoria" });
   }
 
   return (
