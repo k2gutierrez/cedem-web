@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AvisoDiagnosticos } from "@/components/app/AvisoDiagnosticos";
 import { BotonEnlace } from "@/components/ui/Boton";
 import { Container } from "@/components/ui/Container";
 import { IconoFlecha } from "@/components/ui/Iconos";
@@ -28,6 +29,12 @@ export default async function PaginaPanel() {
       <p className="mt-4 max-w-[52ch] text-lead text-fg-muted">
         Aquí vive tu Camino del Dueño, tu perfil y lo que CEDEM tiene para ti.
       </p>
+
+      {sesion.esAdmin ? (
+        <div className="mt-8">
+          <AvisoDiagnosticos />
+        </div>
+      ) : null}
 
       <div className="mt-10 grid gap-6 lg:grid-cols-3">
         {/* Camino del Dueño */}
