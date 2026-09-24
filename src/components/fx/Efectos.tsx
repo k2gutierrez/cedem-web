@@ -17,33 +17,69 @@ import { motion, useInView, useMotionValue, useReducedMotion, useSpring } from "
  *   la rejilla y la marquesina son CSS puro.
  */
 
-/** Aparece al entrar en pantalla, una sola vez. */
+/**
+ * Aparece al entrar en pantalla, una sola vez.
+ *
+ * ESTO NO USA `motion`, Y ES A PROPÓSITO
+ *
+ * La primera versión animaba con `initial={{ opacity: 0 }}`, que deja el
+ * contenido **invisible en el HTML del servidor** y solo lo muestra cuando el
+ * JavaScript hidrata y el observador se dispara. Con la página recién cargada y
+ * sin hacer scroll, la captura salió con secciones enteras en blanco: si el
+ * JavaScript falla —o alguien navega con él desactivado— el sitio se queda a
+ * medias. Además, un `<div>` por elemento dentro de un `<ol>` es HTML inválido.
+ *
+ * La versión buena: el CSS del revelado cuelga de la clase `con-js`, que el script
+ * de arranque pone antes del primer pintado. Sin JavaScript no hay clase, no hay
+ * regla y el contenido se ve completo. Y como no hay envoltorio propio, se puede
+ * pedir que el elemento sea el que corresponde (`como="li"`).
+ */
 export function Revelar({
   children,
   retraso = 0,
-  desplazamiento = 26,
   className = "",
+  como: Etiqueta = "div",
 }: {
   children: ReactNode;
   /** Retraso en segundos, para escalonar elementos hermanos. */
   retraso?: number;
-  desplazamiento?: number;
   className?: string;
+  /** Etiqueta del contenedor. Importa para no meter un `div` dentro de un `ol`. */
+  como?: "div" | "li" | "article" | "section";
 }) {
-  const reducido = useReducedMotion();
+  const ref = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
 
-  if (reducido) return <div className={className}>{children}</div>;
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
+    }
+
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        if (entradas.some((e) => e.isIntersecting)) {
+          setVisible(true);
+          observador.disconnect();
+        }
+      },
+      { rootMargin: "-70px 0px -40px 0px" },
+    );
+
+    observador.observe(el);
+    return () => observador.disconnect();
+  }, []);
 
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: desplazamiento }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, delay: retraso, ease: [0.22, 1, 0.36, 1] }}
+    <Etiqueta
+      // @ts-expect-error — el ref es del mismo tipo de elemento que la etiqueta
+      ref={ref}
+      className={`revelar ${visible ? "es-visible" : ""} ${className}`}
+      style={retraso ? { transitionDelay: `${retraso}s` } : undefined}
     >
       {children}
-    </motion.div>
+    </Etiqueta>
   );
 }
 

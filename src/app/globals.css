@@ -302,6 +302,33 @@
   animation: cedem-brillo-borde 4.5s ease-in-out infinite;
 }
 
+/* ── Revelado al hacer scroll ────────────────────────────────────────────────
+   La clase `con-js` la pone el script de arranque del tema, que corre antes del
+   primer pintado. Es la pieza clave: si el JavaScript no carga, la clase no está,
+   estas reglas no aplican y TODO EL CONTENIDO SE VE. Sin esto, animar la entrada
+   significa que un fallo de JavaScript deja la página en blanco. */
+.con-js .revelar {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.con-js .revelar.es-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .con-js .revelar {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* El halo que sigue al cursor solo existe donde hay cursor de verdad. */
 @media (hover: none), (prefers-reduced-motion: reduce) {
   .halo-cursor { display: none; }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { Revelar } from "@/components/fx/Efectos";
 import { Container } from "@/components/ui/Container";
 
 /**
@@ -23,10 +24,16 @@ export function EncabezadoPagina({
   children?: ReactNode;
 }) {
   return (
-    <section className="relative overflow-hidden border-b border-border bg-bg">
+    <section className="relative isolate overflow-hidden border-b border-border bg-bg">
+      {/* Misma rejilla y mismos halos que el hero: el visitante reconoce que
+          sigue en el mismo sitio, no en una página suelta. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-32 right-0 h-[420px] w-[420px] rounded-full bg-sky/15 blur-3xl dark:bg-cyan/10"
+        className="rejilla-tecnica rejilla-viva pointer-events-none absolute inset-0 -z-10"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-32 right-0 -z-10 h-[460px] w-[460px] rounded-full bg-sky/20 blur-3xl dark:bg-cyan/12"
       />
       <Container className="relative py-14 lg:py-20">
         <nav aria-label="Ruta" className="text-[13px] text-fg-subtle">
@@ -39,9 +46,11 @@ export function EncabezadoPagina({
           <span className="text-fg-muted">{etiqueta}</span>
         </nav>
 
-        <p className="tagline mt-6 text-cyan dark:text-sky">{antetitulo}</p>
-        <h1 className="mt-4 max-w-[46rem] text-h1 text-fg">{titulo}</h1>
-        <p className="mt-5 max-w-[56ch] text-lead text-fg-muted">{entrada}</p>
+        <Revelar>
+          <p className="tagline mt-6 text-cyan dark:text-sky">{antetitulo}</p>
+          <h1 className="mt-4 max-w-[46rem] text-h1 text-fg">{titulo}</h1>
+          <p className="mt-5 max-w-[56ch] text-lead text-fg-muted">{entrada}</p>
+        </Revelar>
 
         {children}
       </Container>

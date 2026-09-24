@@ -29,5 +29,25 @@ export const revalidate = 3600;
 
 export default async function PaginaCamino() {
   const catalogo = await mapaDeCatalogo();
-  return <Recorrido catalogo={catalogo} />;
+
+  return (
+    <>
+      {/* El recorrido es interactivo: sin JavaScript solo se ve la portada. En
+          lugar de dejar al visitante con una pantalla a medias, se le explica y
+          se le da la salida. */}
+      <noscript>
+        <div className="border-b border-amber-300/60 bg-amber-50 px-5 py-4 text-center text-[13.5px] leading-relaxed text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200">
+          El Camino del Dueño necesita JavaScript para funcionar. Actívalo en tu
+          navegador y vuelve a entrar; mientras tanto puedes escribirnos desde la
+          página de{" "}
+          <a href="/contacto" className="font-semibold underline underline-offset-4">
+            contacto
+          </a>{" "}
+          y lo hacemos contigo.
+        </div>
+      </noscript>
+
+      <Recorrido catalogo={catalogo} />
+    </>
+  );
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BotonEnlace } from "@/components/ui/Boton";
+import { Revelar } from "@/components/fx/Efectos";
 import { Container } from "@/components/ui/Container";
 import { EncabezadoSeccion } from "@/components/ui/EncabezadoSeccion";
 import { IconoFlecha } from "@/components/ui/Iconos";
@@ -18,11 +19,16 @@ export function PaginaServicio({ servicio }: { servicio: Servicio }) {
   return (
     <>
       {/* Hero del servicio */}
-      <section className="relative overflow-hidden border-b border-border bg-bg">
+      <section className="relative isolate overflow-hidden border-b border-border bg-bg">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-32 right-0 h-[420px] w-[420px] rounded-full bg-sky/15 blur-3xl dark:bg-cyan/10"
+          className="rejilla-tecnica rejilla-viva pointer-events-none absolute inset-0 -z-10"
         />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-32 right-0 -z-10 h-[460px] w-[460px] rounded-full bg-sky/20 blur-3xl dark:bg-cyan/12"
+        />
+
         <Container className="relative py-14 lg:py-20">
           <nav aria-label="Ruta" className="text-[13px] text-fg-subtle">
             <Link href="/" className="hover:text-cyan dark:hover:text-sky">
@@ -34,36 +40,43 @@ export function PaginaServicio({ servicio }: { servicio: Servicio }) {
             <span className="text-fg-muted">{servicio.nombre}</span>
           </nav>
 
-          <p className="tagline mt-6 text-cyan dark:text-sky">{servicio.antetitulo}</p>
-          <h1 className="mt-4 max-w-[46rem] text-h1 text-fg">{servicio.titulo}</h1>
-          <p className="mt-5 max-w-[54ch] text-lead text-fg-muted">{servicio.entrada}</p>
+          <Revelar>
+            <p className="tagline mt-6 text-cyan dark:text-sky">{servicio.antetitulo}</p>
+            <h1 className="mt-4 max-w-[46rem] text-h1 text-fg">{servicio.titulo}</h1>
+            <p className="mt-5 max-w-[54ch] text-lead text-fg-muted">{servicio.entrada}</p>
 
-          <p className="mt-6 inline-flex rounded-full border border-border bg-bg-soft px-4 py-2 text-sm font-medium text-fg-muted">
-            {servicio.segmento}
-          </p>
+            <p className="mt-6 inline-flex rounded-full border border-border bg-bg/70 px-4 py-2 text-sm font-medium text-fg-muted backdrop-blur">
+              {servicio.segmento}
+            </p>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <BotonEnlace href="/contacto" tamano="lg">
-              Solicitar información
-              <IconoFlecha className="h-4 w-4" />
-            </BotonEnlace>
-            <BotonEnlace href="/unete" variante="secundario" tamano="lg">
-              Hacer el diagnóstico
-            </BotonEnlace>
-          </div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <BotonEnlace href="/contacto" tamano="lg" className="barrido">
+                Solicitar información
+                <IconoFlecha className="h-4 w-4" />
+              </BotonEnlace>
+              <BotonEnlace href="/unete" variante="secundario" tamano="lg">
+                Hacer el diagnóstico
+              </BotonEnlace>
+            </div>
+          </Revelar>
 
-          <dl className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
-            {servicio.datosClave.map((dato) => (
-              <div key={dato.etiqueta} className="bg-bg p-5">
-                <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
-                  {dato.etiqueta}
-                </dt>
-                <dd className="mt-1.5 font-display text-[15px] font-semibold text-fg">
-                  {dato.valor}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <Revelar retraso={0.14}>
+            <dl className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+              {servicio.datosClave.map((dato) => (
+                <div
+                  key={dato.etiqueta}
+                  className="bg-bg p-5 transition-colors hover:bg-bg-soft"
+                >
+                  <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+                    {dato.etiqueta}
+                  </dt>
+                  <dd className="mt-1.5 font-display text-[15px] font-semibold text-fg">
+                    {dato.valor}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </Revelar>
         </Container>
       </section>
 
@@ -115,21 +128,20 @@ export function PaginaServicio({ servicio }: { servicio: Servicio }) {
           />
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {servicio.problema.map((item, i) => (
-              <article
-                key={item.titulo}
-                className="rounded-2xl border border-border bg-bg p-7"
-              >
-                <span
-                  aria-hidden="true"
-                  className="font-display text-sm font-bold text-cyan/70 dark:text-sky/70"
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-3 font-display text-lg font-bold text-fg">
-                  {item.titulo}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-fg-muted">{item.texto}</p>
-              </article>
+              <Revelar key={item.titulo} retraso={i * 0.08} className="flex">
+                <article className="borde-vivo flex w-full flex-col rounded-2xl border border-border bg-bg p-7">
+                  <span
+                    aria-hidden="true"
+                    className="font-display text-sm font-bold text-cyan/70 dark:text-sky/70"
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-3 font-display text-lg font-bold text-fg">
+                    {item.titulo}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-fg-muted">{item.texto}</p>
+                </article>
+              </Revelar>
             ))}
           </div>
         </Container>
@@ -145,23 +157,24 @@ export function PaginaServicio({ servicio }: { servicio: Servicio }) {
           />
           <ol className="mt-12 space-y-4">
             {servicio.solucion.map((paso, i) => (
-              <li
+              <Revelar
                 key={paso.titulo}
-                className="grid gap-4 rounded-2xl border border-border bg-bg p-7 lg:grid-cols-[auto_1fr] lg:gap-8"
-              >
-                <span
-                  aria-hidden="true"
-                  className="grid h-11 w-11 place-items-center rounded-full bg-navy font-display text-sm font-bold text-white dark:bg-cyan dark:text-[#04102e]"
-                >
-                  {i + 1}
-                </span>
-                <div>
-                  <h3 className="font-display text-lg font-bold text-fg">{paso.titulo}</h3>
-                  <p className="mt-2.5 text-[15px] leading-relaxed text-fg-muted">
-                    {paso.texto}
-                  </p>
+                como="li"
+                retraso={i * 0.07}
+                className="group grid gap-4 rounded-2xl border border-border bg-bg p-7 transition-colors hover:border-cyan/50 lg:grid-cols-[auto_1fr] lg:gap-8 dark:hover:border-sky/50">
+                  <span
+                    aria-hidden="true"
+                    className="grid h-11 w-11 place-items-center rounded-full bg-navy font-display text-sm font-bold text-white transition-transform duration-300 group-hover:scale-110 dark:bg-cyan dark:text-[#04102e]"
+                  >
+                    {i + 1}
+                  </span>
+                  <div>
+                    <h3 className="font-display text-lg font-bold text-fg">{paso.titulo}</h3>
+                    <p className="mt-2.5 text-[15px] leading-relaxed text-fg-muted">
+                      {paso.texto}
+                    </p>
                 </div>
-              </li>
+              </Revelar>
             ))}
           </ol>
         </Container>
@@ -175,10 +188,10 @@ export function PaginaServicio({ servicio }: { servicio: Servicio }) {
             titulo="Qué cambia cuando la Dueñez se ejerce"
           />
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
-            {servicio.resultados.map((resultado) => (
+            {servicio.resultados.map((resultado, i) => (
+              <Revelar key={resultado.cifra} retraso={i * 0.08} className="flex">
               <article
-                key={resultado.cifra}
-                className="rounded-2xl border border-border bg-bg p-7"
+                className="borde-vivo flex w-full flex-col rounded-2xl border border-border bg-bg p-7"
               >
                 <p className="font-display text-3xl font-bold text-navy dark:text-sky">
                   {resultado.cifra}
@@ -190,21 +203,32 @@ export function PaginaServicio({ servicio }: { servicio: Servicio }) {
                   {resultado.fuente}
                 </p>
               </article>
+              </Revelar>
             ))}
           </div>
 
           {servicio.testimonio ? (
-            <figure className="mt-10 rounded-3xl bg-navy p-8 text-white lg:p-12">
-              <blockquote className="max-w-[52rem] font-display text-xl font-semibold leading-snug lg:text-2xl">
+            <Revelar>
+            <figure className="relative mt-10 overflow-hidden rounded-3xl bg-navy p-8 text-white lg:p-12">
+              <div
+                aria-hidden="true"
+                className="rejilla-tecnica pointer-events-none absolute inset-0 opacity-45 [--rejilla:rgba(255,255,255,0.07)]"
+              />
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-16 -top-20 h-[300px] w-[300px] rounded-full bg-cyan/20 blur-3xl"
+              />
+              <blockquote className="relative max-w-[52rem] font-display text-xl font-semibold leading-snug lg:text-2xl">
                 &ldquo;{servicio.testimonio.texto}&rdquo;
               </blockquote>
-              <figcaption className="mt-6 text-sm text-[#a9b8d6]">
+              <figcaption className="relative mt-6 text-sm text-[#a9b8d6]">
                 <span className="font-semibold text-white">
                   {servicio.testimonio.autor}
                 </span>{" "}
                 · {servicio.testimonio.cargo}
               </figcaption>
             </figure>
+            </Revelar>
           ) : null}
         </Container>
       </section>

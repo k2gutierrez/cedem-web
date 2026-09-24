@@ -41,8 +41,11 @@ export function Metodo() {
 
         <ol className="mt-14 grid gap-px overflow-hidden rounded-3xl bg-white/15 lg:grid-cols-3">
           {metodo.map((paso, i) => (
-            <Revelar key={paso.verbo} retraso={i * 0.12} className="bg-navy">
-            <li className="group h-full bg-navy p-7 transition-colors duration-500 hover:bg-navy-deep lg:p-8">
+            <Revelar
+              key={paso.verbo}
+              como="li"
+              retraso={i * 0.12}
+              className="group h-full bg-navy p-7 transition-colors duration-500 hover:bg-navy-deep lg:p-8">
               <div className="flex items-baseline gap-3">
                 <span className="font-display text-xs font-bold text-sky">
                   {String(i + 1).padStart(2, "0")}
@@ -71,9 +74,8 @@ export function Metodo() {
               </ul>
 
               <p className="mt-6 border-l-2 border-cyan pl-4 font-display text-sm italic leading-relaxed text-white/90">
-                {paso.idea}
-              </p>
-            </li>
+              {paso.idea}
+            </p>
             </Revelar>
           ))}
         </ol>

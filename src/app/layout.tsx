@@ -53,6 +53,11 @@ export const metadata: Metadata = {
 const themeScript = `
 (function(){
   try {
+    // Marca que hay JavaScript ANTES del primer pintado. El CSS del revelado
+    // depende de esta clase: sin ella, el contenido no se oculta nunca y la
+    // página se ve completa aunque el JavaScript falle.
+    document.documentElement.classList.add('con-js');
+
     var guardado = localStorage.getItem('cedem-tema');
     var sistema = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'oscuro' : 'claro';
     var tema = guardado || sistema;

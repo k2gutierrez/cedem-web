@@ -19,9 +19,11 @@ export function ViajeDelDueno() {
 
         <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {viajeDelDueno.map((momento, i) => (
-            <Revelar key={momento.titulo} retraso={i * 0.08} className="flex">
-            <li
-              className="group relative flex w-full flex-col rounded-2xl border border-border bg-bg p-6 transition-all hover:-translate-y-1 hover:border-cyan/60 hover:shadow-[var(--sombra-suave)] dark:hover:border-sky/60"
+            <Revelar
+              key={momento.titulo}
+              como="li"
+              retraso={i * 0.08}
+              className="group relative flex flex-col rounded-2xl border border-border bg-bg p-6 transition-all hover:-translate-y-1 hover:border-cyan/60 hover:shadow-[var(--sombra-suave)] dark:hover:border-sky/60"
             >
               <span
                 aria-hidden="true"
@@ -37,9 +39,8 @@ export function ViajeDelDueno() {
               </p>
               <span
                 aria-hidden="true"
-                className="mt-5 h-[3px] w-10 rounded-full bg-gradient-to-r from-cyan to-sky transition-all duration-300 group-hover:w-16"
-              />
-            </li>
+              className="mt-5 h-[3px] w-10 rounded-full bg-gradient-to-r from-cyan to-sky transition-all duration-300 group-hover:w-16"
+            />
             </Revelar>
           ))}
         </ol>
