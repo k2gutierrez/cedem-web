@@ -28,7 +28,7 @@ export function CtaFinal() {
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <BotonEnlace href="/unete" variante="claro" tamano="lg">
+              <BotonEnlace href="/camino" variante="claro" tamano="lg">
                 Hacer el diagnóstico
                 <IconoFlecha className="h-4 w-4" />
               </BotonEnlace>

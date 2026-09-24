@@ -42,7 +42,7 @@ export function Hero() {
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <BotonEnlace href="/unete" tamano="lg">
+            <BotonEnlace href="/camino" tamano="lg">
               Empieza tu Camino del Dueño
               <IconoFlecha className="h-4 w-4" />
             </BotonEnlace>

@@ -64,14 +64,19 @@ export default function PaginaRecursos() {
         titulo="Lo que hemos escrito y grabado sobre el rol de dueño"
         entrada="Parte del archivo es abierto. El resto es para miembros de CEDEM 2.0: puedes leer el primer párrafo y se te invita a registrarte."
       >
-        <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-          <BotonEnlace href="#videos" tamano="lg">
-            Ver los webinars
+        <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <BotonEnlace href="/unete" tamano="lg">
+            Unirme a CEDEM 2.0
             <IconoFlecha className="h-4 w-4" />
           </BotonEnlace>
-          <BotonEnlace href="/unete" variante="secundario" tamano="lg">
-            Unirme a CEDEM 2.0
-          </BotonEnlace>
+          {/* Ancla dentro de la misma página: no hay ruta que navegar, así que va en <a> */}
+          <a
+            href="#videos"
+            className="inline-flex items-center gap-2 font-display text-sm font-semibold text-navy transition-colors hover:text-cyan sm:ml-3 dark:text-sky dark:hover:text-white"
+          >
+            Ver los webinars
+            <IconoFlecha className="h-4 w-4" />
+          </a>
         </div>
       </EncabezadoPagina>
 
@@ -222,13 +227,13 @@ export default function PaginaRecursos() {
             <p className="mt-3 text-[13px] leading-relaxed text-fg-subtle">
               Mientras tanto, los webinars cubren los mismos temas y ya están disponibles.
             </p>
-            <Link
+            <a
               href="#videos"
               className="mt-5 inline-flex items-center gap-2 font-display text-sm font-semibold text-navy hover:text-cyan dark:text-sky dark:hover:text-white"
             >
               Ir a los webinars
               <IconoFlecha className="h-4 w-4" />
-            </Link>
+            </a>
           </div>
         </Container>
       </section>

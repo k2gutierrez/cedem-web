@@ -7,6 +7,7 @@
  */
 
 export const navegacion = [
+  { etiqueta: "El Camino", href: "/camino" },
   { etiqueta: "Consulting", href: "/consulting" },
   { etiqueta: "PCE", href: "/pce" },
   { etiqueta: "Máster", href: "/master" },
