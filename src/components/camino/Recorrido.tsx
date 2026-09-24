@@ -50,6 +50,7 @@ export function Recorrido() {
   const [segundos, setSegundos] = useState(0);
   const [guardando, setGuardando] = useState(false);
   const [avisoGuardado, setAvisoGuardado] = useState<string | null>(null);
+  const [sessionId, setSessionId] = useState<string | undefined>(undefined);
 
   const inicioPantalla = useRef(Date.now());
   const inicioRecorrido = useRef<number | null>(null);
@@ -195,6 +196,7 @@ export function Recorrido() {
         modo,
       });
       if (!resultado.ok) setAvisoGuardado(resultado.mensaje);
+      else if (resultado.sessionId) setSessionId(resultado.sessionId);
     } catch {
       setAvisoGuardado(
         "No pudimos guardar tu lectura, pero aquí la tienes. Escríbenos si quieres que la revisemos contigo.",
@@ -480,6 +482,7 @@ export function Recorrido() {
         nombre={contacto.nombre}
         segundos={segundos}
         modo={modo}
+        sessionId={sessionId}
       />
     </Marco>
   );

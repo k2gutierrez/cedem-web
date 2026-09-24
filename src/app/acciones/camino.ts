@@ -5,9 +5,10 @@ import { crearClienteAdmin } from "@/lib/supabase/cliente-admin";
 import { crearClienteServidor } from "@/lib/supabase/cliente-servidor";
 import { supabaseConfigurado } from "@/lib/supabase/configurado";
 import { calcularPerfil, type Perfil, type Respuestas } from "@/lib/camino/puntuar";
+import { generarLectura, type Lectura } from "@/lib/ia/lectura";
 import { VERSION_MOTOR } from "@/content/camino/config";
 
-export type ResultadoGuardado = { ok: boolean; mensaje: string };
+export type ResultadoGuardado = { ok: boolean; mensaje: string; sessionId?: string };
 
 /**
  * Guarda un diagnóstico del Camino del Dueño.
@@ -237,5 +238,57 @@ export async function guardarDiagnostico(datos: {
   }
 
   revalidatePath("/app/admin/camino");
-  return { ok: true, mensaje: "Listo, guardamos tu lectura." };
+  return { ok: true, mensaje: "Listo, guardamos tu lectura.", sessionId: sesion.id };
+}
+
+/* -------------------------------------------------------------------------- */
+/* Lectura con IA                                                             */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Genera (o recupera) la lectura personalizada de una sesión ya guardada.
+ *
+ * Se pide DESPUÉS de mostrar el resultado: el dueño ve su diagnóstico base de
+ * inmediato y esta llamada solo lo afina. Si tarda o falla, no pasa nada: ya
+ * tiene una lectura completa en pantalla.
+ */
+export async function pedirLectura(sessionId: string): Promise<{
+  ok: boolean;
+  lectura?: Lectura;
+}> {
+  if (!supabaseConfigurado() || !sessionId) return { ok: false };
+
+  const admin = crearClienteAdmin();
+
+  const { data: sesion } = await admin
+    .from("journey_sessions")
+    .select("id, segment_scores, ai_summary_md")
+    .eq("id", sessionId)
+    .maybeSingle();
+
+  if (!sesion) return { ok: false };
+
+  // Si ya se generó antes, se devuelve tal cual (no se paga dos veces).
+  if (sesion.ai_summary_md) {
+    try {
+      const guardada = JSON.parse(sesion.ai_summary_md);
+      return { ok: true, lectura: guardada as Lectura };
+    } catch {
+      /* dato viejo o corrupto: se vuelve a generar */
+    }
+  }
+
+  const s = (sesion.segment_scores ?? {}) as Record<string, unknown>;
+  const respuestas = (s.respuestas ?? {}) as Respuestas;
+  const comentario = (s.comentario as string) ?? "";
+
+  const perfil = calcularPerfil(respuestas);
+  const lectura = await generarLectura(perfil, respuestas, comentario);
+
+  await admin
+    .from("journey_sessions")
+    .update({ ai_summary_md: JSON.stringify(lectura) })
+    .eq("id", sessionId);
+
+  return { ok: true, lectura };
 }

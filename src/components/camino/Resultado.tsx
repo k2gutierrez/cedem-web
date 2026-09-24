@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnilloValor } from "@/components/camino/AnilloValor";
+import { pedirLectura } from "@/app/acciones/camino";
 import { BotonEnlace } from "@/components/ui/Boton";
 import { IconoFlecha } from "@/components/ui/Iconos";
 import {
@@ -16,6 +17,7 @@ import {
   textoDispersante,
   type Perfil,
 } from "@/lib/camino/puntuar";
+import { lecturaBase } from "@/lib/ia/lectura";
 
 /**
  * La lectura que recibe el dueño al terminar.
@@ -31,6 +33,7 @@ export function Resultado({
   nombre,
   segundos,
   modo,
+  sessionId,
 }: {
   perfil: Perfil;
   respuestas: Record<string, string | undefined>;
@@ -38,11 +41,36 @@ export function Resultado({
   nombre: string;
   segundos: number;
   modo: "normal" | "express";
+  sessionId?: string;
 }) {
   const [hechos, setHechos] = useState<Record<number, boolean>>({});
 
+  // La lectura base se muestra de inmediato; en cuanto la IA responde, se
+  // sustituye sin que el dueño haya tenido que esperar. Si falla, se queda la
+  // base: nunca se ve una pantalla a medias.
+  const [lectura, setLectura] = useState(() => lecturaBase(perfil));
+  const [afinando, setAfinando] = useState(Boolean(sessionId));
+
+  useEffect(() => {
+    if (!sessionId) return;
+    let vigente = true;
+    pedirLectura(sessionId)
+      .then((r) => {
+        if (vigente && r.ok && r.lectura) setLectura(r.lectura);
+      })
+      .catch(() => {
+        /* se conserva la lectura base */
+      })
+      .finally(() => {
+        if (vigente) setAfinando(false);
+      });
+    return () => {
+      vigente = false;
+    };
+  }, [sessionId]);
+
   const articulos = articulosPara(ETIQUETAS_BASE[perfil.arquetipo] ?? []);
-  const ejercicios = EJERCICIOS_BASE[perfil.arquetipo] ?? [];
+  const ejercicios = lectura.ejercicios?.length ? lectura.ejercicios : (EJERCICIOS_BASE[perfil.arquetipo] ?? []);
   const titular = TITULARES[perfil.arquetipo];
 
   const nombrePila = nombre.trim().split(/\s+/)[0] ?? "";
@@ -63,7 +91,13 @@ export function Resultado({
         {saludo}
         {titular}
       </h1>
-      <p className="mt-4 text-lead text-fg-muted">{perfil.bandaTexto}</p>
+      <p className="mt-4 text-lead text-fg-muted">{lectura.subtitulo}</p>
+      <p className="mt-2 text-sm text-fg-subtle">{perfil.bandaTexto}</p>
+      {afinando ? (
+        <p className="mt-3 text-[12.5px] text-cyan dark:text-sky">
+          Estoy afinando tu lectura con lo que me escribiste…
+        </p>
+      ) : null}
 
       {modo === "express" ? (
         <p className="mt-3 text-[13px] text-fg-subtle">
@@ -88,10 +122,7 @@ export function Resultado({
           <h2 className="font-display text-lg font-bold text-fg">
             Tu verbo atorado: {verboLegible}
           </h2>
-          <p className="mt-2 text-sm leading-relaxed text-fg-muted">
-            El valor se mueve en tres tiempos: se genera, se multiplica y se captura. En tu
-            caso, lo que se está quedando corto es <strong className="font-semibold text-fg">{verboLegible.toLowerCase()}</strong>.
-          </p>
+          <p className="mt-2 text-sm leading-relaxed text-fg-muted">{lectura.verbo}</p>
           {perfil.focos.length ? (
             <ul className="mt-4 space-y-2">
               {perfil.focos.map((foco) => (
@@ -118,14 +149,7 @@ export function Resultado({
             <h2 className="font-display text-base font-bold text-fg">
               Lo que te está frenando
             </h2>
-            <p className="mt-2.5 text-sm leading-relaxed text-fg-muted">
-              {textoDispersante(perfil.dispersanteDominante)}{" "}
-              {perfil.dispersanteDominante === "soledad"
-                ? "Es la fuerza que más rápido se mueve cuando alguien piensa contigo lo que hoy piensas solo."
-                : perfil.dispersanteDominante === "tolerancia"
-                  ? "Se resuelve con una decisión concreta y una fecha, no con más análisis."
-                  : "Se resuelve eligiendo: los mejores recursos no pueden estar repartidos en todo."}
-            </p>
+            <p className="mt-2.5 text-sm leading-relaxed text-fg-muted">{lectura.freno}</p>
           </>
         ) : (
           <>
