@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { descargarDocumento } from "@/app/acciones/descargas";
+import { AvisoDeUrl } from "@/components/fx/AvisoDeUrl";
 import { Container } from "@/components/ui/Container";
 import { IconoFlecha, IconoYouTube } from "@/components/ui/Iconos";
 import { canalYouTube, serieWebinars, webinars } from "@/content/recursos";
@@ -65,6 +66,7 @@ export default async function PaginaBiblioteca(props: PageProps<"/app/biblioteca
         con los que se aplica el método en la empresa.
       </p>
 
+      <AvisoDeUrl />
       {avisoActual ? (
         <p
           role="status"

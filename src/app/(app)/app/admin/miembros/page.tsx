@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { cambiarRol, otorgarMembresia } from "@/app/acciones/miembros";
+import { AvisoDeUrl } from "@/components/fx/AvisoDeUrl";
 import { Container } from "@/components/ui/Container";
 import { obtenerSesion } from "@/lib/auth/sesion";
 import { crearClienteServidor } from "@/lib/supabase/cliente-servidor";
@@ -155,10 +156,12 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
   const sesion = await obtenerSesion();
   if (!sesion.esAdmin) redirect("/app");
 
-  const { q, aviso, hecho } = await props.searchParams;
+  const { q, aviso } = await props.searchParams;
   const busqueda = typeof q === "string" ? q.trim() : "";
+  // El aviso de confirmación (`?hecho=…`) lo recoge `AvisoDeUrl` para mostrarlo
+  // flotante y limpiar la dirección; aquí solo se lee el de error, que además se
+  // queda escrito en la página para poder releerlo.
   const textoAviso = typeof aviso === "string" ? aviso : null;
-  const textoHecho = typeof hecho === "string" ? hecho : null;
 
   const supabase = await crearClienteServidor();
 
@@ -217,20 +220,16 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
         nombra consultor.
       </p>
 
+      {/* El aviso de lo que acaba de pasar llega flotando y con la URL limpia.
+          Se queda además el párrafo cuando es un error, porque un error hay que
+          poder releerlo sin prisa. */}
+      <AvisoDeUrl />
       {textoAviso ? (
         <p
           role="status"
           className="mt-6 rounded-2xl border border-amber-300/60 bg-amber-50 p-4 text-[13.5px] leading-relaxed text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200"
         >
           {textoAviso}
-        </p>
-      ) : null}
-      {textoHecho ? (
-        <p
-          role="status"
-          className="mt-6 rounded-2xl border border-emerald-300/60 bg-emerald-50 p-4 text-[13.5px] leading-relaxed text-emerald-900 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200"
-        >
-          {textoHecho}
         </p>
       ) : null}
 
