@@ -37,7 +37,7 @@ export async function Recursos() {
           {articulosDestacados.map((articulo) => (
             <article
               key={articulo.slug}
-              className="flex flex-col rounded-2xl border border-border bg-bg p-6 transition-shadow hover:shadow-lg hover:shadow-navy/5"
+              className="borde-vivo flex flex-col rounded-2xl border border-border bg-bg p-6"
             >
               <ul className="flex flex-wrap gap-2">
                 {articulo.etiquetas.map((etiqueta) => (

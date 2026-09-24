@@ -127,7 +127,7 @@ export default async function PaginaBiblioteca(props: PageProps<"/app/biblioteca
                   {grupo.docs.map((doc) => (
                     <li
                       key={doc.slug}
-                      className="flex flex-col rounded-2xl border border-border bg-bg p-5 transition-colors hover:border-cyan/60 dark:hover:border-sky/60"
+                      className="borde-vivo flex flex-col rounded-2xl border border-border bg-bg p-5"
                     >
                       <Link
                         href={`/app/biblioteca/${doc.slug}`}
@@ -216,7 +216,7 @@ export default async function PaginaBiblioteca(props: PageProps<"/app/biblioteca
               <li key={articulo.slug}>
                 <Link
                   href={`/recursos/${articulo.slug}`}
-                  className="flex h-full flex-col rounded-2xl border border-border bg-bg p-6 transition-colors hover:border-cyan/60 dark:hover:border-sky/60"
+                  className="borde-vivo flex h-full flex-col rounded-2xl border border-border bg-bg p-6"
                 >
                   <span className="flex items-center gap-2">
                     {articulo.esPremium ? (

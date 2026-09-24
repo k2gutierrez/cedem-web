@@ -135,7 +135,7 @@ export default function PaginaNosotros() {
 
           <div className="mt-12 grid gap-6 lg:grid-cols-2">
             {roles.map((rol) => (
-              <article key={rol.titulo} className="rounded-2xl border border-border bg-bg p-7">
+              <article key={rol.titulo} className="borde-vivo rounded-2xl border border-border bg-bg p-7">
                 <h3 className="font-display text-xl font-bold text-fg">{rol.titulo}</h3>
                 <div className="regla-acento mt-5" />
                 <p className="mt-5 text-[15px] leading-relaxed text-fg-muted">{rol.texto}</p>

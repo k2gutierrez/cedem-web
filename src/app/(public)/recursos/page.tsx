@@ -147,7 +147,7 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
                   <li key={articulo.slug}>
                     <Link
                       href={`/recursos/${articulo.slug}`}
-                      className="flex h-full flex-col rounded-2xl border border-border bg-bg p-6 transition-colors hover:border-cyan/60 dark:hover:border-sky/60"
+                      className="borde-vivo flex h-full flex-col rounded-2xl border border-border bg-bg p-6"
                     >
                       <span className="font-display text-base font-bold leading-snug text-fg">
                         {articulo.titulo}
@@ -225,7 +225,7 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
               {publicados.map((articulo) => (
                 <article
                   key={articulo.slug}
-                  className="flex flex-col rounded-2xl border border-border bg-bg p-6 transition-shadow hover:shadow-lg hover:shadow-navy/5"
+                  className="borde-vivo flex flex-col rounded-2xl border border-border bg-bg p-6"
                 >
                   <ul className="flex flex-wrap gap-2">
                     <li className="rounded-full bg-sky/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy dark:bg-sky/20 dark:text-sky">
@@ -269,7 +269,7 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
             {articulosDestacados.map((articulo) => (
               <article
                 key={articulo.slug}
-                className="flex flex-col rounded-2xl border border-border bg-bg p-6 transition-shadow hover:shadow-lg hover:shadow-navy/5"
+                className="borde-vivo flex flex-col rounded-2xl border border-border bg-bg p-6"
               >
                 <ul className="flex flex-wrap gap-2">
                   {articulo.etiquetas.map((etiqueta) => (
