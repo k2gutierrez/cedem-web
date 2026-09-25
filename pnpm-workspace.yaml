@@ -1,3 +1,11 @@
+# Paquetes cuyos scripts de instalación se ignoran a propósito (pnpm 10 ya no
+# los ejecuta por su cuenta). Se declaran aquí para que el resultado sea idéntico
+# en la computadora y en el servidor de compilación: sin esto, pnpm avisa
+# «Ignored build scripts: esbuild» en cada build de Amplify y, con la
+# configuración estricta, el despliegue falla.
+# Los tres traen su binario ya compilado entre las dependencias opcionales, así
+# que no necesitan script de instalación para funcionar.
 ignoredBuiltDependencies:
   - sharp
   - unrs-resolver
+  - esbuild

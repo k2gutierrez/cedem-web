@@ -102,9 +102,31 @@ En la carpeta del proyecto (un nivel arriba):
 
 ## Publicar el sitio (despliegue)
 
-El proyecto se despliega desde GitHub. El camino recomendado es **Vercel**, que es
-de los creadores de Next.js: conectas el repositorio una vez, y a partir de ahí
-cada push publica solo.
+El proyecto se despliega desde GitHub. El camino elegido es **AWS Amplify
+Hosting**; Vercel queda como alternativa al final de esta sección.
+
+### AWS Amplify Hosting
+
+Ya está configurado en el repositorio: **`amplify.yml`** en la raíz instala pnpm
+(la imagen de Amplify no lo trae y el build moría con `pnpm: command not found`),
+vuelca las variables de entorno a `.env.production` y compila. Amplify usa ese
+archivo en lugar de la configuración del panel, así que no hay que pegar nada en
+la consola.
+
+Lo único que hay que hacer a mano:
+
+1. **Variables de entorno** en *Hosting → Environment variables* (las cinco
+   primeras son obligatorias; sin `SUPABASE_SERVICE_ROLE_KEY` el build falla a
+   propósito, con un mensaje claro, en vez de publicar un sitio que no deja
+   entrar). Se copian de `.env.local`, que no se sube al repositorio.
+2. **`NEXT_PUBLIC_SITE_URL`** apunta a la URL de Amplify mientras no esté el
+   dominio (`https://main.<id-de-la-app>.amplifyapp.com`). Como las
+   `NEXT_PUBLIC_*` se incrustan al compilar, cambiarla obliga a **volver a
+   desplegar**.
+3. **Dominio** en *Hosting → Custom domains*, y los registros DNS en GoDaddy.
+
+El paso a paso completo, con la tabla de variables y la lista de comprobaciones,
+está en [`../docs/20-despliegue-en-amplify.md`](../docs/20-despliegue-en-amplify.md).
 
 ### 1 · Subir el repositorio
 
@@ -121,7 +143,7 @@ para comprobarlo:
 git log --all -p | grep -iE "service_role|sk-[a-zA-Z0-9]{20}|eyJhbGciOi"
 ```
 
-### 2 · Conectar en Vercel
+### 2 · Conectar en Vercel (alternativa)
 
 1. **Add New → Project**, elegir el repositorio de GitHub.
 2. Vercel detecta Next.js solo: no hay que tocar la configuración de compilación.

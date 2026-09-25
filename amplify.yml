@@ -1,0 +1,62 @@
+# ============================================================================
+# CEDEM 2.0 · Cómo se compila en AWS Amplify Hosting
+#
+# Por qué existe este archivo (el error que resuelve):
+#   Amplify detecta Next.js y el gestor de paquetes mirando `package.json`, así
+#   que ejecuta `pnpm install`… pero su imagen de compilación **no trae pnpm**.
+#   El build moría en el primer paso con `pnpm: command not found` (exit 127).
+#   Aquí se instala pnpm antes de usarlo.
+#
+# Las otras dos trampas de Amplify con Next.js en modo servidor (SSR), que este
+# archivo también tapa:
+#
+#   1. Las variables del panel de Amplify se ven al COMPILAR, pero no en el
+#      servidor que atiende cada visita. Por eso se vuelcan a `.env.production`
+#      antes de compilar. Es el procedimiento que documenta AWS:
+#      https://docs.aws.amazon.com/amplify/latest/userguide/ssr-environment-variables.html
+#      Sin esto el sitio compila bien y luego falla al primer inicio de sesión.
+#
+#   2. Node se fija en `.nvmrc` (22). Amplify solo admite 16, 18, 20 y 22.
+#
+# El repositorio es la raíz de la app (no es monorepo), así que este archivo va
+# en la raíz. Cuando existe, Amplify lo usa **en lugar** de la configuración
+# guardada en el panel:
+# https://docs.aws.amazon.com/amplify/latest/userguide/build-settings.html
+# ============================================================================
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        # Misma versión que declara `packageManager` en package.json: si no
+        # coincide, pnpm se niega a usar el lockfile y el build se vuelve
+        # impredecible.
+        - npm install -g pnpm@10.12.4
+        - pnpm install --frozen-lockfile
+    build:
+      commands:
+        # Falla aquí, con mensaje claro, si falta una variable obligatoria; es
+        # preferible a descubrirlo con el sitio publicado y sin poder entrar.
+        - 'test -n "$NEXT_PUBLIC_SUPABASE_URL" && test -n "$NEXT_PUBLIC_SUPABASE_ANON_KEY" && test -n "$NEXT_PUBLIC_SITE_URL" && test -n "$SUPABASE_SERVICE_ROLE_KEY" || { echo "ERROR. Faltan variables de entorno obligatorias. Revisa Hosting > Environment variables en Amplify."; exit 1; }'
+
+        # --- Variables que necesita el navegador ---------------------------
+        # Next las incrusta al compilar: si cambian, hay que volver a desplegar.
+        - env | grep -e '^NEXT_PUBLIC_' >> .env.production
+
+        # --- Variables que solo usa el servidor ---------------------------
+        # Las leen las acciones de servidor y las rutas API en cada petición
+        # (Supabase con permisos de servicio, correo, IA del Camino, Stripe).
+        # `DATABASE_URL` se queda fuera a propósito: solo sirve para aplicar
+        # migraciones desde una computadora, no para el sitio publicado.
+        - env | grep -e '^SUPABASE_SERVICE_ROLE_KEY' -e '^SMTP_' -e '^EMAIL_FROM' -e '^DEEPSEEK_' -e '^STRIPE_' >> .env.production
+
+        - pnpm run build
+  artifacts:
+    # Ahí deja Next.js el resultado; Amplify levanta con él el servidor.
+    baseDirectory: .next
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - .next/cache/**/*
+      - node_modules/**/*
