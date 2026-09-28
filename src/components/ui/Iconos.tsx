@@ -145,3 +145,20 @@ export function IconoFlecha(props: IconoProps) {
     </svg>
   );
 }
+
+export function IconoDescarga(props: IconoProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.9"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M12 3v12M7 11l5 5 5-5M4 20h16" />
+    </svg>
+  );
+}

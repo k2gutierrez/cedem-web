@@ -44,7 +44,7 @@ export default async function PaginaAdminEquipo() {
           { etiqueta: "Registrados", valor: equipo.length },
         ].map((dato) => (
           <div key={dato.etiqueta} className="bg-bg p-5">
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+            <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
               {dato.etiqueta}
             </dt>
             <dd className="mt-1.5 font-display text-2xl font-bold text-fg">{dato.valor}</dd>
@@ -78,12 +78,12 @@ export default async function PaginaAdminEquipo() {
                   <h2 className="font-display text-lg font-bold text-fg">
                     {persona.full_name}
                     {persona.is_founder ? (
-                      <span className="ml-2 rounded-full bg-sky/20 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-navy dark:text-sky">
+                      <span className="ml-2 rounded-full bg-sky/20 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-navy dark:text-sky">
                         Fundador
                       </span>
                     ) : null}
                     {!persona.is_active ? (
-                      <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-800 dark:bg-amber-500/15 dark:text-amber-300">
+                      <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-amber-800 dark:bg-amber-500/15 dark:text-amber-300">
                         Oculto
                       </span>
                     ) : null}
@@ -93,7 +93,7 @@ export default async function PaginaAdminEquipo() {
                     {persona.location ? ` · ${persona.location}` : ""}
                   </p>
                   {persona.specialties?.length ? (
-                    <p className="mt-2 text-[12.5px] text-fg-subtle">
+                    <p className="mt-2 text-xs text-fg-subtle">
                       {persona.specialties.join(" · ")}
                     </p>
                   ) : null}
@@ -104,7 +104,7 @@ export default async function PaginaAdminEquipo() {
                   <input type="hidden" name="activo" value={String(persona.is_active)} />
                   <button
                     type="submit"
-                    className="rounded-full border border-border px-3.5 py-1.5 text-[12px] font-medium text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
+                    className="rounded-full border border-border px-3.5 py-1.5 text-xs font-medium text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
                   >
                     {persona.is_active ? "Ocultar del sitio" : "Mostrar en el sitio"}
                   </button>
@@ -112,7 +112,7 @@ export default async function PaginaAdminEquipo() {
               </div>
 
               <details className="mt-5">
-                <summary className="cursor-pointer text-[13px] font-semibold text-navy dark:text-sky">
+                <summary className="cursor-pointer text-sm font-semibold text-navy dark:text-sky">
                   Editar perfil
                 </summary>
                 <div className="mt-5 border-t border-border pt-5">
@@ -121,7 +121,7 @@ export default async function PaginaAdminEquipo() {
               </details>
 
               <details className="mt-3">
-                <summary className="cursor-pointer text-[13px] font-semibold text-navy dark:text-sky">
+                <summary className="cursor-pointer text-sm font-semibold text-navy dark:text-sky">
                   Su acceso y su foto
                 </summary>
                 <div className="mt-5 space-y-5 border-t border-border pt-5">
@@ -134,8 +134,8 @@ export default async function PaginaAdminEquipo() {
                   />
 
                   <div>
-                    <p className="text-[13px] font-semibold text-fg">Su foto</p>
-                    <p className="mt-1.5 text-[12.5px] leading-relaxed text-fg-muted">
+                    <p className="text-sm font-semibold text-fg">Su foto</p>
+                    <p className="mt-1.5 text-xs leading-relaxed text-fg-muted">
                       Se ve en la página de Equipo y en su perfil. Si no tiene, se muestran
                       sus iniciales.
                     </p>

@@ -24,7 +24,7 @@ export default async function PaginaAcceso(props: PageProps<"/acceso">) {
       {enlaceInvalido ? (
         <p
           role="status"
-          className="mb-6 rounded-2xl border border-amber-300/60 bg-amber-50 p-4 text-[13px] leading-relaxed text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200"
+          className="mb-6 rounded-2xl border border-amber-300/60 bg-amber-50 p-4 text-sm leading-relaxed text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200"
         >
           Ese enlace ya no sirve: los enlaces de recuperación caducan y solo se pueden
           usar una vez. Pide uno nuevo desde{" "}
@@ -38,7 +38,7 @@ export default async function PaginaAcceso(props: PageProps<"/acceso">) {
       {!conectado ? (
         <div
           role="status"
-          className="rounded-2xl border border-cyan/40 bg-sky/10 p-5 text-[13px] leading-relaxed text-fg-muted dark:border-sky/40"
+          className="rounded-2xl border border-cyan/40 bg-sky/10 p-5 text-sm leading-relaxed text-fg-muted dark:border-sky/40"
         >
           <strong className="font-semibold text-fg">Falta conectar la base de datos.</strong>{" "}
           Mientras tanto, el{" "}

@@ -108,7 +108,7 @@ export default async function PaginaEditarContenido(
 
   return (
     <Container size="ancho">
-      <nav aria-label="Ruta" className="text-[13px] text-fg-subtle">
+      <nav aria-label="Ruta" className="text-sm text-fg-subtle">
         <Link href="/app/admin/contenido" className="hover:text-cyan dark:hover:text-sky">
           Contenido
         </Link>
@@ -122,7 +122,7 @@ export default async function PaginaEditarContenido(
         <div>
           <p className="tagline text-cyan dark:text-sky">Administración</p>
           <h1 className="mt-3 text-h1 text-fg">{contenido.title}</h1>
-          <p className="mt-3 text-[13px] text-fg-muted">
+          <p className="mt-3 text-sm text-fg-muted">
             {ETIQUETA_ESTADO[contenido.status] ?? contenido.status}
             {contenido.published_at
               ? ` · ${new Date(contenido.published_at).toLocaleDateString("es-MX", {
@@ -144,7 +144,7 @@ export default async function PaginaEditarContenido(
                   ? `/app/biblioteca/${contenido.slug}`
                   : `/recursos/${contenido.slug}`
               }
-              className="rounded-full border border-border px-4 py-2 font-display text-[13px] font-semibold text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
+              className="rounded-full border border-border px-4 py-2 font-display text-sm font-semibold text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
             >
               Ver como lo ve el público
             </Link>
@@ -155,7 +155,7 @@ export default async function PaginaEditarContenido(
             <input type="hidden" name="estado" value={publicado ? "borrador" : "publicado"} />
             <button
               type="submit"
-              className={`rounded-full px-4 py-2 font-display text-[13px] font-semibold transition-colors ${
+              className={`rounded-full px-4 py-2 font-display text-sm font-semibold transition-colors ${
                 publicado
                   ? "border border-border text-fg-muted hover:border-amber-300 hover:text-amber-800 dark:hover:text-amber-300"
                   : "bg-navy text-white hover:bg-cyan dark:bg-sky dark:text-navy"
@@ -180,10 +180,10 @@ export default async function PaginaEditarContenido(
 
         <aside className="space-y-5">
           <div className="rounded-2xl border border-border bg-bg-soft p-5">
-            <h2 className="font-display text-[13px] font-bold uppercase tracking-wider text-fg-subtle">
+            <h2 className="font-display text-xs font-bold uppercase tracking-wider text-fg-subtle">
               Qué cambia con cada campo
             </h2>
-            <dl className="mt-3 space-y-3 text-[12.5px] leading-relaxed text-fg-muted">
+            <dl className="mt-3 space-y-3 text-xs leading-relaxed text-fg-muted">
               <div>
                 <dt className="font-semibold text-fg">Tipo</dt>
                 <dd>
@@ -219,7 +219,7 @@ export default async function PaginaEditarContenido(
           </div>
 
           <div className="rounded-2xl border border-border bg-bg p-5">
-            <p className="text-[12.5px] leading-relaxed text-fg-muted">
+            <p className="text-xs leading-relaxed text-fg-muted">
               Los cambios se ven al instante en el sitio público. La base valida lo que no
               se puede publicar —sin cuerpo, o un artículo sin autoría— y si algo falta lo
               dice con su nombre.

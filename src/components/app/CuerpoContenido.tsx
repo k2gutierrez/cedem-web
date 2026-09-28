@@ -57,7 +57,7 @@ export function CuerpoContenido({
 
   const clases =
     className ||
-    "space-y-5 text-[17px] leading-relaxed text-fg-muted [&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-h3 [&_h2]:text-fg [&_h3]:mt-8 [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-fg [&_li]:ml-5 [&_li]:list-disc [&_strong]:font-semibold [&_strong]:text-fg";
+    "space-y-5 text-base leading-relaxed text-fg-muted [&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-h3 [&_h2]:text-fg [&_h3]:mt-8 [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-fg [&_li]:ml-5 [&_li]:list-disc [&_strong]:font-semibold [&_strong]:text-fg";
 
   const bloques = texto.split(/\n{2,}/).map((bloque, i): JSX.Element | null => {
     const limpio = bloque.trim();
@@ -114,7 +114,7 @@ function CuerpoHtml({ texto, className }: { texto: string; className?: string })
   const clases =
     className ||
     [
-      "text-[17px] leading-relaxed text-fg-muted",
+      "text-base leading-relaxed text-fg-muted",
       "[&_p]:mb-5",
       "[&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-h3 [&_h2]:text-fg",
       "[&_h3]:mt-8 [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-fg",

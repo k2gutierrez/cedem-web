@@ -81,7 +81,7 @@ export default async function PaginaArticulo(props: PageProps<"/recursos/[slug]"
   return (
     <article className="py-14 lg:py-20">
       <Container size="estrecho">
-        <nav aria-label="Ruta" className="text-[13px] text-fg-subtle">
+        <nav aria-label="Ruta" className="text-sm text-fg-subtle">
           <Link href="/recursos" className="hover:text-cyan dark:hover:text-sky">
             Recursos
           </Link>
@@ -92,7 +92,7 @@ export default async function PaginaArticulo(props: PageProps<"/recursos/[slug]"
         </nav>
 
         <ul className="mt-8 flex flex-wrap gap-2">
-          <li className="rounded-full bg-sky/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy dark:bg-sky/20 dark:text-sky">
+          <li className="rounded-full bg-sky/15 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-navy dark:bg-sky/20 dark:text-sky">
             {articulo.visibility === "premium"
               ? "Solo miembros"
               : articulo.visibility === "free_registrado"
@@ -103,7 +103,7 @@ export default async function PaginaArticulo(props: PageProps<"/recursos/[slug]"
             etiqueta?.name ? (
               <li
                 key={`${etiqueta.name}-${i}`}
-                className="rounded-full border border-border px-2.5 py-1 text-[11px] font-medium text-fg-subtle"
+                className="rounded-full border border-border px-2.5 py-1 text-xs font-medium text-fg-subtle"
               >
                 {etiqueta.name}
               </li>
@@ -116,7 +116,7 @@ export default async function PaginaArticulo(props: PageProps<"/recursos/[slug]"
           <p className="mt-4 text-lead text-fg-muted">{articulo.subtitle}</p>
         ) : null}
 
-        <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-fg-subtle">
+        <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-fg-subtle">
           {articulo.consultant_name ? (
             <>
               <span className="font-medium text-fg-muted">
@@ -203,7 +203,7 @@ export default async function PaginaArticulo(props: PageProps<"/recursos/[slug]"
           </div>
         ) : null}
 
-        <p className="mt-12 border-t border-border pt-6 text-[12px] leading-relaxed text-fg-subtle">
+        <p className="mt-12 border-t border-border pt-6 text-xs leading-relaxed text-fg-subtle">
           &ldquo;Dueñez®&rdquo; es una marca registrada por Carlos A. Dumois Núñez. Esta
           lectura es un apoyo para tu reflexión y no sustituye asesoría legal, fiscal ni
           financiera.

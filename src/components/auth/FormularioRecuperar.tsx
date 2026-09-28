@@ -14,8 +14,8 @@ import {
 const inicial: EstadoFormulario = {};
 
 const campo =
-  "w-full rounded-xl border border-border bg-bg px-4 py-3 text-[15px] text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
-const etiqueta = "mb-1.5 block text-[13px] font-medium text-fg-muted";
+  "w-full rounded-xl border border-border bg-bg px-4 py-3 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
+const etiqueta = "mb-1.5 block text-sm font-medium text-fg-muted";
 
 function Enviar({ children, cargando }: { children: React.ReactNode; cargando: string }) {
   const { pending } = useFormStatus();
@@ -31,7 +31,7 @@ function Mensaje({ estado }: { estado: EstadoFormulario }) {
     return (
       <p
         role="alert"
-        className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-[13px] text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200"
+        className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200"
       >
         {estado.error}
       </p>
@@ -41,7 +41,7 @@ function Mensaje({ estado }: { estado: EstadoFormulario }) {
     return (
       <p
         role="status"
-        className="rounded-xl border border-cyan/40 bg-sky/10 px-4 py-3 text-[13px] leading-relaxed text-fg-muted dark:border-sky/40"
+        className="rounded-xl border border-cyan/40 bg-sky/10 px-4 py-3 text-sm leading-relaxed text-fg-muted dark:border-sky/40"
       >
         {estado.mensaje}
       </p>
@@ -58,7 +58,7 @@ export function FormularioRecuperar() {
     return (
       <div className="space-y-5">
         <Mensaje estado={estado} />
-        <p className="text-center text-[13px] text-fg-subtle">
+        <p className="text-center text-sm text-fg-subtle">
           <Link
             href="/acceso"
             className="font-semibold text-navy hover:text-cyan dark:text-sky dark:hover:text-white"
@@ -94,7 +94,7 @@ export function FormularioRecuperar() {
         <IconoFlecha className="h-4 w-4" />
       </Enviar>
 
-      <p className="text-center text-[13px] text-fg-subtle">
+      <p className="text-center text-sm text-fg-subtle">
         ¿Ya te acordaste?{" "}
         <Link
           href="/acceso"
@@ -167,7 +167,7 @@ export function FormularioRestablecer() {
         <IconoFlecha className="h-4 w-4" />
       </Enviar>
 
-      <p className="text-center text-[13px] text-fg-subtle">
+      <p className="text-center text-sm text-fg-subtle">
         ¿El enlace ya no sirve?{" "}
         <Link
           href="/recuperar"

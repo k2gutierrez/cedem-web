@@ -85,7 +85,7 @@ export default async function PaginaMiFicha() {
             <IconoFlecha className="h-4 w-4" />
           </BotonEnlace>
           {!ficha.is_active ? (
-            <span className="rounded-full border border-amber-300/60 bg-amber-50 px-3 py-1.5 text-[12px] font-medium text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200">
+            <span className="rounded-full border border-amber-300/60 bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200">
               Tu ficha está oculta en este momento. El equipo de CEDEM decide cuándo se
               publica.
             </span>
@@ -116,7 +116,7 @@ export default async function PaginaMiFicha() {
         </div>
       </Revelar>
 
-      <p className="mt-6 text-[12.5px] leading-relaxed text-fg-subtle">
+      <p className="mt-6 text-xs leading-relaxed text-fg-subtle">
         Hay cosas de tu ficha que solo puede cambiar CEDEM: la dirección de tu página, el
         orden en que apareces y si tu ficha se publica. Si necesitas alguna,{" "}
         <Link href="/contacto" className="underline underline-offset-4">

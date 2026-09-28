@@ -6,8 +6,8 @@ import { Boton } from "@/components/ui/Boton";
 import { guardarPerfil, type EstadoPerfil } from "@/app/acciones/perfil";
 
 const campo =
-  "w-full rounded-xl border border-border bg-bg px-4 py-2.5 text-[15px] text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
-const etiqueta = "mb-1.5 block text-[13px] font-medium text-fg-muted";
+  "w-full rounded-xl border border-border bg-bg px-4 py-2.5 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
+const etiqueta = "mb-1.5 block text-sm font-medium text-fg-muted";
 
 export type DatosPerfil = {
   full_name: string | null;
@@ -169,7 +169,7 @@ export function FormularioPerfil({
             className={campo}
             placeholder="5000000"
           />
-          <p className="mt-2 text-[12.5px] leading-relaxed text-fg-subtle">
+          <p className="mt-2 text-xs leading-relaxed text-fg-subtle">
             Sirve para dos cosas: recomendarte el nivel de acompañamiento que te
             corresponde y que quien te atienda llegue sabiendo el tamaño de tu empresa.
             No se publica en ningún lado.
@@ -178,12 +178,12 @@ export function FormularioPerfil({
       </fieldset>
 
       {estado.error ? (
-        <p role="alert" className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-[13px] text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200">
+        <p role="alert" className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200">
           {estado.error}
         </p>
       ) : null}
       {estado.ok ? (
-        <p role="status" className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-[13px] text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200">
+        <p role="status" className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-sm text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200">
           {estado.ok}
         </p>
       ) : null}

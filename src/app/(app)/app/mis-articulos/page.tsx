@@ -169,7 +169,7 @@ export default async function PaginaMisArticulos(props: PageProps<"/app/mis-arti
         ].map((cifra, i) => (
           <Revelar key={cifra.etiqueta} retraso={i * 0.06}>
             <div className="rounded-2xl border border-border bg-bg p-5">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-fg-subtle">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-fg-subtle">
                 {cifra.etiqueta}
               </p>
               <p className="mt-2 font-display text-2xl font-bold text-fg">{cifra.valor}</p>
@@ -196,12 +196,12 @@ export default async function PaginaMisArticulos(props: PageProps<"/app/mis-arti
 
         {/* Sus artículos */}
         <aside>
-          <h2 className="font-display text-[13px] font-bold uppercase tracking-wider text-fg-subtle">
+          <h2 className="font-display text-xs font-bold uppercase tracking-wider text-fg-subtle">
             Lo que has escrito
           </h2>
 
           {suyos.length === 0 ? (
-            <p className="mt-4 rounded-2xl border border-border bg-bg-soft p-5 text-[13px] leading-relaxed text-fg-muted">
+            <p className="mt-4 rounded-2xl border border-border bg-bg-soft p-5 text-sm leading-relaxed text-fg-muted">
               Todavía no has escrito nada. El primer artículo suele ser el caso que más veces
               has tenido que explicar en una junta.
             </p>
@@ -217,23 +217,23 @@ export default async function PaginaMisArticulos(props: PageProps<"/app/mis-arti
                     className="rounded-2xl border border-border bg-bg p-4"
                   >
                     <div className="flex flex-wrap items-start justify-between gap-2">
-                      <span className="font-display text-[14px] font-semibold leading-snug text-fg">
+                      <span className="font-display text-sm font-semibold leading-snug text-fg">
                         {articulo.title}
                       </span>
                       <span
-                        className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${etiqueta.clase}`}
+                        className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold uppercase tracking-wider ${etiqueta.clase}`}
                       >
                         {etiqueta.texto}
                       </span>
                     </div>
 
                     {articulo.summary ? (
-                      <p className="mt-2 text-[12.5px] leading-relaxed text-fg-muted">
+                      <p className="mt-2 text-xs leading-relaxed text-fg-muted">
                         {articulo.summary}
                       </p>
                     ) : null}
 
-                    <div className="mt-3 flex flex-wrap gap-3 text-[12px]">
+                    <div className="mt-3 flex flex-wrap gap-3 text-xs">
                       {esBorrador ? (
                         <Link
                           href={`/app/mis-articulos?id=${articulo.id}`}
@@ -263,7 +263,7 @@ export default async function PaginaMisArticulos(props: PageProps<"/app/mis-arti
           )}
 
           <div className="mt-6 rounded-2xl border border-border bg-bg-soft p-5">
-            <p className="text-[12.5px] leading-relaxed text-fg-muted">
+            <p className="text-xs leading-relaxed text-fg-muted">
               Tus artículos aparecen en tu ficha pública en cuanto se publican.{" "}
               <Link
                 href={`/equipo/${ficha.slug}`}

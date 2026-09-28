@@ -1,17 +1,27 @@
 import Image from "next/image";
+import { rutaDeArchivo } from "@/lib/fotos-locales";
 
 /**
  * Marco de fotografía con el duotono de marca.
  *
- * Mientras CEDEM no entregue fotografía propia, cae en un **placeholder de
- * marca**: un bloque con la retícula del manual y el isotipo. Es deliberado que
- * se vea como un hueco y no como una foto: así nadie publica el sitio creyendo
- * que ahí ya hay una imagen definitiva.
+ * DOS FORMAS DE USARLO
  *
- * Decisión de Carlos: no generar imágenes con IA ni gastar recursos en esto
- * ahora. Las fotos definitivas salen de su archivo (eventos, equipo, oficinas).
+ *   <MarcoFoto archivo="hero-consejo.jpg" … />   la foto de `public/fotos/`
+ *   <MarcoFoto src="/fotos/otra.jpg" … />        una ruta ya armada
+ *
+ * Si el archivo todavía no existe, cae en un **hueco de marca**: un bloque con la
+ * retícula del manual y el isotipo. Es deliberado que se vea como un hueco y no
+ * como una foto: así nadie publica el sitio creyendo que ahí ya hay una imagen
+ * definitiva. El día que llegue la foto, se deja en `public/fotos/` con el nombre
+ * exacto y aparece sola, sin tocar código (lo resuelve el manifiesto que se genera
+ * al compilar: ver `scripts/generar-manifiesto-fotos.mjs`).
+ *
+ * Decisión de Carlos: no generar imágenes con IA desde aquí ni gastar recursos en
+ * esto. Las fotos se piden con los prompts de `docs/21-prompts-de-imagenes.md` y
+ * salen de su archivo (eventos, equipo, oficinas).
  */
 export function MarcoFoto({
+  archivo,
   src,
   alt,
   className = "",
@@ -19,7 +29,9 @@ export function MarcoFoto({
   prioridad = false,
   proporcion = "aspect-[4/5]",
 }: {
-  /** Ruta en /public. Si falta, se dibuja el placeholder. */
+  /** Nombre del archivo dentro de `public/fotos/`, con extensión. */
+  archivo?: string;
+  /** Ruta pública completa. Tiene prioridad sobre `archivo`. */
   src?: string;
   alt: string;
   className?: string;
@@ -27,7 +39,9 @@ export function MarcoFoto({
   prioridad?: boolean;
   proporcion?: string;
 }) {
-  if (!src) {
+  const ruta = src ?? (archivo ? rutaDeArchivo(archivo) : undefined);
+
+  if (!ruta) {
     return (
       <div
         role="img"
@@ -54,7 +68,7 @@ export function MarcoFoto({
             <path d="M190 20v260l70-130z" />
           </svg>
           <p className="tagline text-sky/70">Fotografía pendiente</p>
-          <p className="max-w-[26ch] text-[13px] leading-relaxed text-white/50">
+          <p className="max-w-[26ch] text-xs leading-relaxed text-white/50">
             {alt}
           </p>
         </div>
@@ -67,7 +81,7 @@ export function MarcoFoto({
       className={`duotono-marco relative overflow-hidden rounded-[28px] ${proporcion} ${className}`}
     >
       <Image
-        src={src}
+        src={ruta}
         alt={alt}
         fill
         priority={prioridad}

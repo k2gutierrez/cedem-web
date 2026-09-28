@@ -39,7 +39,7 @@ export function PaginaLegal({
       <section className="py-12 lg:py-16">
         <Container size="estrecho">
           <div className="rounded-2xl border border-border-strong border-l-4 border-l-cyan bg-bg-soft p-6">
-            <p className="font-display text-[15px] font-bold leading-relaxed text-fg">
+            <p className="font-display text-sm font-bold leading-relaxed text-fg">
               ⚠️ Documento en revisión. El texto definitivo debe ser validado por el área
               legal antes de publicar.
             </p>
@@ -51,7 +51,7 @@ export function PaginaLegal({
                 <h2 className="font-display text-h3 text-fg">{seccion.titulo}</h2>
                 <div className="mt-3 space-y-3">
                   {seccion.parrafos.map((parrafo, i) => (
-                    <p key={i} className="text-[15px] leading-relaxed text-fg-muted">
+                    <p key={i} className="text-sm leading-relaxed text-fg-muted">
                       {parrafo}
                     </p>
                   ))}
@@ -99,7 +99,7 @@ export function PaginaLegal({
             </ul>
           </div>
 
-          <p className="mt-8 text-[13px] leading-relaxed text-fg-subtle">
+          <p className="mt-8 text-sm leading-relaxed text-fg-subtle">
             Este texto se publica solo para explicar, en lenguaje llano, cómo se tratan
             hoy los datos en el sitio. No sustituye al documento que CEDEM publique una
             vez validado por su área legal.

@@ -87,7 +87,7 @@ export default async function PaginaDiagnosticos() {
           { etiqueta: "Urgentes", valor: cuenta.urgentes },
         ].map((dato) => (
           <div key={dato.etiqueta} className="bg-bg p-5">
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+            <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
               {dato.etiqueta}
             </dt>
             <dd className="mt-1.5 font-display text-2xl font-bold text-fg">{dato.valor}</dd>
@@ -113,7 +113,7 @@ export default async function PaginaDiagnosticos() {
         <div className="mt-8 overflow-x-auto rounded-2xl border border-border bg-bg">
           <table className="w-full min-w-[720px] text-left text-sm">
             <thead className="border-b border-border bg-bg-soft">
-              <tr className="text-[11px] uppercase tracking-wider text-fg-subtle">
+              <tr className="text-xs uppercase tracking-wider text-fg-subtle">
                 <th className="px-5 py-3 font-semibold">Dueño</th>
                 <th className="px-4 py-3 font-semibold">Lectura</th>
                 <th className="px-4 py-3 font-semibold">Temperatura</th>
@@ -145,7 +145,7 @@ export default async function PaginaDiagnosticos() {
                           (s.nombre_declarado as string) ||
                           "Sin nombre"}
                       </span>
-                      <span className="mt-0.5 block text-[12.5px] text-fg-subtle">
+                      <span className="mt-0.5 block text-xs text-fg-subtle">
                         {fila.profiles?.company_name || contacto || "sin contacto"}
                       </span>
                     </td>
@@ -153,14 +153,14 @@ export default async function PaginaDiagnosticos() {
                       <span className="block capitalize text-fg">
                         {fila.profile_label?.replace(/_/g, " ") ?? "—"}
                       </span>
-                      <span className="mt-0.5 block text-[12.5px] text-fg-subtle">
+                      <span className="mt-0.5 block text-xs text-fg-subtle">
                         verbo débil: {String(s.verbo_critico ?? "—")}
                         {s.dispersante ? ` · ${String(s.dispersante)}` : ""}
                       </span>
                     </td>
                     <td className="px-4 py-4">
                       <span
-                        className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider ${etiqueta.clase}`}
+                        className={`rounded-full px-2.5 py-1 text-xs font-semibold uppercase tracking-wider ${etiqueta.clase}`}
                       >
                         {etiqueta.texto}
                       </span>
@@ -168,7 +168,7 @@ export default async function PaginaDiagnosticos() {
                     <td className="px-4 py-4 text-fg-muted">
                       {ETIQUETA_NIVEL[String(s.nivel_sugerido ?? "")] ?? "—"}
                     </td>
-                    <td className="px-5 py-4 text-[12.5px] text-fg-subtle">
+                    <td className="px-5 py-4 text-xs text-fg-subtle">
                       {fila.completed_at
                         ? new Date(fila.completed_at).toLocaleDateString("es-MX", {
                             day: "2-digit",
@@ -191,7 +191,7 @@ export default async function PaginaDiagnosticos() {
         </div>
       )}
 
-      <p className="mt-6 text-[12.5px] leading-relaxed text-fg-subtle">
+      <p className="mt-6 text-xs leading-relaxed text-fg-subtle">
         El comentario libre que deja el dueño y sus respuestas completas se guardan con cada
         diagnóstico: se consultan en la base y sirven para preparar la primera conversación.
       </p>

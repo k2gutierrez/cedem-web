@@ -34,26 +34,26 @@ export default async function PaginaEquipo() {
       >
         <dl className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-3">
           <div className="bg-bg p-5">
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+            <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
               En la firma
             </dt>
-            <dd className="mt-1.5 font-display text-[15px] font-semibold text-fg">
+            <dd className="mt-1.5 font-display text-base font-semibold text-fg">
               {totalPersonas} personas
             </dd>
           </div>
           <div className="bg-bg p-5">
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+            <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
               Organizadas en
             </dt>
-            <dd className="mt-1.5 font-display text-[15px] font-semibold text-fg">
+            <dd className="mt-1.5 font-display text-base font-semibold text-fg">
               Socios, consultores y coordinación
             </dd>
           </div>
           <div className="bg-bg p-5">
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+            <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
               Claustro del Máster
             </dt>
-            <dd className="mt-1.5 font-display text-[15px] font-semibold text-fg">
+            <dd className="mt-1.5 font-display text-base font-semibold text-fg">
               {claustroMaster.docentes} docentes
             </dd>
           </div>
@@ -87,7 +87,7 @@ export default async function PaginaEquipo() {
                       <h3 className="font-display text-base font-bold leading-snug text-fg">
                         {persona.nombre}
                       </h3>
-                      <p className="mt-1 text-[13px] leading-relaxed text-fg-muted">
+                      <p className="mt-1 text-sm leading-relaxed text-fg-muted">
                         {persona.cargo}
                       </p>
                     </div>
@@ -122,9 +122,9 @@ export default async function PaginaEquipo() {
                 Cada consultor tiene su perfil, con nombre y trayectoria
               </h2>
               <p className="mt-4 max-w-[52ch] text-lead text-white/80">
-                En CEDEM 2.0 cada consultor publica su perfil: su CV, su LinkedIn, su
-                cuenta de X y los artículos que ha escrito. Así sabes a quién le estás
-                abriendo la empresa antes de la primera sesión.
+                En CEDEM 2.0 cada consultor publica su perfil: su trayectoria, su
+                LinkedIn y los artículos que ha escrito. Así sabes a quién le abres tu
+                empresa antes de la primera sesión.
               </p>
             </div>
             <div className="lg:justify-self-end">
@@ -158,7 +158,7 @@ export default async function PaginaEquipo() {
           </div>
 
           {/* Nota al pie */}
-          <p className="mx-auto mt-8 max-w-[62ch] text-center text-[13px] leading-relaxed text-fg-subtle">
+          <p className="mx-auto mt-8 max-w-[62ch] text-center text-sm leading-relaxed text-fg-subtle">
             El claustro del Máster incluye {claustroMaster.docentes} docentes de{" "}
             {claustroMaster.instituciones.slice(0, -1).join(", ")} y{" "}
             {claustroMaster.instituciones[claustroMaster.instituciones.length - 1]}.

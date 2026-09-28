@@ -30,11 +30,11 @@ export function ProveedorMovimiento({ children }: { children: React.ReactNode })
         toastOptions={{
           className:
             "!rounded-2xl !border !border-border !bg-bg !text-fg !font-sans !shadow-[0_18px_50px_-22px_rgba(15,32,108,0.35)]",
-          descriptionClassName: "!text-fg-muted !text-[13px]",
+          descriptionClassName: "!text-fg-muted !text-sm",
           classNames: {
-            title: "!font-display !font-semibold !text-[14px]",
-            actionButton: "!bg-navy !text-white !rounded-full !font-display !text-[13px]",
-            cancelButton: "!border !border-border !text-fg-muted !rounded-full !text-[13px]",
+            title: "!font-display !font-semibold !text-sm",
+            actionButton: "!bg-navy !text-white !rounded-full !font-display !text-sm",
+            cancelButton: "!border !border-border !text-fg-muted !rounded-full !text-sm",
             closeButton: "!bg-bg !border !border-border !text-fg-muted",
           },
         }}

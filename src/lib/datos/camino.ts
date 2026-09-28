@@ -2,7 +2,7 @@ import { crearClienteServidor } from "@/lib/supabase/cliente-servidor";
 import { supabaseConfigurado } from "@/lib/supabase/configurado";
 import { VERSION_MOTOR } from "@/content/camino/config";
 import { calcularPerfil, type Perfil, type Respuestas } from "@/lib/camino/puntuar";
-import { LecturaEsquema, lecturaBase, type Lectura } from "@/lib/ia/lectura";
+import { normalizarLectura, lecturaBase, type Lectura } from "@/lib/ia/lectura";
 
 /**
  * El historial del Camino del Dueño de un miembro.
@@ -58,21 +58,19 @@ type FilaSesion = {
 /**
  * Recupera la lectura guardada de la IA.
  *
- * Se valida con el mismo esquema con el que se guardó: una lectura vieja o
- * incompleta no se muestra a medias, se sustituye por la base.
+ * Se normaliza con el mismo esquema con el que se guardó —y con el anterior, para
+ * no invalidar las lecturas ya escritas—: una lectura vieja o incompleta no se
+ * muestra a medias, se sustituye por la base.
  */
 function lecturaGuardada(crudo: string | null, perfil: Perfil): Lectura {
   if (!crudo) return lecturaBase(perfil);
 
   try {
-    const datos = JSON.parse(crudo);
-    const valida = LecturaEsquema.safeParse(datos);
-    if (valida.success) return { ...valida.data, origen: "ia" };
+    return normalizarLectura(JSON.parse(crudo), perfil);
   } catch {
     // Un JSON roto no debe impedir ver el historial: se cae a la lectura base.
+    return lecturaBase(perfil);
   }
-
-  return lecturaBase(perfil);
 }
 
 function aDiagnostico(fila: FilaSesion): DiagnosticoGuardado | null {

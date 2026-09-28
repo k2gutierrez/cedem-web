@@ -5,7 +5,11 @@ import { IconoFlecha } from "@/components/ui/Iconos";
 
 /**
  * Cierre de la home: la conversión principal.
- * Dos caminos: unirse a CEDEM 2.0 (pago o invitación) o hablar con la firma.
+ * Dos caminos: empezar por el diagnóstico o hablar con la firma.
+ *
+ * La promesa es concreta y verificable (quince preguntas, una observación escrita,
+ * tres acciones) porque a esta altura de la página el dueño ya sabe qué es CEDEM:
+ * lo que necesita es saber qué pasa si hace clic.
  */
 export function CtaFinal() {
   return (
@@ -28,13 +32,13 @@ export function CtaFinal() {
               Empieza por tu Camino del Dueño
             </h2>
             <p className="mt-5 text-lead text-[#c7d2e8]">
-              Un recorrido de cinco minutos que te ayuda a identificar en qué verbo
-              estás fallando —generar, multiplicar o capturar valor— y te entrega tus
-              primeros pasos concretos. Gratis y sin registro para empezar.
+              Quince preguntas. Cinco minutos. Al terminar recibes una observación
+              escrita sobre tu caso, tres artículos y tres acciones para esta semana.
+              Gratis y sin registro para empezar.
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <BotonEnlace href="/camino" variante="claro" tamano="lg">
+              <BotonEnlace href="/camino" variante="claro" tamano="lg" className="barrido">
                 Hacer el diagnóstico
                 <IconoFlecha className="h-4 w-4" />
               </BotonEnlace>

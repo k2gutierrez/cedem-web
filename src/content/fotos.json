@@ -1,0 +1,7 @@
+{
+  "_nota": "Generado por scripts/generar-manifiesto-fotos.mjs. No se edita a mano: agrega las imágenes en public/ y vuelve a compilar.",
+  "fotos": [],
+  "logos": [],
+  "og": [],
+  "graficos": []
+}

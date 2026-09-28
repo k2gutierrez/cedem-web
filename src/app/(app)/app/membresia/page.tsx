@@ -88,7 +88,7 @@ export default async function PaginaMembresia() {
           </p>
           <dl className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2">
             <div className="bg-bg p-5">
-              <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+              <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
                 Vigente hasta
               </dt>
               <dd className="mt-1.5 font-display text-lg font-bold text-fg">
@@ -96,7 +96,7 @@ export default async function PaginaMembresia() {
               </dd>
             </div>
             <div className="bg-bg p-5">
-              <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+              <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
                 Cómo entraste
               </dt>
               <dd className="mt-1.5 font-display text-lg font-bold text-fg capitalize">
@@ -110,7 +110,7 @@ export default async function PaginaMembresia() {
             </div>
           </dl>
           {suscripcion.origin === "invitacion" ? (
-            <p className="mt-6 text-[13px] leading-relaxed text-fg-subtle">
+            <p className="mt-6 text-sm leading-relaxed text-fg-subtle">
               Tu acceso forma parte de tu relación con la firma. Si tienes dudas sobre su
               vigencia, escríbele a quien te acompaña.
             </p>
@@ -136,7 +136,7 @@ export default async function PaginaMembresia() {
               <p className="mt-2 font-mono text-lg font-bold tracking-wider text-fg">
                 {pagoPendiente.external_reference}
               </p>
-              <p className="mt-3 text-[13px] text-fg-subtle">
+              <p className="mt-3 text-sm text-fg-subtle">
                 {formatearImporte(
                   pagoPendiente.amount_cents as number,
                   pagoPendiente.currency as string,
@@ -171,7 +171,7 @@ export default async function PaginaMembresia() {
                   />
                   <div className="my-8 flex items-center gap-4">
                     <span className="h-px flex-1 bg-border" />
-                    <span className="text-[12px] uppercase tracking-wider text-fg-subtle">
+                    <span className="text-xs uppercase tracking-wider text-fg-subtle">
                       o por transferencia
                     </span>
                     <span className="h-px flex-1 bg-border" />
@@ -180,7 +180,7 @@ export default async function PaginaMembresia() {
               ) : null}
 
               <FormularioSolicitud precios={opciones} />
-              <p className="mt-6 text-[12.5px] leading-relaxed text-fg-subtle">
+              <p className="mt-6 text-xs leading-relaxed text-fg-subtle">
                 Al solicitar no se te cobra nada automáticamente. Recibes una referencia para
                 transferir y el equipo activa tu acceso al confirmar el ingreso. Si prefieres
                 otro medio de pago,{" "}
@@ -201,7 +201,7 @@ export default async function PaginaMembresia() {
 
       <AvisoDeUrl />
 
-      <p className="mt-8 text-[12.5px] leading-relaxed text-fg-subtle">
+      <p className="mt-8 text-xs leading-relaxed text-fg-subtle">
         ¿Ya eres cliente de CEDEM? No necesitas pagar la membresía: pídele a tu consultor tu
         invitación.{" "}
         <Link href="/invitacion" className="underline underline-offset-4">

@@ -5,7 +5,11 @@ import { viajeDelDueno } from "@/content/site";
 
 /**
  * Los cuatro momentos del Viaje del Dueño.
- * Es la sección de reconocimiento: el dueño tiene que verse en al menos uno.
+ *
+ * Es la sección de reconocimiento: el dueño tiene que verse en al menos uno. Por
+ * eso cada momento lleva una sola línea y el número va dentro de un nodo, con un
+ * segmento de línea que sale hacia el siguiente: en escritorio se lee como una
+ * línea de tiempo, no como cuatro tarjetas sueltas.
  */
 export function ViajeDelDueno() {
   return (
@@ -13,8 +17,8 @@ export function ViajeDelDueno() {
       <Container>
         <EncabezadoSeccion
           antetitulo="El viaje del dueño"
-          titulo="¿En qué punto de tu viaje estás?"
-          entrada="Acompañamos al dueño en todas las etapas. Si te reconoces en alguno de estos momentos, hay método para salir."
+          titulo="¿En qué punto estás?"
+          entrada="Cuatro momentos. En los cuatro hay método, y en los cuatro el dueño es el mismo."
         />
 
         <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -25,22 +29,23 @@ export function ViajeDelDueno() {
               retraso={i * 0.08}
               className="group relative flex flex-col rounded-2xl border border-border bg-bg p-6 transition-all hover:-translate-y-1 hover:border-cyan/60 hover:shadow-[var(--sombra-suave)] dark:hover:border-sky/60"
             >
-              <span
-                aria-hidden="true"
-                className="font-display text-sm font-bold text-cyan/70 dark:text-sky/70"
-              >
-                {String(i + 1).padStart(2, "0")}
+              {/* Nodo + segmento: la línea de tiempo del viaje */}
+              <span className="flex items-center gap-3">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-cyan/40 bg-bg font-display text-sm font-bold text-cyan dark:border-sky/40 dark:text-sky">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="hidden h-px flex-1 bg-gradient-to-r from-cyan/40 to-transparent lg:block"
+                />
               </span>
-              <h3 className="mt-3 font-display text-lg font-bold text-fg">
+
+              <h3 className="mt-4 font-display text-lg font-bold text-fg">
                 {momento.titulo}
               </h3>
               <p className="mt-2.5 text-sm leading-relaxed text-fg-muted">
                 {momento.texto}
               </p>
-              <span
-                aria-hidden="true"
-              className="mt-5 h-[3px] w-10 rounded-full bg-gradient-to-r from-cyan to-sky transition-all duration-300 group-hover:w-16"
-            />
             </Revelar>
           ))}
         </ol>

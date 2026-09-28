@@ -30,7 +30,7 @@ export default async function PaginaNuevoContenido() {
 
   return (
     <Container size="estrecho">
-      <nav aria-label="Ruta" className="text-[13px] text-fg-subtle">
+      <nav aria-label="Ruta" className="text-sm text-fg-subtle">
         <Link href="/app/admin/contenido" className="hover:text-cyan dark:hover:text-sky">
           Contenido
         </Link>

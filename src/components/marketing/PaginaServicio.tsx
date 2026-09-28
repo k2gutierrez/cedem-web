@@ -30,7 +30,7 @@ export function PaginaServicio({ servicio }: { servicio: Servicio }) {
         />
 
         <Container className="relative py-14 lg:py-20">
-          <nav aria-label="Ruta" className="text-[13px] text-fg-subtle">
+          <nav aria-label="Ruta" className="text-sm text-fg-subtle">
             <Link href="/" className="hover:text-cyan dark:hover:text-sky">
               Inicio
             </Link>
@@ -67,10 +67,10 @@ export function PaginaServicio({ servicio }: { servicio: Servicio }) {
                   key={dato.etiqueta}
                   className="bg-bg p-5 transition-colors hover:bg-bg-soft"
                 >
-                  <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+                  <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
                     {dato.etiqueta}
                   </dt>
-                  <dd className="mt-1.5 font-display text-[15px] font-semibold text-fg">
+                  <dd className="mt-1.5 font-display text-base font-semibold text-fg">
                     {dato.valor}
                   </dd>
                 </div>
@@ -90,7 +90,7 @@ export function PaginaServicio({ servicio }: { servicio: Servicio }) {
           <div>
             <ul className="space-y-4">
               {servicio.paraQuien.map((item) => (
-                <li key={item} className="flex gap-3 text-[15px] leading-relaxed text-fg-muted">
+                <li key={item} className="flex gap-3 text-base leading-relaxed text-fg-muted">
                   <span
                     aria-hidden="true"
                     className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan dark:bg-sky"
@@ -152,8 +152,8 @@ export function PaginaServicio({ servicio }: { servicio: Servicio }) {
         <Container>
           <EncabezadoSeccion
             antetitulo="La solución"
-            titulo="Cómo trabajamos"
-            entrada="El método es el mismo en toda la firma. Lo que cambia es la profundidad y quién lo aplica."
+            titulo="Así trabajamos contigo"
+            entrada="Mismo método en toda la firma. Cambia la profundidad y quién lo aplica."
           />
           <ol className="mt-12 space-y-4">
             {servicio.solucion.map((paso, i) => (
@@ -170,7 +170,7 @@ export function PaginaServicio({ servicio }: { servicio: Servicio }) {
                   </span>
                   <div>
                     <h3 className="font-display text-lg font-bold text-fg">{paso.titulo}</h3>
-                    <p className="mt-2.5 text-[15px] leading-relaxed text-fg-muted">
+                    <p className="mt-2.5 text-base leading-relaxed text-fg-muted">
                       {paso.texto}
                     </p>
                 </div>
@@ -199,7 +199,7 @@ export function PaginaServicio({ servicio }: { servicio: Servicio }) {
                 <p className="mt-3 text-sm leading-relaxed text-fg-muted">
                   {resultado.texto}
                 </p>
-                <p className="mt-4 text-[11px] uppercase tracking-wider text-fg-subtle">
+                <p className="mt-4 text-xs uppercase tracking-wider text-fg-subtle">
                   {resultado.fuente}
                 </p>
               </article>

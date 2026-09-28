@@ -23,8 +23,8 @@ export function FormularioRegistro({ destino = "/app" }: { destino?: string }) {
   const [estado, accion] = useActionState(registrar, inicial);
 
   const campo =
-    "w-full rounded-xl border border-border bg-bg px-4 py-3 text-[15px] text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
-  const etiqueta = "mb-1.5 block text-[13px] font-medium text-fg-muted";
+    "w-full rounded-xl border border-border bg-bg px-4 py-3 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
+  const etiqueta = "mb-1.5 block text-sm font-medium text-fg-muted";
 
   if (estado.ok) {
     return (
@@ -89,7 +89,7 @@ export function FormularioRegistro({ destino = "/app" }: { destino?: string }) {
         />
       </div>
 
-      <label className="flex cursor-pointer gap-3 text-[13px] leading-relaxed text-fg-muted">
+      <label className="flex cursor-pointer gap-3 text-sm leading-relaxed text-fg-muted">
         <input
           type="checkbox"
           name="acepto"
@@ -108,7 +108,7 @@ export function FormularioRegistro({ destino = "/app" }: { destino?: string }) {
       {estado.error ? (
         <p
           role="alert"
-          className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-[13px] text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200"
+          className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200"
         >
           {estado.error}
         </p>
@@ -116,7 +116,7 @@ export function FormularioRegistro({ destino = "/app" }: { destino?: string }) {
 
       <Enviar />
 
-      <p className="text-center text-[13px] text-fg-subtle">
+      <p className="text-center text-sm text-fg-subtle">
         ¿Ya tienes cuenta?{" "}
         <Link
           href="/acceso"

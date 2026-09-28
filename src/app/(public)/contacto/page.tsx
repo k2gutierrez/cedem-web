@@ -37,7 +37,7 @@ export default function PaginaContacto() {
                 <IconoTelefono className="mt-0.5 h-4 w-4 shrink-0 fill-cyan dark:fill-sky" />
                 <a
                   href={contacto.telefonoHref}
-                  className="text-[15px] font-semibold text-fg hover:text-cyan dark:hover:text-sky"
+                  className="text-base font-semibold text-fg hover:text-cyan dark:hover:text-sky"
                 >
                   {contacto.telefono}
                 </a>
@@ -48,7 +48,7 @@ export default function PaginaContacto() {
                   href={contacto.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[15px] font-semibold text-fg hover:text-cyan dark:hover:text-sky"
+                  className="text-base font-semibold text-fg hover:text-cyan dark:hover:text-sky"
                 >
                   WhatsApp
                 </a>
@@ -73,7 +73,7 @@ export default function PaginaContacto() {
                     >
                       {sede.nombre}
                     </a>
-                    <p className="mt-1 text-[13px] leading-relaxed text-fg-muted">
+                    <p className="mt-1 text-sm leading-relaxed text-fg-muted">
                       {sede.direccion}
                     </p>
                   </div>

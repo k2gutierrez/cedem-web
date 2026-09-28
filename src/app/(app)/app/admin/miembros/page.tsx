@@ -227,7 +227,7 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
       {textoAviso ? (
         <p
           role="status"
-          className="mt-6 rounded-2xl border border-amber-300/60 bg-amber-50 p-4 text-[13.5px] leading-relaxed text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200"
+          className="mt-6 rounded-2xl border border-amber-300/60 bg-amber-50 p-4 text-sm leading-relaxed text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200"
         >
           {textoAviso}
         </p>
@@ -242,7 +242,7 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
           { etiqueta: "Sin membresía", valor: conteos.sinMembresia },
         ].map((cifra) => (
           <div key={cifra.etiqueta} className="rounded-2xl border border-border bg-bg p-5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-fg-subtle">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-fg-subtle">
               {cifra.etiqueta}
             </p>
             <p className="mt-2 font-display text-2xl font-bold text-fg">{cifra.valor}</p>
@@ -295,15 +295,15 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
               <li key={miembro.id} className="rounded-2xl border border-border bg-bg p-5">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-[220px] flex-1">
-                    <p className="font-display text-[15px] font-bold text-fg">
+                    <p className="font-display text-sm font-bold text-fg">
                       {miembro.full_name ?? "Sin nombre"}
                       {esUnoMismo ? (
-                        <span className="ml-2 text-[12px] font-normal text-fg-subtle">(tú)</span>
+                        <span className="ml-2 text-xs font-normal text-fg-subtle">(tú)</span>
                       ) : null}
                     </p>
-                    <p className="text-[13px] text-fg-muted">{miembro.email ?? "sin correo"}</p>
+                    <p className="text-sm text-fg-muted">{miembro.email ?? "sin correo"}</p>
                     {miembro.company_name ? (
-                      <p className="mt-1 text-[12.5px] text-fg-subtle">
+                      <p className="mt-1 text-xs text-fg-subtle">
                         {miembro.company_name}
                         {miembro.job_title ? ` · ${miembro.job_title}` : ""}
                       </p>
@@ -312,25 +312,25 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
 
                   <div className="flex flex-wrap items-center gap-2">
                     <span
-                      className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider ${
+                      className={`rounded-full border px-2.5 py-1 text-xs font-semibold uppercase tracking-wider ${
                         COLOR_ROL[miembro.role] ?? COLOR_ROL.miembro_free
                       }`}
                     >
                       {ETIQUETA_ROL[miembro.role] ?? miembro.role}
                     </span>
                     {miembro.subscription_id ? (
-                      <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300">
+                      <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300">
                         {ESTADO_SUSCRIPCION[miembro.subscription_status ?? ""] ?? "Membresía"}
                       </span>
                     ) : (
-                      <span className="rounded-full border border-border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">
+                      <span className="rounded-full border border-border px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-fg-subtle">
                         Sin membresía
                       </span>
                     )}
                   </div>
                 </div>
 
-                <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] text-fg-subtle">
+                <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-fg-subtle">
                   <span>Alta: {fecha(miembro.created_at)}</span>
                   <span aria-hidden="true">·</span>
                   <span>Último acceso: {fecha(miembro.last_seen_at)}</span>
@@ -353,7 +353,7 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
 
                 {/* Acciones: dos formularios dentro de un desplegable nativo */}
                 <details className="group mt-4">
-                  <summary className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-border px-3.5 py-1.5 font-display text-[12.5px] font-semibold text-fg-muted transition-colors hover:border-cyan hover:text-navy dark:hover:border-sky dark:hover:text-sky">
+                  <summary className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-border px-3.5 py-1.5 font-display text-xs font-semibold text-fg-muted transition-colors hover:border-cyan hover:text-navy dark:hover:border-sky dark:hover:text-sky">
                     Dar acceso o cambiar rol
                   </summary>
 
@@ -361,11 +361,11 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
                     {/* Membresía */}
                     <form action={otorgarMembresia} className="space-y-3">
                       <input type="hidden" name="usuario" value={miembro.id} />
-                      <p className="font-display text-[13px] font-bold uppercase tracking-wider text-fg-subtle">
+                      <p className="font-display text-xs font-bold uppercase tracking-wider text-fg-subtle">
                         {miembro.subscription_id ? "Extender membresía" : "Dar membresía"}
                       </p>
 
-                      <label className="block text-[13px] text-fg-muted">
+                      <label className="block text-sm text-fg-muted">
                         Plan
                         <select
                           name="plan"
@@ -381,7 +381,7 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
                         </select>
                       </label>
 
-                      <label className="block text-[13px] text-fg-muted">
+                      <label className="block text-sm text-fg-muted">
                         Días de vigencia
                         <input
                           type="number"
@@ -393,7 +393,7 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
                         />
                       </label>
 
-                      <label className="block text-[13px] text-fg-muted">
+                      <label className="block text-sm text-fg-muted">
                         Motivo (queda en la auditoría)
                         <input
                           type="text"
@@ -406,7 +406,7 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
                       <button
                         type="submit"
                         disabled={planesDisponibles.length === 0}
-                        className="rounded-full bg-navy px-4 py-2 font-display text-[13px] font-semibold text-white transition-colors hover:bg-cyan disabled:opacity-50 dark:bg-sky dark:text-navy"
+                        className="rounded-full bg-navy px-4 py-2 font-display text-sm font-semibold text-white transition-colors hover:bg-cyan disabled:opacity-50 dark:bg-sky dark:text-navy"
                       >
                         {miembro.subscription_id ? "Extender" : "Activar membresía"}
                       </button>
@@ -415,11 +415,11 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
                     {/* Rol */}
                     <form action={cambiarRol} className="space-y-3">
                       <input type="hidden" name="usuario" value={miembro.id} />
-                      <p className="font-display text-[13px] font-bold uppercase tracking-wider text-fg-subtle">
+                      <p className="font-display text-xs font-bold uppercase tracking-wider text-fg-subtle">
                         Rol
                       </p>
 
-                      <label className="block text-[13px] text-fg-muted">
+                      <label className="block text-sm text-fg-muted">
                         Nuevo rol
                         <select
                           name="rol"
@@ -435,7 +435,7 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
                         </select>
                       </label>
 
-                      <label className="block text-[13px] text-fg-muted">
+                      <label className="block text-sm text-fg-muted">
                         Motivo (queda en la auditoría)
                         <input
                           type="text"
@@ -447,19 +447,19 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
 
                       <button
                         type="submit"
-                        className="rounded-full border border-border px-4 py-2 font-display text-[13px] font-semibold text-fg-muted transition-colors hover:border-cyan hover:text-navy dark:hover:border-sky dark:hover:text-sky"
+                        className="rounded-full border border-border px-4 py-2 font-display text-sm font-semibold text-fg-muted transition-colors hover:border-cyan hover:text-navy dark:hover:border-sky dark:hover:text-sky"
                       >
                         Cambiar rol
                       </button>
 
                       {!esSuperAdmin ? (
-                        <p className="text-[11.5px] leading-relaxed text-fg-subtle">
+                        <p className="text-xs leading-relaxed text-fg-subtle">
                           Los permisos de administración solo los puede dar un super
                           administrador.
                         </p>
                       ) : null}
                       {esUnoMismo ? (
-                        <p className="text-[11.5px] leading-relaxed text-fg-subtle">
+                        <p className="text-xs leading-relaxed text-fg-subtle">
                           No puedes quitarte tu propio permiso de administración.
                         </p>
                       ) : null}
@@ -477,7 +477,7 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
         <summary className="cursor-pointer font-display text-base font-bold text-fg">
           Qué puede hacer cada nivel
         </summary>
-        <p className="mt-3 max-w-[68ch] text-[13.5px] leading-relaxed text-fg-muted">
+        <p className="mt-3 max-w-[68ch] text-sm leading-relaxed text-fg-muted">
           Nadie paga por ser consultor ni administrador: los permisos del equipo se dan a
           mano desde esta pantalla. El pago solo decide el acceso al contenido reservado, y
           los clientes de la firma lo reciben por invitación.
@@ -488,24 +488,24 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
             <li key={nivel.rol} className="rounded-xl border border-border bg-bg-soft p-5">
               <div className="flex flex-wrap items-center gap-3">
                 <span
-                  className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider ${
+                  className={`rounded-full border px-2.5 py-1 text-xs font-semibold uppercase tracking-wider ${
                     COLOR_ROL[nivel.rol] ?? COLOR_ROL.miembro_free
                   }`}
                 >
                   {nivel.titulo}
                 </span>
-                <code className="font-mono text-[11.5px] text-fg-subtle">{nivel.rol}</code>
+                <code className="font-mono text-xs text-fg-subtle">{nivel.rol}</code>
                 <span
                   className={
                     nivel.paga
-                      ? "rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-amber-900 dark:bg-amber-400/15 dark:text-amber-200"
-                      : "rounded-full border border-border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-fg-subtle"
+                      ? "rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-amber-900 dark:bg-amber-400/15 dark:text-amber-200"
+                      : "rounded-full border border-border px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-fg-subtle"
                   }
                 >
                   {nivel.paga ? "Se paga" : "Sin pago"}
                 </span>
               </div>
-              <dl className="mt-3 space-y-1.5 text-[13px] leading-relaxed">
+              <dl className="mt-3 space-y-1.5 text-sm leading-relaxed">
                 <div>
                   <dt className="inline font-semibold text-fg-muted">Para quién: </dt>
                   <dd className="inline text-fg-muted">{nivel.paraQuien}</dd>
@@ -524,7 +524,7 @@ export default async function PaginaAdminMiembros(props: PageProps<"/app/admin/m
         </ul>
       </details>
 
-      <p className="mt-10 text-[12.5px] leading-relaxed text-fg-subtle">
+      <p className="mt-10 text-xs leading-relaxed text-fg-subtle">
         Cada cambio de rol y cada membresía otorgada quedan registrados con su motivo en{" "}
         <a href="/app/admin/auditoria" className="font-medium text-navy dark:text-sky">
           Auditoría

@@ -78,7 +78,7 @@ export function Footer() {
                     >
                       {sede.nombre}
                     </a>
-                    <p className="mt-1 text-[13px] leading-relaxed text-[#a9b8d6]">
+                    <p className="mt-1 text-sm leading-relaxed text-[#a9b8d6]">
                       {sede.direccion}
                     </p>
                   </div>
@@ -96,12 +96,12 @@ export function Footer() {
               <li className="flex gap-3">
                 <IconoTelefono className="mt-1 h-4 w-4 shrink-0 fill-sky" />
                 <div>
-                  <span className="block text-[11px] uppercase tracking-[0.14em] text-[#8fa3c8]">
+                  <span className="block text-xs uppercase tracking-[0.14em] text-[#8fa3c8]">
                     Teléfono
                   </span>
                   <a
                     href={contacto.telefonoHref}
-                    className="text-[15px] font-semibold text-white hover:text-sky"
+                    className="text-sm font-semibold text-white hover:text-sky"
                   >
                     {contacto.telefono}
                   </a>
@@ -110,14 +110,14 @@ export function Footer() {
               <li className="flex gap-3">
                 <IconoWhatsApp className="mt-1 h-4 w-4 shrink-0 fill-sky" />
                 <div>
-                  <span className="block text-[11px] uppercase tracking-[0.14em] text-[#8fa3c8]">
+                  <span className="block text-xs uppercase tracking-[0.14em] text-[#8fa3c8]">
                     WhatsApp
                   </span>
                   <a
                     href={contacto.whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[15px] font-semibold text-white hover:text-sky"
+                    className="text-sm font-semibold text-white hover:text-sky"
                   >
                     Escríbenos
                   </a>
@@ -154,7 +154,7 @@ export function Footer() {
         {/* Barra inferior */}
         <div className="mt-14 border-t border-white/15">
           <div className="flex flex-col gap-4 py-6 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-[12.5px] leading-relaxed text-[#8fa3c8]">
+            <p className="text-xs leading-relaxed text-[#8fa3c8]">
               Copyright © Todos los Derechos Reservados.
               <br />
               CEDEM – Centro de Dueñez Empresaria · &ldquo;Dueñez®&rdquo; es una marca
@@ -164,7 +164,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/aviso-de-privacidad"
-                  className="text-[12.5px] text-[#c7d2e8] hover:text-sky hover:underline"
+                  className="text-xs text-[#c7d2e8] hover:text-sky hover:underline"
                 >
                   Aviso de Privacidad
                 </Link>
@@ -172,7 +172,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/terminos"
-                  className="text-[12.5px] text-[#c7d2e8] hover:text-sky hover:underline"
+                  className="text-xs text-[#c7d2e8] hover:text-sky hover:underline"
                 >
                   Términos y condiciones
                 </Link>

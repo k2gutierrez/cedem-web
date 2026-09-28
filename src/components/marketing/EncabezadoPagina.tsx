@@ -36,7 +36,7 @@ export function EncabezadoPagina({
         className="pointer-events-none absolute -top-32 right-0 -z-10 h-[460px] w-[460px] rounded-full bg-sky/20 blur-3xl dark:bg-cyan/12"
       />
       <Container className="relative py-14 lg:py-20">
-        <nav aria-label="Ruta" className="text-[13px] text-fg-subtle">
+        <nav aria-label="Ruta" className="text-sm text-fg-subtle">
           <Link href="/" className="hover:text-cyan dark:hover:text-sky">
             Inicio
           </Link>

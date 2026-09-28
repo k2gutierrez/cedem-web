@@ -38,7 +38,7 @@ export default async function PaginaInvitacion(props: PageProps<"/invitacion/[co
           <div className="mt-8 rounded-3xl border border-border bg-bg p-7">
             {sesion.usuario ? (
               <>
-                <p className="mb-5 text-[13px] text-fg-muted">
+                <p className="mb-5 text-sm text-fg-muted">
                   Entraste como <strong className="font-semibold text-fg">{sesion.usuario.email}</strong>.
                   Confirma para activar tu acceso.
                 </p>
@@ -64,7 +64,7 @@ export default async function PaginaInvitacion(props: PageProps<"/invitacion/[co
                     Ya tengo cuenta
                   </a>
                 </div>
-                <p className="mt-5 text-center text-[12.5px] text-fg-subtle">
+                <p className="mt-5 text-center text-xs text-fg-subtle">
                   Tu código se conserva: <span className="font-mono">{codigo}</span>
                 </p>
               </>

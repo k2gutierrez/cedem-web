@@ -75,7 +75,7 @@ export default async function PaginaMiCamino() {
         </div>
       )}
 
-      <p className="mt-10 text-[12.5px] leading-relaxed text-fg-subtle">
+      <p className="mt-10 text-xs leading-relaxed text-fg-subtle">
         Tus respuestas y tus lecturas quedan en tu perfil y puedes pedir que las borremos
         escribiéndonos. El Camino del Dueño es un apoyo para tu reflexión: no sustituye
         asesoría legal, fiscal ni financiera.

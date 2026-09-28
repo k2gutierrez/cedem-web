@@ -78,7 +78,7 @@ export default async function PaginaCanje(props: PageProps<"/invitacion">) {
             )}
           </div>
 
-          <p className="mt-6 text-[13px] leading-relaxed text-fg-subtle">
+          <p className="mt-6 text-sm leading-relaxed text-fg-subtle">
             ¿No tienes código? Pídeselo a tu consultor de CEDEM. Y si prefieres entrar por
             tu cuenta,{" "}
             <Link href="/unete" className="font-medium text-navy underline underline-offset-4 dark:text-sky">

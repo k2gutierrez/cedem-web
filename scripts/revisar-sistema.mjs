@@ -149,20 +149,21 @@ const PROTEGIDAS = [
       await p.locator("#correo").fill("revision@pruebas.cedem.local");
       await p.getByRole("checkbox").check();
       await p.waitForTimeout(300);
-      await p.getByRole("button", { name: /Ver mi lectura/ }).click();
+      await p.getByRole("button", { name: /Ver mi observación/ }).click();
       break;
     }
     await p.getByRole("button", { name: paso, exact: true }).first().click();
   }
 
-  await p.getByText("Tu verbo atorado").first().waitFor({ timeout: 40000 });
+  await p.getByText("Observación de CEDEM").first().waitFor({ timeout: 40000 });
   const resultado = await p.evaluate(() => {
     const t = document.body.innerText;
     return {
-      verbo: /Tu verbo atorado/.test(t),
+      observacion: /Lo que observamos/.test(t),
       articulos: /Para leer esta semana/.test(t),
       ejercicios: /Para hacer esta semana/.test(t),
       nivel: /Nivel de acompañamiento/.test(t),
+      pdf: /Descargar en PDF/.test(t),
     };
   });
   const completo = Object.values(resultado).every(Boolean);

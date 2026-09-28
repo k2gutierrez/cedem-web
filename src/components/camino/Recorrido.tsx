@@ -251,7 +251,7 @@ export function Recorrido({ catalogo = {} }: { catalogo?: Record<string, string>
               </Boton>
             </div>
 
-            <p className="mt-6 text-[13px] leading-relaxed text-fg-subtle">
+            <p className="mt-6 text-sm leading-relaxed text-fg-subtle">
               {APERTURA.pie}
             </p>
           </>
@@ -296,7 +296,7 @@ export function Recorrido({ catalogo = {} }: { catalogo?: Record<string, string>
         ) : null}
         <h2 className="text-h3 text-fg">{pregunta.enunciado}</h2>
         {pregunta.ayuda ? (
-          <p className="mt-2 text-[13px] text-fg-subtle">{pregunta.ayuda}</p>
+          <p className="mt-2 text-sm text-fg-subtle">{pregunta.ayuda}</p>
         ) : null}
 
         {pregunta.tipo === "opcion" && pregunta.opciones ? (
@@ -309,7 +309,7 @@ export function Recorrido({ catalogo = {} }: { catalogo?: Record<string, string>
                     type="button"
                     onClick={() => responderOpcion(pregunta, opcion)}
                     aria-pressed={elegida}
-                    className={`w-full rounded-2xl border px-5 py-4 text-left text-[15px] transition-colors ${
+                    className={`w-full rounded-2xl border px-5 py-4 text-left text-sm transition-colors ${
                       elegida
                         ? "border-cyan bg-sky/15 font-semibold text-fg dark:border-sky"
                         : "border-border text-fg-muted hover:border-cyan/60 hover:text-fg dark:hover:border-sky/60"
@@ -341,7 +341,7 @@ export function Recorrido({ catalogo = {} }: { catalogo?: Record<string, string>
         )}
 
         {pregunta.tipo === "opcion" ? (
-          <p className="mt-6 text-[12.5px] text-fg-subtle">
+          <p className="mt-6 text-xs text-fg-subtle">
             Elige una. Puedes volver atrás cuando quieras.
           </p>
         ) : null}
@@ -383,21 +383,21 @@ export function Recorrido({ catalogo = {} }: { catalogo?: Record<string, string>
 
         <div className="mt-5 space-y-4">
           <div>
-            <label htmlFor="nombre" className="mb-1.5 block text-[13px] font-medium text-fg-muted">
+            <label htmlFor="nombre" className="mb-1.5 block text-sm font-medium text-fg-muted">
               Tu nombre
             </label>
             <input
               id="nombre"
               value={contacto.nombre}
               onChange={(e) => setContacto({ ...contacto, nombre: e.target.value })}
-              className="w-full rounded-xl border border-border bg-bg px-4 py-3 text-[15px] text-fg outline-none focus:border-cyan dark:focus:border-sky"
+              className="w-full rounded-xl border border-border bg-bg px-4 py-3 text-sm text-fg outline-none focus:border-cyan dark:focus:border-sky"
               placeholder="Cómo te llamas"
             />
           </div>
 
           {canal === "correo" ? (
             <div>
-              <label htmlFor="correo" className="mb-1.5 block text-[13px] font-medium text-fg-muted">
+              <label htmlFor="correo" className="mb-1.5 block text-sm font-medium text-fg-muted">
                 Tu correo
               </label>
               <input
@@ -405,13 +405,13 @@ export function Recorrido({ catalogo = {} }: { catalogo?: Record<string, string>
                 type="email"
                 value={contacto.correo}
                 onChange={(e) => setContacto({ ...contacto, correo: e.target.value })}
-                className="w-full rounded-xl border border-border bg-bg px-4 py-3 text-[15px] text-fg outline-none focus:border-cyan dark:focus:border-sky"
+                className="w-full rounded-xl border border-border bg-bg px-4 py-3 text-sm text-fg outline-none focus:border-cyan dark:focus:border-sky"
                 placeholder="tucorreo@empresa.com"
               />
             </div>
           ) : (
             <div>
-              <label htmlFor="whatsapp" className="mb-1.5 block text-[13px] font-medium text-fg-muted">
+              <label htmlFor="whatsapp" className="mb-1.5 block text-sm font-medium text-fg-muted">
                 Tu WhatsApp
               </label>
               <input
@@ -419,14 +419,14 @@ export function Recorrido({ catalogo = {} }: { catalogo?: Record<string, string>
                 type="tel"
                 value={contacto.whatsapp}
                 onChange={(e) => setContacto({ ...contacto, whatsapp: e.target.value })}
-                className="w-full rounded-xl border border-border bg-bg px-4 py-3 text-[15px] text-fg outline-none focus:border-cyan dark:focus:border-sky"
+                className="w-full rounded-xl border border-border bg-bg px-4 py-3 text-sm text-fg outline-none focus:border-cyan dark:focus:border-sky"
                 placeholder="+52 33 1234 5678"
               />
             </div>
           )}
 
           <div>
-            <label htmlFor="comentario" className="mb-1.5 block text-[13px] font-medium text-fg-muted">
+            <label htmlFor="comentario" className="mb-1.5 block text-sm font-medium text-fg-muted">
               ¿Algo más que quieras que sepa de tu caso? (opcional)
             </label>
             <textarea
@@ -435,12 +435,12 @@ export function Recorrido({ catalogo = {} }: { catalogo?: Record<string, string>
               maxLength={400}
               value={comentario}
               onChange={(e) => setComentario(e.target.value)}
-              className="w-full resize-y rounded-xl border border-border bg-bg px-4 py-3 text-[15px] text-fg outline-none focus:border-cyan dark:focus:border-sky"
+              className="w-full resize-y rounded-xl border border-border bg-bg px-4 py-3 text-sm text-fg outline-none focus:border-cyan dark:focus:border-sky"
               placeholder="Lo que quieras agregar"
             />
           </div>
 
-          <label className="flex cursor-pointer gap-3 text-[13px] leading-relaxed text-fg-muted">
+          <label className="flex cursor-pointer gap-3 text-sm leading-relaxed text-fg-muted">
             <input
               type="checkbox"
               checked={consentimiento}
@@ -459,14 +459,14 @@ export function Recorrido({ catalogo = {} }: { catalogo?: Record<string, string>
             disabled={!puedeEnviar || guardando}
             className="w-full sm:w-auto"
           >
-            {guardando ? "Guardando…" : "Ver mi lectura"}
+            {guardando ? "Escribiendo tu observación…" : "Ver mi observación"}
             {!guardando ? <IconoFlecha className="h-4 w-4" /> : null}
           </Boton>
-          <p className="mt-4 text-[12.5px] text-fg-subtle">
+          <p className="mt-4 text-xs text-fg-subtle">
             Nada de spam. Un correo, y si quieres hablamos.
           </p>
           {avisoGuardado ? (
-            <p className="mt-3 text-[12.5px] text-amber-700 dark:text-amber-300">
+            <p className="mt-3 text-xs text-amber-700 dark:text-amber-300">
               {avisoGuardado}
             </p>
           ) : null}
@@ -521,17 +521,17 @@ function Marco({
             <button
               type="button"
               onClick={alVolver}
-              className="text-[13px] font-medium text-fg-subtle transition-colors hover:text-fg"
+              className="text-sm font-medium text-fg-subtle transition-colors hover:text-fg"
             >
               ← Atrás
             </button>
           ) : (
-            <span className="text-[13px] font-medium text-fg-subtle">
+            <span className="text-sm font-medium text-fg-subtle">
               Camino del Dueño
             </span>
           )}
           <div className="flex items-center gap-3">
-            <span className="text-[12px] uppercase tracking-wider text-fg-subtle">
+            <span className="text-xs uppercase tracking-wider text-fg-subtle">
               {etiqueta}
             </span>
             <div className="h-1.5 w-24 overflow-hidden rounded-full bg-border sm:w-36">
@@ -547,7 +547,7 @@ function Marco({
           {children}
         </div>
 
-        <p className="mt-5 text-center text-[12px] text-fg-subtle">
+        <p className="mt-5 text-center text-xs text-fg-subtle">
           CEDEM · Centro de Dueñez Empresaria · &ldquo;Dueñez®&rdquo; es una marca
           registrada por Carlos A. Dumois Núñez.
         </p>
@@ -586,7 +586,7 @@ function PreguntaAbierta({
         value={valor}
         onChange={(e) => onCambio(e.target.value)}
         placeholder={pregunta.placeholder}
-        className="w-full resize-y rounded-2xl border border-border bg-bg px-5 py-4 text-[15px] text-fg outline-none focus:border-cyan dark:focus:border-sky"
+        className="w-full resize-y rounded-2xl border border-border bg-bg px-5 py-4 text-sm text-fg outline-none focus:border-cyan dark:focus:border-sky"
       />
 
       {pregunta.chips ? (
@@ -596,7 +596,7 @@ function PreguntaAbierta({
               <button
                 type="button"
                 onClick={() => onCambio(valor ? `${valor} ${chip}` : chip)}
-                className="rounded-full border border-border px-3.5 py-1.5 text-[13px] text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
+                className="rounded-full border border-border px-3.5 py-1.5 text-sm text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
               >
                 {chip}
               </button>
@@ -614,14 +614,14 @@ function PreguntaAbierta({
           <button
             type="button"
             onClick={onSalida}
-            className="text-[13px] font-medium text-fg-subtle underline underline-offset-4 hover:text-fg"
+            className="text-sm font-medium text-fg-subtle underline underline-offset-4 hover:text-fg"
           >
             {pregunta.salida.texto}
           </button>
         ) : null}
       </div>
 
-      <p className="mt-3 flex items-center justify-between text-[12px] text-fg-subtle">
+      <p className="mt-3 flex items-center justify-between text-xs text-fg-subtle">
         <span>{segundos >= 18 ? "Cuando quieras, seguimos." : "\u00A0"}</span>
         <span>
           {valor.length}/{maximo}

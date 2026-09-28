@@ -9,6 +9,9 @@ import { servicios } from "@/content/site";
  * Las tres puertas de entrada.
  * No se presentan como "servicios" comparables, sino como niveles de
  * acompañamiento: el dueño se autoselecciona por tamaño y etapa.
+ *
+ * Tres viñetas por puerta y ni una más: la cuarta vive en la página del servicio.
+ * Al final hay una salida para quien todavía no sabe cuál le toca.
  */
 export function Puertas() {
   return (
@@ -16,8 +19,8 @@ export function Puertas() {
       <Container>
         <EncabezadoSeccion
           antetitulo="Tres formas de trabajar con CEDEM"
-          titulo="Elige por el tamaño de tu empresa y tu momento"
-          entrada="El mismo método, con distinta intensidad y distinto nivel de acompañamiento. En los tres casos trabajas con la metodología de Dueñez Empresaria."
+          titulo="¿Con cuál te toca empezar?"
+          entrada="El mismo método, con distinta intensidad. Se elige por tamaño de empresa y momento del dueño."
         />
 
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
@@ -31,11 +34,11 @@ export function Puertas() {
                 aria-hidden="true"
                 className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-gradient-to-r from-cyan via-blue to-sky transition-transform duration-500 group-hover:scale-x-100"
               />
-              <p className="tagline text-cyan dark:text-sky">{servicio.etiqueta}</p>
+              <p className="tagline text-xs text-cyan dark:text-sky">{servicio.etiqueta}</p>
               <h3 className="mt-3 font-display text-2xl font-bold text-fg">
                 {servicio.nombre}
               </h3>
-              <p className="mt-2 text-[13px] font-medium text-fg-subtle">
+              <p className="mt-2 text-xs font-medium text-fg-subtle">
                 {servicio.segmento}
               </p>
               <p className="mt-5 text-sm leading-relaxed text-fg-muted">
@@ -65,6 +68,20 @@ export function Puertas() {
             </Revelar>
           ))}
         </div>
+
+        {/* Salida para quien no sabe cuál le toca: el diagnóstico decide por él */}
+        <Revelar retraso={0.2}>
+          <p className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-fg-muted">
+            <span>¿No sabes cuál te corresponde?</span>
+            <Link
+              href="/camino"
+              className="inline-flex items-center gap-2 font-display text-sm font-semibold text-navy underline-offset-4 hover:text-cyan hover:underline dark:text-sky dark:hover:text-white"
+            >
+              El Camino del Dueño lo dice en 5 minutos
+              <IconoFlecha className="h-4 w-4" />
+            </Link>
+          </p>
+        </Revelar>
       </Container>
     </section>
   );

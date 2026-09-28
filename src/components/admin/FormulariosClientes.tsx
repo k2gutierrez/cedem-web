@@ -10,12 +10,12 @@ import {
 } from "@/app/acciones/equipo";
 
 const campo =
-  "w-full rounded-xl border border-border bg-bg px-4 py-2.5 text-[14px] text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
-const etiqueta = "mb-1 block text-[12px] font-medium text-fg-muted";
+  "w-full rounded-xl border border-border bg-bg px-4 py-2.5 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
+const etiqueta = "mb-1 block text-xs font-medium text-fg-muted";
 const avisoError =
-  "rounded-xl border border-red-300 bg-red-50 px-4 py-2.5 text-[13px] text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200";
+  "rounded-xl border border-red-300 bg-red-50 px-4 py-2.5 text-sm text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200";
 const avisoOk =
-  "rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2.5 text-[13px] text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200";
+  "rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2.5 text-sm text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200";
 
 function Enviar({ texto }: { texto: string }) {
   const { pending } = useFormStatus();
@@ -109,17 +109,17 @@ export function FormularioCliente({ paises }: { paises: Pais[] }) {
       </div>
 
       <fieldset className="space-y-3 rounded-xl border border-border p-4">
-        <legend className="px-1 text-[12px] font-medium text-fg-muted">
+        <legend className="px-1 text-xs font-medium text-fg-muted">
           Permisos de publicación
         </legend>
-        <label className="flex items-start gap-2.5 text-[13px] leading-relaxed text-fg-muted">
+        <label className="flex items-start gap-2.5 text-sm leading-relaxed text-fg-muted">
           <input type="checkbox" name="autorizado" className="mt-1 h-4 w-4 accent-[#00a1e0]" />
           <span>
             Tenemos autorización por escrito para usar su marca. <strong>Sin esto no se
             publica el logo.</strong>
           </span>
         </label>
-        <label className="flex items-center gap-2.5 text-[13px] text-fg-muted">
+        <label className="flex items-center gap-2.5 text-sm text-fg-muted">
           <input
             type="checkbox"
             name="en_mapa"
@@ -128,7 +128,7 @@ export function FormularioCliente({ paises }: { paises: Pais[] }) {
           />
           Mostrar en el mapa de presencia
         </label>
-        <label className="flex items-center gap-2.5 text-[13px] text-fg-muted">
+        <label className="flex items-center gap-2.5 text-sm text-fg-muted">
           <input type="checkbox" name="destacado" className="h-4 w-4 accent-[#00a1e0]" />
           Destacar en la página de casos
         </label>
@@ -191,7 +191,7 @@ export function FormularioTestimonio() {
         />
       </div>
 
-      <label className="flex items-start gap-2.5 text-[13px] leading-relaxed text-fg-muted">
+      <label className="flex items-start gap-2.5 text-sm leading-relaxed text-fg-muted">
         <input type="checkbox" name="autorizado" className="mt-1 h-4 w-4 accent-[#00a1e0]" />
         <span>La persona autorizó que se publique su nombre y su dicho.</span>
       </label>

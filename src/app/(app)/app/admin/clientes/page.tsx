@@ -62,7 +62,7 @@ function BotonAlternar({
       <button
         type="submit"
         aria-pressed={activo}
-        className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-colors ${
+        className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
           activo
             ? "bg-emerald-100 text-emerald-800 hover:bg-emerald-200 dark:bg-emerald-500/15 dark:text-emerald-300"
             : "border border-border text-fg-muted hover:border-cyan hover:text-fg dark:hover:border-sky"
@@ -117,7 +117,7 @@ export default async function PaginaAdminClientes() {
           },
         ].map((dato) => (
           <div key={dato.etiqueta} className="bg-bg p-5">
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+            <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
               {dato.etiqueta}
             </dt>
             <dd className="mt-1.5 font-display text-2xl font-bold text-fg">{dato.valor}</dd>
@@ -151,12 +151,12 @@ export default async function PaginaAdminClientes() {
                   <h3 className="font-display text-base font-bold text-fg">
                     {cliente.name}
                     {cliente.is_featured ? (
-                      <span className="ml-2 rounded-full bg-sky/20 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-navy dark:text-sky">
+                      <span className="ml-2 rounded-full bg-sky/20 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-navy dark:text-sky">
                         Caso
                       </span>
                     ) : null}
                   </h3>
-                  <p className="mt-1 text-[13px] text-fg-muted">
+                  <p className="mt-1 text-sm text-fg-muted">
                     {nombrePais.get(cliente.country_code) ?? cliente.country_code}
                     {cliente.city ? ` · ${cliente.city}` : ""}
                     {cliente.sector ? ` · ${cliente.sector}` : ""}
@@ -221,7 +221,7 @@ export default async function PaginaAdminClientes() {
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-[12.5px] text-fg-subtle">
+        <p className="mt-4 text-xs text-fg-subtle">
           Hoy se listan los diez países de la semilla. Para agregar otro, se añade a la tabla
           de países desde la base.
         </p>
@@ -246,11 +246,11 @@ export default async function PaginaAdminClientes() {
         <ul className="mt-5 space-y-3">
           {listaTestimonios.map((t) => (
             <li key={t.id} className="rounded-2xl border border-border bg-bg p-5">
-              <blockquote className="text-[15px] leading-relaxed text-fg">
+              <blockquote className="text-sm leading-relaxed text-fg">
                 &ldquo;{t.quote}&rdquo;
               </blockquote>
               <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-                <p className="text-[13px] text-fg-muted">
+                <p className="text-sm text-fg-muted">
                   <span className="font-semibold text-fg">{t.person_name}</span>
                   {t.person_role ? ` · ${t.person_role}` : ""}
                   {t.person_company ? ` · ${t.person_company}` : ""}

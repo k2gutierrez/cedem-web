@@ -108,7 +108,7 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
               type="search"
               defaultValue={consulta}
               placeholder="Busca por tema: sucesión, gobierno, abandonar, querencia…"
-              className="w-full rounded-full border border-border bg-bg px-5 py-3 text-[15px] text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky"
+              className="w-full rounded-full border border-border bg-bg px-5 py-3 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky"
             />
             <button
               type="submit"
@@ -117,7 +117,7 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
               Buscar
             </button>
           </form>
-          <p className="mt-3 text-[12.5px] text-fg-subtle">
+          <p className="mt-3 text-xs text-fg-subtle">
             Busca en los 186 artículos del archivo. Entiende el español: «sucesion»
             encuentra «sucesión».
           </p>
@@ -152,11 +152,11 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
                       <span className="font-display text-base font-bold leading-snug text-fg">
                         {articulo.titulo}
                       </span>
-                      <span className="mt-2.5 flex-1 text-[13px] leading-relaxed text-fg-muted">
+                      <span className="mt-2.5 flex-1 text-sm leading-relaxed text-fg-muted">
                         {articulo.extracto}
                       </span>
                       {articulo.publicado ? (
-                        <span className="mt-4 text-[12px] text-fg-subtle">
+                        <span className="mt-4 text-xs text-fg-subtle">
                           {new Date(articulo.publicado).toLocaleDateString("es-MX", {
                             year: "numeric",
                             month: "long",
@@ -228,7 +228,7 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
                   className="borde-vivo flex flex-col rounded-2xl border border-border bg-bg p-6"
                 >
                   <ul className="flex flex-wrap gap-2">
-                    <li className="rounded-full bg-sky/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy dark:bg-sky/20 dark:text-sky">
+                    <li className="rounded-full bg-sky/15 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-navy dark:bg-sky/20 dark:text-sky">
                       {articulo.visibilidad === "premium"
                         ? "Solo miembros"
                         : articulo.visibilidad === "free_registrado"
@@ -275,7 +275,7 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
                   {articulo.etiquetas.map((etiqueta) => (
                     <li
                       key={etiqueta}
-                      className="rounded-full bg-sky/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy dark:bg-sky/20 dark:text-sky"
+                      className="rounded-full bg-sky/15 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-navy dark:bg-sky/20 dark:text-sky"
                     >
                       {etiqueta}
                     </li>
@@ -289,7 +289,7 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
                   {articulo.extracto}
                 </p>
 
-                <p className="mt-5 border-t border-border pt-4 text-[12.5px] leading-relaxed text-fg-subtle">
+                <p className="mt-5 border-t border-border pt-4 text-xs leading-relaxed text-fg-subtle">
                   {articulo.titulo !== articulo.tituloOriginal
                     ? `Publicado como «${articulo.tituloOriginal}» · `
                     : ""}
@@ -354,7 +354,7 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
               <IconoYouTube className="h-4 w-4" />
               Ver el canal completo
             </BotonEnlace>
-            <p className="text-[13px] leading-relaxed text-fg-subtle">
+            <p className="text-sm leading-relaxed text-fg-subtle">
               Los webinars se transmiten en vivo y quedan publicados en el canal.
             </p>
           </div>
@@ -366,11 +366,11 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
         <Container>
           <EncabezadoSeccion antetitulo="Podcasts" titulo="Todavía no hay podcasts" />
           <div className="mt-10 rounded-2xl border border-dashed border-border-strong bg-bg-soft p-8 text-center">
-            <p className="mx-auto max-w-[46ch] text-[15px] leading-relaxed text-fg-muted">
+            <p className="mx-auto max-w-[46ch] text-sm leading-relaxed text-fg-muted">
               Todavía no publicamos podcasts. Esta sección está lista para cuando el
               equipo los produzca.
             </p>
-            <p className="mt-3 text-[13px] leading-relaxed text-fg-subtle">
+            <p className="mt-3 text-sm leading-relaxed text-fg-subtle">
               Mientras tanto, los webinars cubren los mismos temas y ya están disponibles.
             </p>
             <a
@@ -393,7 +393,7 @@ export default async function PaginaRecursos(props: PageProps<"/recursos">) {
               <h2 className="mt-3 text-h2 text-fg">
                 {bibliotecaMiembros.documentos} documentos metodológicos, en PDF
               </h2>
-              <p className="mt-4 max-w-[52ch] text-[15px] leading-relaxed text-fg-muted">
+              <p className="mt-4 max-w-[52ch] text-sm leading-relaxed text-fg-muted">
                 {bibliotecaMiembros.texto} Se descargan desde la plataforma, junto con el
                 archivo completo de artículos y los webinars.
               </p>

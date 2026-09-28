@@ -16,32 +16,17 @@ const beneficios = [
   {
     titulo: "El Camino del Dueño",
     texto:
-      "Un recorrido de cinco minutos que te dice en qué verbo estás fallando —generar, multiplicar o capturar valor— y te entrega tus primeros pasos concretos.",
+      "Cinco minutos para saber en qué verbo se te atora el valor: generar, multiplicar o capturar. Sales con tus primeros pasos.",
   },
   {
     titulo: "La biblioteca completa",
     texto:
-      "Todos los artículos del archivo de CEDEM sin límite, más los webinars y los once documentos metodológicos descargables.",
-  },
-  {
-    titulo: "Perfil propio",
-    texto:
-      "Tu espacio para guardar tus respuestas, tus notas y el avance de tu Camino del Dueño, y para retomarlo donde lo dejaste.",
+      "Todo el archivo de CEDEM sin límite: los artículos, los webinars y los once documentos del método, listos para descargar.",
   },
   {
     titulo: "Seguimiento con IA",
     texto:
-      "Un agente entrenado con el método de CEDEM que te cuestiona y te propone ejercicios a partir de lo que tú mismo escribiste.",
-  },
-  {
-    titulo: "Artículos de los consultores",
-    texto:
-      "Lo que escriben los socios y consultores de la firma, con su perfil, su trayectoria y su contacto profesional.",
-  },
-  {
-    titulo: "Eventos y novedades",
-    texto:
-      "Invitaciones a talleres, webinars y encuentros empresarios antes de que se abran al público general.",
+      "Un agente entrenado con el método de CEDEM te cuestiona y te propone ejercicios a partir de lo que tú mismo escribiste.",
   },
 ];
 
@@ -66,22 +51,17 @@ const preguntas = [
   {
     pregunta: "¿Necesito pagar para empezar?",
     respuesta:
-      "No. Crear la cuenta y hacer el Camino del Dueño es gratuito. La membresía se activa solo si quieres la biblioteca completa y el seguimiento.",
-  },
-  {
-    pregunta: "Ya soy cliente de CEDEM, ¿tengo que pagar la plataforma?",
-    respuesta:
-      "No. Si ya trabajas con la firma, recibes una invitación de tu consultor y entras con acceso completo sin costo adicional.",
+      "No. Tu cuenta y el Camino del Dueño son gratis. La membresía se activa solo si quieres la biblioteca completa y el seguimiento.",
   },
   {
     pregunta: "¿Qué pasa con mis respuestas y mis datos?",
     respuesta:
-      "Se guardan en tu perfil para poder darte seguimiento, y solo el equipo de CEDEM los consulta. No se comparten con terceros ni se usan para publicidad.",
+      "Quedan en tu perfil para darte seguimiento y solo el equipo de CEDEM los consulta. No se comparten con terceros ni se usan para publicidad.",
   },
   {
     pregunta: "¿Se puede hacer desde el celular?",
     respuesta:
-      "Sí. Todo el recorrido está diseñado para hacerse desde el teléfono, en un solo trayecto y sin necesidad de escribir mucho.",
+      "Sí. Todo el recorrido está pensado para hacerse desde el teléfono, en un solo trayecto y sin escribir mucho.",
   },
 ];
 
@@ -100,9 +80,8 @@ export default function PaginaUnete() {
             La plataforma para ejercer la Dueñez con método
           </h1>
           <p className="mt-5 max-w-[56ch] text-lead text-fg-muted">
-            Todo lo que CEDEM sabe sobre el rol del dueño, en un solo lugar: el
-            diagnóstico, la biblioteca completa, tus notas y el seguimiento. Empieza
-            gratis; sigue si te sirve.
+            Todo lo que CEDEM sabe del rol del dueño, en un solo lugar. Empieza gratis
+            con el diagnóstico; sigue cuando compruebes que te sirve.
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -216,7 +195,7 @@ export default function PaginaUnete() {
             </article>
           </div>
 
-          <p className="mt-6 text-[13px] leading-relaxed text-fg-subtle">
+          <p className="mt-6 text-sm leading-relaxed text-fg-subtle">
             El precio de la membresía se publicará aquí cuando quede definido. Mientras
             tanto, cualquier persona puede usar el Camino del Dueño sin costo.
           </p>

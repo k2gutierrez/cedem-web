@@ -149,7 +149,7 @@ export function AnilloValor({
                     verboDebil === arco.clave ? "ring-2 ring-cyan/40 dark:ring-sky/40" : ""
                   }`}
                 />
-                <span className="font-display text-[11px] font-semibold uppercase tracking-wider text-fg-muted">
+                <span className="font-display text-xs font-semibold uppercase tracking-wider text-fg-muted">
                   {arco.clave}
                 </span>
                 <span
@@ -168,7 +168,7 @@ export function AnilloValor({
               {Math.round(avance * 100)}%
             </span>
             {etiqueta ? (
-              <span className="mt-1 block text-[11px] uppercase tracking-wider text-fg-subtle">
+              <span className="mt-1 block text-xs uppercase tracking-wider text-fg-subtle">
                 {etiqueta}
               </span>
             ) : null}

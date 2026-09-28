@@ -51,17 +51,17 @@ export const contacto = {
   whatsapp: "https://api.whatsapp.com/send?phone=523322576343",
 } as const;
 
-/** Los cuatro momentos del Viaje del Dueño (narrativa propia de CEDEM). */
+/** Los cuatro momentos del Viaje del Dueño (narrativa propia de CEDEM).
+    Regla de esta sección: una línea por momento. El dueño se reconoce o no se
+    reconoce; no hay nada que explicarle. */
 export const viajeDelDueno = [
   {
     titulo: "Cuando necesita crecer",
-    texto:
-      "Y no sabe cómo hacerlo sin perder el control de lo que le costó años construir.",
+    texto: "Y no sabe cómo, sin perder el control de lo que le costó años construir.",
   },
   {
     titulo: "Cuando quiere soltar",
-    texto:
-      "Pero todavía no confía en la siguiente generación para entregarle el mando.",
+    texto: "Pero todavía no confía en la siguiente generación.",
   },
   {
     titulo: "Cuando quiere profesionalizar",
@@ -73,20 +73,20 @@ export const viajeDelDueno = [
   },
 ] as const;
 
-/** Las tres puertas de entrada, por nivel de acompañamiento. */
+/** Las tres puertas de entrada, por nivel de acompañamiento.
+    Máximo tres viñetas por puerta: la cuarta se lee en la página del servicio. */
 export const servicios = [
   {
     clave: "consulting",
     nombre: "Consulting",
     etiqueta: "El nivel más alto de la firma",
-    segmento: "Empresas desde 5 millones de dólares de ventas anuales",
+    segmento: "Desde 5 millones de dólares de ventas anuales",
     resumen:
-      "Trabajo directo con los socios de CEDEM para rediseñar la fórmula de negocio, la fórmula de gobierno y el rumbo de la empresa desde el rol del dueño.",
+      "Trabajas con los socios de CEDEM, no con un equipo junior. Rediseñamos la fórmula de negocio y la de gobierno, desde el rol del dueño.",
     puntos: [
-      "Pre-diagnóstico de 6 a 8 semanas para entender la realidad del negocio",
+      "Pre-diagnóstico de 6 a 8 semanas",
       "Proyecto de acompañamiento de 4 a 24 meses",
-      "El Consultor Líder actúa como consejero personal del dueño",
-      "Se instala un consejo funcional, se vigila la estrategia y se miden avances",
+      "Un Consultor Líder como consejero personal del dueño",
     ],
     href: "/consulting",
   },
@@ -94,14 +94,13 @@ export const servicios = [
     clave: "pce",
     nombre: "PCE",
     etiqueta: "Concentración Estratégica",
-    segmento: "Empresas por debajo de 5 millones de dólares de ventas anuales",
+    segmento: "Por debajo de 5 millones de dólares de ventas anuales",
     resumen:
-      "Consultoría de nivel intermedio: un Consultor Senior dirige a consultores de menor rango para aplicar el método a un ritmo y un alcance proporcionales al tamaño del negocio.",
+      "El mismo método, a tu tamaño. Un Consultor Senior dirige el trabajo y su equipo lo aplica en tu negocio.",
     puntos: [
       "Cada negocio como si fuera el único",
       "Los mejores recursos a las mejores oportunidades",
-      "Abandono estratégico de lo que no promete crecimiento",
-      "Un senior supervisa cada cuenta, sin excepción",
+      "Abandonar lo que no promete crecimiento",
     ],
     href: "/pce",
   },
@@ -109,14 +108,13 @@ export const servicios = [
     clave: "master",
     nombre: "Máster",
     etiqueta: "Con Euncet Business School · UPC",
-    segmento: "Dirigido a sucesores y miembros de la siguiente generación",
+    segmento: "Para sucesores y la siguiente generación",
     resumen:
-      "Máster en Innovación y Emprendimiento en la Empresa Familiar: 12 meses, doble titulación europea y semanas académicas en Miami y Barcelona.",
+      "Doce meses para formar a la siguiente generación como dueña, no como ejecutiva. Doble titulación europea.",
     puntos: [
-      "60 ECTS · 184 horas · modalidad online con streaming",
-      "Semanas académicas presenciales en Miami y Barcelona",
-      "Coaching individual y consejo consultivo de 4 a 5 participantes",
-      "Proyecto de creación de valor aplicado a la propia empresa",
+      "60 ECTS · 184 horas, online con streaming",
+      "Semanas académicas en Miami y Barcelona",
+      "Proyecto de creación de valor en tu propia empresa",
     ],
     href: "/master",
   },
@@ -144,32 +142,36 @@ export const metodo = [
   },
 ] as const;
 
-/** Casos publicados por CEDEM. Las cifras son declaradas por la firma. */
+/** Casos publicados por CEDEM. Las cifras son declaradas por la firma.
+    Cada caso se lee en cinco segundos: problema, solución, resultado.
+    `crecimiento` alimenta el gráfico de barras de la sección; sin él, el caso se
+    presenta solo con texto (es el caso de Coppel, que no tiene cifra pública). */
 export const casos = [
   {
     empresa: "Grupo D'portenis",
     persona: "Óscar Sánchez",
     cargo: "CEO",
-    problema: "La empresa crecía, pero el gobierno familiar no acompañaba ese crecimiento.",
-    solucion: "Rediseño de la Fórmula de Gobierno con la metodología de Dueñez Empresaria.",
-    resultado: "En 10 años cuadruplicaron las ventas y el dueño ejerció su rol de verdad.",
+    problema: "La empresa crecía; el gobierno familiar, no.",
+    solucion: "Rediseño de la Fórmula de Gobierno.",
+    resultado: "Cuadruplicaron las ventas en 10 años y el dueño ejerció su rol.",
+    crecimiento: { inicio: 1, fin: 4, unidad: "veces las ventas", nota: "en 10 años" },
   },
   {
     empresa: "Grupo Caffenio",
     persona: "José Antonio Díaz Quintanar",
     cargo: "Presidente del Consejo",
-    problema: "Una empresa familiar atada a la operación y a la visión de una sola generación.",
-    solucion: "Acompañamiento para compartir la Dueñez y priorizar la creación de valor.",
+    problema: "Una empresa atada a la operación y a una sola generación.",
+    solucion: "Compartir la Dueñez y priorizar la creación de valor.",
     resultado: "Pasaron de empresa familiar a familia empresaria.",
+    crecimiento: { inicio: 20, fin: 250, unidad: "MDD", nota: "en 21 años" },
   },
   {
     empresa: "Grupo Coppel",
     persona: "Agustín Coppel Luken",
     cargo: "Presidente del Consejo",
-    problema: "Integrar la formación de dueños con la gestión de valor del grupo empresarial.",
-    solucion: "Consultoría especializada en gestión de valor y fortalecimiento del patrimonio familiar.",
-    resultado:
-      "Crecimiento del grupo empresarial y fortalecimiento del patrimonio familiar. *",
+    problema: "Formar dueños y gestionar el valor del grupo, al mismo tiempo.",
+    solucion: "Consultoría en gestión de valor y patrimonio familiar.",
+    resultado: "Crecimiento del grupo y patrimonio familiar fortalecido. *",
   },
 ] as const;
 
@@ -180,9 +182,9 @@ export const casos = [
 
 /** Cifras de mercado de terceros, para el discurso público. */
 export const datosDeMercado = [
-  { cifra: "50%", texto: "de las empresas familiares mexicanas tiene riesgo serio de desaparecer." },
-  { cifra: "9%", texto: "llega a la tercera generación (11% a nivel internacional)." },
-  { cifra: "66%", texto: "no cuenta con órganos de gobierno formalizados." },
+  { cifra: "50%", texto: "de las empresas familiares mexicanas corre riesgo de desaparecer." },
+  { cifra: "9%", texto: "llega a la tercera generación (11% en el mundo)." },
+  { cifra: "66%", texto: "no tiene órganos de gobierno formalizados." },
 ] as const;
 
 export const procedenciaDatos = "Fuente: IPADE · CIFEM";

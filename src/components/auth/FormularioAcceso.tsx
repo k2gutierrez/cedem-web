@@ -22,8 +22,8 @@ export function FormularioAcceso({ destino }: { destino: string }) {
   const [estado, accion] = useActionState(entrar, inicial);
 
   const campo =
-    "w-full rounded-xl border border-border bg-bg px-4 py-3 text-[15px] text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
-  const etiqueta = "mb-1.5 block text-[13px] font-medium text-fg-muted";
+    "w-full rounded-xl border border-border bg-bg px-4 py-3 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
+  const etiqueta = "mb-1.5 block text-sm font-medium text-fg-muted";
 
   return (
     <form action={accion} className="space-y-5">
@@ -59,7 +59,7 @@ export function FormularioAcceso({ destino }: { destino: string }) {
         />
         <Link
           href="/recuperar"
-          className="mt-2 inline-block text-[12.5px] font-medium text-navy hover:text-cyan dark:text-sky"
+          className="mt-2 inline-block text-xs font-medium text-navy hover:text-cyan dark:text-sky"
         >
           Olvidé mi contraseña
         </Link>
@@ -68,7 +68,7 @@ export function FormularioAcceso({ destino }: { destino: string }) {
       {estado.error ? (
         <p
           role="alert"
-          className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-[13px] text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200"
+          className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200"
         >
           {estado.error}
         </p>
@@ -79,7 +79,7 @@ export function FormularioAcceso({ destino }: { destino: string }) {
         <IconoFlecha className="h-4 w-4" />
       </Enviar>
 
-      <p className="text-center text-[13px] text-fg-subtle">
+      <p className="text-center text-sm text-fg-subtle">
         ¿Todavía no tienes cuenta?{" "}
         <Link
           href="/registro"

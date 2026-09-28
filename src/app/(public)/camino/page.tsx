@@ -5,7 +5,7 @@ import { mapaDeCatalogo } from "@/lib/datos/recomendaciones";
 export const metadata: Metadata = {
   title: "Camino del Dueño · Diagnóstico gratuito de 5 minutos",
   description:
-    "Quince preguntas para saber en qué verbo se te está atorando el valor: generar, multiplicar o capturar. Al final, tu lectura, tres artículos para tu caso y tres ejercicios para esta semana. Gratis y sin registro para empezar.",
+    "Quince preguntas para saber en qué verbo se te atora el valor. Al terminar, tu lectura, tres artículos para tu caso y tres ejercicios para esta semana. Gratis y sin registro.",
   robots: { index: true, follow: true },
 };
 
@@ -36,10 +36,9 @@ export default async function PaginaCamino() {
           lugar de dejar al visitante con una pantalla a medias, se le explica y
           se le da la salida. */}
       <noscript>
-        <div className="border-b border-amber-300/60 bg-amber-50 px-5 py-4 text-center text-[13.5px] leading-relaxed text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200">
-          El Camino del Dueño necesita JavaScript para funcionar. Actívalo en tu
-          navegador y vuelve a entrar; mientras tanto puedes escribirnos desde la
-          página de{" "}
+        <div className="border-b border-amber-300/60 bg-amber-50 px-5 py-4 text-center text-sm leading-relaxed text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200">
+          El Camino del Dueño necesita JavaScript para funcionar. Actívalo y vuelve a
+          entrar; si prefieres, escríbenos desde la página de{" "}
           <a href="/contacto" className="font-semibold underline underline-offset-4">
             contacto
           </a>{" "}

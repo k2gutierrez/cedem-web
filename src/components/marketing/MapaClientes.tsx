@@ -81,7 +81,7 @@ export function MapaClientes() {
     <div className="overflow-hidden rounded-3xl border border-border bg-navy">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-6 py-4">
         <h3 className="tagline text-sky">Presencia en doce países</h3>
-        <ul className="flex items-center gap-5 text-[12px] text-[#a9b8d6]">
+        <ul className="flex items-center gap-5 text-xs text-[#a9b8d6]">
           <li className="flex items-center gap-2">
             <span className="h-2.5 w-2.5 rotate-45 bg-cyan" aria-hidden="true" />
             Sedes
@@ -203,7 +203,7 @@ export function MapaClientes() {
                 <text
                   x={x + 10}
                   y={y + 4 + (lugar.dy ?? 0)}
-                  className={`font-display text-[11px] ${
+                  className={`font-display text-xs ${
                     esActivo || lugar.sede ? "fill-white" : "fill-[#c7d2e8]"
                   }`}
                 >

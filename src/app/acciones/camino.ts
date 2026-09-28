@@ -6,7 +6,7 @@ import { crearClienteServidor } from "@/lib/supabase/cliente-servidor";
 import { supabaseConfigurado } from "@/lib/supabase/configurado";
 import { calcularPerfil, type Perfil, type Respuestas } from "@/lib/camino/puntuar";
 import { avisarAlEquipo, avisarDelCamino } from "@/lib/correo/correos";
-import { generarLectura, type Lectura } from "@/lib/ia/lectura";
+import { generarLectura, normalizarLectura, type Lectura } from "@/lib/ia/lectura";
 import { VERSION_MOTOR } from "@/content/camino/config";
 
 export type ResultadoGuardado = { ok: boolean; mensaje: string; sessionId?: string };
@@ -335,21 +335,24 @@ export async function pedirLectura(sessionId: string): Promise<{
 
   if (!sesion) return { ok: false };
 
-  // Si ya se generó antes, se devuelve tal cual (no se paga dos veces).
-  if (sesion.ai_summary_md) {
-    try {
-      const guardada = JSON.parse(sesion.ai_summary_md);
-      return { ok: true, lectura: guardada as Lectura };
-    } catch {
-      /* dato viejo o corrupto: se vuelve a generar */
-    }
-  }
-
   const s = (sesion.segment_scores ?? {}) as Record<string, unknown>;
   const respuestas = (s.respuestas ?? {}) as Respuestas;
   const comentario = (s.comentario as string) ?? "";
 
   const perfil = calcularPerfil(respuestas);
+
+  // Si ya se generó antes, se devuelve tal cual (no se paga dos veces). Se
+  // normaliza porque las lecturas guardadas antes del cambio de forma traen
+  // «subtitulo / verbo / freno» y hay que presentarlas como observación.
+  if (sesion.ai_summary_md) {
+    try {
+      const guardada = JSON.parse(sesion.ai_summary_md);
+      return { ok: true, lectura: normalizarLectura(guardada, perfil) };
+    } catch {
+      /* dato viejo o corrupto: se vuelve a generar */
+    }
+  }
+
   const lectura = await generarLectura(perfil, respuestas, comentario);
 
   await admin

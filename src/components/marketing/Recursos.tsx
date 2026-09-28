@@ -21,8 +21,8 @@ export async function Recursos() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <EncabezadoSeccion
             antetitulo="Recursos"
-            titulo="Para empezar a pensar como dueño"
-            entrada="Artículos, podcasts, videos y eventos. Parte del archivo es abierto; el resto es para miembros de CEDEM 2.0."
+            titulo="Para pensar como dueño"
+            entrada="Artículos del archivo de CEDEM. Unos son abiertos; el resto es para miembros."
           />
           <Link
             href="/recursos"
@@ -43,7 +43,7 @@ export async function Recursos() {
                 {articulo.etiquetas.map((etiqueta) => (
                   <li
                     key={etiqueta}
-                    className="rounded-full bg-sky/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy dark:bg-sky/20 dark:text-sky"
+                    className="rounded-full bg-sky/15 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-navy dark:bg-sky/20 dark:text-sky"
                   >
                     {etiqueta}
                   </li>
@@ -58,7 +58,7 @@ export async function Recursos() {
               </p>
 
               {articulo.titulo !== articulo.tituloOriginal ? (
-                <p className="mt-4 text-[11.5px] uppercase tracking-wider text-fg-subtle">
+                <p className="mt-4 text-xs uppercase tracking-wider text-fg-subtle">
                   Publicado como «{articulo.tituloOriginal}»
                 </p>
               ) : null}

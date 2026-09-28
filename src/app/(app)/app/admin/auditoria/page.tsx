@@ -106,7 +106,7 @@ export default async function PaginaAuditoria(props: PageProps<"/app/admin/audit
           },
         ].map((dato) => (
           <div key={dato.etiqueta} className="bg-bg p-5">
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+            <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
               {dato.etiqueta}
             </dt>
             <dd className="mt-1.5 font-display text-2xl font-bold text-fg">{dato.valor}</dd>
@@ -118,7 +118,7 @@ export default async function PaginaAuditoria(props: PageProps<"/app/admin/audit
       <div className="mt-8 flex flex-wrap items-center gap-2">
         <Link
           href="/app/admin/auditoria"
-          className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-colors ${
+          className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
             !filtro && !soloSensibles
               ? "bg-navy text-white dark:bg-cyan dark:text-[#04102e]"
               : "border border-border text-fg-muted hover:border-cyan hover:text-fg dark:hover:border-sky"
@@ -128,7 +128,7 @@ export default async function PaginaAuditoria(props: PageProps<"/app/admin/audit
         </Link>
         <Link
           href="/app/admin/auditoria?sensibles=1"
-          className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-colors ${
+          className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
             soloSensibles
               ? "bg-navy text-white dark:bg-cyan dark:text-[#04102e]"
               : "border border-border text-fg-muted hover:border-cyan hover:text-fg dark:hover:border-sky"
@@ -140,7 +140,7 @@ export default async function PaginaAuditoria(props: PageProps<"/app/admin/audit
           <Link
             key={accion}
             href={`/app/admin/auditoria?accion=${accion}`}
-            className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-colors ${
+            className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
               filtro === accion
                 ? "bg-navy text-white dark:bg-cyan dark:text-[#04102e]"
                 : "border border-border text-fg-muted hover:border-cyan hover:text-fg dark:hover:border-sky"
@@ -159,7 +159,7 @@ export default async function PaginaAuditoria(props: PageProps<"/app/admin/audit
         <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-bg">
           <table className="w-full min-w-[760px] text-left text-sm">
             <thead className="border-b border-border bg-bg-soft">
-              <tr className="text-[11px] uppercase tracking-wider text-fg-subtle">
+              <tr className="text-xs uppercase tracking-wider text-fg-subtle">
                 <th className="px-5 py-3 font-semibold">Cuándo</th>
                 <th className="px-4 py-3 font-semibold">Quién</th>
                 <th className="px-4 py-3 font-semibold">Qué hizo</th>
@@ -172,7 +172,7 @@ export default async function PaginaAuditoria(props: PageProps<"/app/admin/audit
                 const sensible = SENSIBLES.includes(mov.action);
                 return (
                   <tr key={mov.id} className="border-b border-border last:border-0">
-                    <td className="whitespace-nowrap px-5 py-3 text-[12.5px] text-fg-subtle">
+                    <td className="whitespace-nowrap px-5 py-3 text-xs text-fg-subtle">
                       {new Date(mov.occurred_at).toLocaleString("es-MX", {
                         day: "2-digit",
                         month: "short",
@@ -181,18 +181,18 @@ export default async function PaginaAuditoria(props: PageProps<"/app/admin/audit
                       })}
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-[13px] text-fg">
+                      <span className="text-sm text-fg">
                         {mov.actor_email ?? "(sistema)"}
                       </span>
                       {mov.actor_role ? (
-                        <span className="mt-0.5 block text-[11px] uppercase tracking-wider text-fg-subtle">
+                        <span className="mt-0.5 block text-xs uppercase tracking-wider text-fg-subtle">
                           {mov.actor_role}
                         </span>
                       ) : null}
                     </td>
                     <td className="px-4 py-3">
                       <span
-                        className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider ${
+                        className={`rounded-full px-2.5 py-1 text-xs font-semibold uppercase tracking-wider ${
                           sensible
                             ? "bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300"
                             : "bg-slate-100 text-slate-700 dark:bg-slate-500/15 dark:text-slate-300"
@@ -201,10 +201,10 @@ export default async function PaginaAuditoria(props: PageProps<"/app/admin/audit
                         {ETIQUETA_ACCION[mov.action] ?? mov.action}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-[13px] capitalize text-fg-muted">
+                    <td className="px-4 py-3 text-sm capitalize text-fg-muted">
                       {mov.entity_table.replace(/_/g, " ")}
                     </td>
-                    <td className="px-5 py-3 text-[13px] text-fg-muted">
+                    <td className="px-5 py-3 text-sm text-fg-muted">
                       {mov.entity_label ?? "—"}
                     </td>
                   </tr>
@@ -215,7 +215,7 @@ export default async function PaginaAuditoria(props: PageProps<"/app/admin/audit
         </div>
       )}
 
-      <p className="mt-6 text-[12.5px] leading-relaxed text-fg-subtle">
+      <p className="mt-6 text-xs leading-relaxed text-fg-subtle">
         Se muestran los últimos 200 movimientos. El registro es inmutable: la base rechaza
         cualquier intento de editarlo o borrarlo. Para atender una solicitud de borrado de
         datos se hace por un procedimiento aparte, documentado en{" "}

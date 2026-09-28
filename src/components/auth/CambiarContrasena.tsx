@@ -19,14 +19,14 @@ export function CambiarContrasena() {
   const [estado, accion] = useActionState(cambiarContrasena, {} as EstadoFormulario);
 
   const campo =
-    "w-full rounded-xl border border-border bg-bg px-4 py-3 text-[15px] text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
-  const etiqueta = "mb-1.5 block text-[13px] font-medium text-fg-muted";
+    "w-full rounded-xl border border-border bg-bg px-4 py-3 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
+  const etiqueta = "mb-1.5 block text-sm font-medium text-fg-muted";
 
   if (estado.ok) {
     return (
       <p
         role="status"
-        className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-[13px] text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200"
+        className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-sm text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200"
       >
         {estado.mensaje ?? "Listo. Tu contraseña quedó guardada."}
       </p>
@@ -88,7 +88,7 @@ export function CambiarContrasena() {
       {estado.error ? (
         <p
           role="alert"
-          className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-[13px] text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200"
+          className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200"
         >
           {estado.error}
         </p>

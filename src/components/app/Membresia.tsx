@@ -12,12 +12,12 @@ import {
 } from "@/app/acciones/membresia";
 
 const campo =
-  "w-full rounded-xl border border-border bg-bg px-4 py-2.5 text-[15px] text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
-const etiqueta = "mb-1.5 block text-[13px] font-medium text-fg-muted";
+  "w-full rounded-xl border border-border bg-bg px-4 py-2.5 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
+const etiqueta = "mb-1.5 block text-sm font-medium text-fg-muted";
 const avisoError =
-  "rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-[13px] text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200";
+  "rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200";
 const avisoOk =
-  "rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-[13px] text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200";
+  "rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-sm text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200";
 
 function Enviar({ texto, cargando }: { texto: string; cargando: string }) {
   const { pending } = useFormStatus();
@@ -49,7 +49,7 @@ export function FormularioSolicitud({
         <p className="mt-3 font-mono text-lg font-bold tracking-wider text-fg">
           {estado.referencia}
         </p>
-        <p className="mt-3 text-[13px] leading-relaxed text-fg-subtle">
+        <p className="mt-3 text-sm leading-relaxed text-fg-subtle">
           En cuanto el equipo confirme el ingreso, tu acceso completo queda activo y te
           avisamos. Si prefieres otro medio de pago, escríbenos por WhatsApp.
         </p>
@@ -77,7 +77,7 @@ export function FormularioSolicitud({
               <span className="block font-display text-base font-bold text-fg">
                 {precio.etiqueta}
               </span>
-              <span className="mt-1 block text-[13px] text-fg-muted">{precio.nota}</span>
+              <span className="mt-1 block text-sm text-fg-muted">{precio.nota}</span>
             </span>
           </label>
         ))}
@@ -125,7 +125,7 @@ export function PagoConTarjeta({ precios }: { precios: { id: string; etiqueta: s
         <IconoFlecha className="h-4 w-4" />
       </Boton>
 
-      <p className="text-[12.5px] leading-relaxed text-fg-subtle">
+      <p className="text-xs leading-relaxed text-fg-subtle">
         El cobro lo procesa Stripe. Tus datos de tarjeta no pasan por CEDEM en ningún
         momento, y el acceso se activa en cuanto el pago se confirma.
       </p>
@@ -204,7 +204,7 @@ export function FormularioPrecio({
             className={campo}
             placeholder="45000"
           />
-          <p className="mt-1.5 text-[12px] text-fg-subtle">
+          <p className="mt-1.5 text-xs text-fg-subtle">
             Sin centavos y sin símbolo: solo el número.
           </p>
         </div>

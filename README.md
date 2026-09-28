@@ -79,8 +79,10 @@ src/
 | `pnpm dev` | Servidor de desarrollo en http://localhost:3000 |
 | `pnpm build` | Build de producción (incluye verificación de tipos) |
 | `pnpm probar:motor` | Pruebas del motor de puntuación del Camino del Dueño |
+| `pnpm probar:base` | Pruebas de la lectura base del Camino (la que se muestra si la IA no responde) |
+| `pnpm fotos` | Lista las imágenes que el sitio ya pide y todavía no existen en `public/` |
 | `pnpm importar:wordpress` | Descarga el archivo editorial a `supabase/datos/` |
-| `node scripts/revisar-sistema.mjs` | Revisión integral antes de publicar (28 comprobaciones) |
+| `node scripts/revisar-sistema.mjs` | Revisión integral antes de publicar (30 comprobaciones) |
 | `pnpm importar:articulos` | Carga el archivo editorial a la base |
 | `pnpm revisar:html` | Informa qué cuerpos tienen HTML mal formado (`--escribir` para corregirlos) |
 | `pnpm probar:sanear` | Pruebas del saneador de HTML (9 casos) |
@@ -210,5 +212,18 @@ node scripts/revisar-sistema.mjs      # 30 comprobaciones sobre el sitio levanta
   comercial. Si CEDEM licencia Proxima Nova, se cambia en `layout.tsx`.
 - **Las imágenes no se reprocesan para el duotono:** el tratamiento de marca se aplica por CSS
   (`.duotono-marco`), así se puede cambiar sin volver a exportar archivos.
+- **Las fotos se agregan sin tocar código:** se dejan en `public/fotos/` (logos en
+  `public/logos/`, gráficos en `public/graficos/`, imagen social en `public/og/`) y
+  `scripts/generar-manifiesto-fotos.mjs` —que corre solo en `pnpm dev` y `pnpm build`— decide si
+  el componente muestra la foto o el hueco de marca. La lista se calcula al compilar porque en
+  Amplify el servidor puede correr sin la carpeta `public/`. Los prompts para generarlas están en
+  `../docs/21-prompts-de-imagenes.md`.
+- **La escala tipográfica se cambia en un solo sitio:** `--text-*` en `src/app/globals.css`. Está
+  subida respecto a la de Tailwind (`text-sm` = 16 px, `text-base` = 17 px y nada por debajo de
+  14 px) porque el público de CEDEM tiene 40 años o más. Por eso en el código no se usan tamaños
+  fijos en píxeles.
+- **El PDF del Camino se genera en el navegador** (`src/lib/pdf/observacion.ts`, con `pdf-lib`).
+  Así la observación de cada dueño no viaja a ningún servidor ni se guarda en disco, y el
+  documento sale idéntico siempre, sin depender de los márgenes del navegador de quien imprime.
 - **`devIndicators: false`** en `next.config.ts`: el indicador flotante de desarrollo se
   superponía al contenido en las capturas de verificación en móvil.

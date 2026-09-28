@@ -74,8 +74,8 @@ export function SubirFoto({
       </div>
 
       <div className="min-w-[220px] flex-1">
-        <p className="text-[13px] font-medium text-fg">Tu foto</p>
-        <p className="mt-1 text-[12.5px] leading-relaxed text-fg-subtle">
+        <p className="text-sm font-medium text-fg">Tu foto</p>
+        <p className="mt-1 text-xs leading-relaxed text-fg-subtle">
           JPG, PNG, WebP o AVIF, hasta 5 MB. Se ve en tu perfil y, si eres consultor, en la
           página de Equipo.
         </p>
@@ -113,7 +113,7 @@ export function SubirFoto({
         {mensaje ? (
           <p
             role="status"
-            className={`mt-3 text-[12.5px] ${
+            className={`mt-3 text-xs ${
               mensaje.tono === "ok"
                 ? "text-emerald-700 dark:text-emerald-300"
                 : "text-red-700 dark:text-red-300"
@@ -133,7 +133,7 @@ function Quitar() {
     <button
       type="submit"
       disabled={pending}
-      className="rounded-full border border-border px-4 py-2 font-display text-[13px] font-semibold text-fg-muted transition-colors hover:border-red-300 hover:text-red-700 dark:hover:border-red-500/50 dark:hover:text-red-300"
+      className="rounded-full border border-border px-4 py-2 font-display text-sm font-semibold text-fg-muted transition-colors hover:border-red-300 hover:text-red-700 dark:hover:border-red-500/50 dark:hover:text-red-300"
     >
       {pending ? "Quitando…" : "Quitar"}
     </button>

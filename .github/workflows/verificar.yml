@@ -2,15 +2,16 @@
 #
 # POR QUÉ EXISTE
 #
-# El proyecto tiene tres redes que han atrapado errores reales: los tipos, el
-# linter y las 33 pruebas del motor del Camino. Correrlas a mano funciona hasta
-# que un día no se corren. Aquí se ejecutan en cada push y en cada propuesta de
-# cambio, así que un error se ve antes de llegar a producción.
+# El proyecto tiene cuatro redes que han atrapado errores reales: los tipos, el
+# linter, las 33 pruebas del motor del Camino y las de la lectura base (la que se
+# muestra cuando la IA no responde). Correrlas a mano funciona hasta que un día no
+# se corren. Aquí se ejecutan en cada push y en cada propuesta de cambio, así que un
+# error se ve antes de llegar a producción.
 #
-# Lo que NO se hace aquí: tocar la base de datos ni desplegar. El despliegue lo
-# hace Vercel por su cuenta al ver el push, y las pruebas que necesitan Supabase
-# (el muro de pago, los documentos) se corren a mano porque necesitan llaves que
-# no deben estar en el repositorio.
+# Lo que NO se hace aquí: tocar la base de datos ni desplegar. El despliegue lo hace
+# AWS Amplify al ver el push (ver docs/20-despliegue-en-amplify.md), y las pruebas
+# que necesitan Supabase (el muro de pago, los documentos) se corren a mano porque
+# necesitan llaves que no deben estar en el repositorio.
 name: Verificar
 
 on:
@@ -44,6 +45,9 @@ jobs:
 
       - name: Pruebas del motor del Camino
         run: pnpm probar:motor
+
+      - name: Pruebas de la lectura base del Camino
+        run: pnpm probar:base
 
       - name: Pruebas del saneador de HTML
         run: pnpm probar:sanear

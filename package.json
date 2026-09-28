@@ -3,17 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "node scripts/generar-manifiesto-fotos.mjs && next dev",
+    "build": "node scripts/generar-manifiesto-fotos.mjs && next build",
     "start": "next start",
     "lint": "eslint",
+    "fotos": "node scripts/generar-manifiesto-fotos.mjs",
     "probar:motor": "tsx scripts/probar-puntuar.ts",
     "importar:wordpress": "node scripts/importar-wordpress.mjs",
     "importar:articulos": "tsx scripts/importar-articulos.mts",
     "importar:documentos": "node scripts/importar-documentos.mjs",
     "revisar": "node scripts/revisar-sistema.mjs",
     "revisar:html": "tsx scripts/revisar-html-articulos.mts",
-    "probar:sanear": "tsx scripts/probar-sanear.ts"
+    "probar:sanear": "tsx scripts/probar-sanear.ts",
+    "probar:base": "tsx scripts/probar-base-observacion.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -22,6 +24,7 @@
     "motion": "^13.4.2",
     "next": "16.3.6",
     "nodemailer": "^10.0.10",
+    "pdf-lib": "^1.17.1",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "sonner": "^2.0.8",

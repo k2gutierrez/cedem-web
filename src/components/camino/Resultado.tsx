@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnilloValor } from "@/components/camino/AnilloValor";
+import { DescargarObservacion } from "@/components/camino/DescargarObservacion";
 import { pedirLectura } from "@/app/acciones/camino";
 import { BotonEnlace } from "@/components/ui/Boton";
 import {
@@ -10,15 +11,22 @@ import {
   ETIQUETAS_BASE,
   articulosPara,
 } from "@/content/camino/catalogo";
-import { ETIQUETA_NIVEL, TITULARES, type Perfil } from "@/lib/camino/puntuar";
+import { ETIQUETA_NIVEL, type Perfil } from "@/lib/camino/puntuar";
 import { lecturaBase } from "@/lib/ia/lectura";
 
 /**
- * La lectura que recibe el dueño al terminar.
+ * La observación que recibe el dueño al terminar.
  *
- * Todo lo que se muestra aquí sale del motor determinista y del catálogo local.
- * Cuando la IA esté conectada (Fase 4) reescribirá la redacción con el contexto
- * del dueño, pero no podrá cambiar el verbo crítico, el arquetipo ni el nivel.
+ * QUÉ CAMBIÓ Y POR QUÉ
+ *
+ * Antes esto era un diagnóstico con etiquetas: «tu verbo atorado: multiplicar»,
+ * «se te atora capturar valor». Decisión de Carlos: el entregable es lo que
+ * escribiría un consultor de CEDEM después de escuchar al dueño. Los números del
+ * motor siguen ahí —sirven para elegir los artículos y los ejercicios, y el anillo
+ * los dibuja—, pero lo que se lee es una observación, y va firmada.
+ *
+ * Todo lo que se muestra sale del motor determinista y del catálogo local. La IA
+ * sólo redacta: no puede cambiar dónde está el valor ni el nivel sugerido.
  */
 export function Resultado({
   perfil,
@@ -74,7 +82,7 @@ export function Resultado({
     return { ...articulo, href: slug ? `/recursos/${slug}` : articulo.url, interno: Boolean(slug) };
   });
   const ejercicios = lectura.ejercicios?.length ? lectura.ejercicios : (EJERCICIOS_BASE[perfil.arquetipo] ?? []);
-  const titular = TITULARES[perfil.arquetipo];
+  const titular = lectura.titular;
 
   const nombrePila = nombre.trim().split(/\s+/)[0] ?? "";
   const saludo = nombrePila ? `${nombrePila}, ` : "";
@@ -89,27 +97,28 @@ export function Resultado({
   return (
     <div>
       {/* Titular */}
-      <p className="tagline text-cyan dark:text-sky">Tu lectura</p>
+      <p className="tagline text-cyan dark:text-sky">Observación de CEDEM</p>
       <h1 className="mt-4 text-h2 text-fg">
         {saludo}
         {titular}
       </h1>
-      <p className="mt-4 text-lead text-fg-muted">{lectura.subtitulo}</p>
-      <p className="mt-2 text-sm text-fg-subtle">{perfil.bandaTexto}</p>
+      <p className="mt-3 text-sm text-fg-subtle">
+        Camino del Dueño · observación escrita para tu caso
+      </p>
       {afinando ? (
-        <p className="mt-3 text-[12.5px] text-cyan dark:text-sky">
-          Estoy afinando tu lectura con lo que me escribiste…
+        <p className="mt-3 text-sm text-cyan dark:text-sky">
+          Estoy afinando tu observación con lo que me escribiste…
         </p>
       ) : null}
 
       {modo === "express" ? (
-        <p className="mt-3 text-[13px] text-fg-subtle">
-          Con lo que me contaste me alcanza para darte una lectura. Si quieres afinarla,
-          la completamos otro día.
+        <p className="mt-3 text-sm text-fg-subtle">
+          Con lo que me contaste me alcanza para escribirte esto. Si quieres afinarlo,
+          lo completamos otro día.
         </p>
       ) : null}
 
-      {/* Anillo */}
+      {/* Anillo: el dato, sin etiquetas */}
       <div className="mt-10 grid justify-items-center gap-8 sm:grid-cols-[auto_1fr] sm:items-center sm:justify-items-start">
         <AnilloValor
           progreso={1}
@@ -123,9 +132,12 @@ export function Resultado({
         />
         <div>
           <h2 className="font-display text-lg font-bold text-fg">
-            Tu verbo atorado: {verboLegible}
+            Así se mueve hoy tu valor
           </h2>
-          <p className="mt-2 text-sm leading-relaxed text-fg-muted">{lectura.verbo}</p>
+          <p className="mt-2 text-sm leading-relaxed text-fg-muted">
+            Los tres movimientos del método, medidos con tus respuestas. El más bajo
+            —{verboLegible.toLowerCase()}— es el que hoy te está costando más valor.
+          </p>
           {perfil.focos.length ? (
             <ul className="mt-4 space-y-2">
               {perfil.focos.map((foco) => (
@@ -145,27 +157,49 @@ export function Resultado({
         </div>
       </div>
 
-      {/* Freno o logro */}
-      <section className="mt-10 rounded-2xl border border-border bg-bg-soft p-6">
-        {perfil.dispersanteDominante ? (
-          <>
-            <h2 className="font-display text-base font-bold text-fg">
-              Lo que te está frenando
-            </h2>
-            <p className="mt-2.5 text-sm leading-relaxed text-fg-muted">{lectura.freno}</p>
-          </>
-        ) : (
-          <>
-            <h2 className="font-display text-base font-bold text-fg">
-              Lo que ya hiciste bien
-            </h2>
-            <p className="mt-2.5 text-sm leading-relaxed text-fg-muted">
-              Hoy no traes ninguna de las tres fuerzas dispersantes activas: ni desenfoque,
-              ni soledad, ni tolerancia. Eso no es suerte, es gobierno. El siguiente
-              movimiento ya no es apagar fuegos: es decidir qué sigue.
+      {/* La observación, firmada */}
+      <section className="mt-10 rounded-3xl border border-border bg-bg-soft p-6 sm:p-8">
+        <h2 className="font-display text-lg font-bold text-fg">Lo que observamos</h2>
+        <div className="mt-4 space-y-4">
+          {lectura.observacion.map((parrafo, i) => (
+            <p key={i} className="text-base leading-relaxed text-fg-muted">
+              {parrafo}
             </p>
-          </>
-        )}
+          ))}
+        </div>
+        <p className="mt-5 border-t border-border pt-4 text-sm text-fg-subtle">
+          — Equipo de consultoría de CEDEM
+        </p>
+
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          <DescargarObservacion
+            datos={{
+              nombre: nombre || "Dueño de empresa",
+              titular,
+              observacion: lectura.observacion,
+              fecha: new Date(),
+              version: perfil.version,
+              scores: {
+                generar: perfil.scoreGenerar,
+                multiplicar: perfil.scoreMultiplicar,
+                capturar: perfil.scoreCapturar,
+              },
+              verboCritico: perfil.verboCritico,
+              focos: perfil.focos.map((f) => ({ componente: f.componente, frase: f.frase })),
+              dispersante: null,
+              nivel: ETIQUETA_NIVEL[perfil.nivel],
+              articulos: articulos.slice(0, 3).map((a) => ({
+                titulo: a.titulo,
+                porque: a.etiquetas.slice(0, 2).join(" y "),
+              })),
+              ejercicios,
+              sitio: "cedem.com.mx",
+            }}
+          />
+          <span className="text-sm text-fg-subtle">
+            Con el logo de CEDEM, para imprimir o compartir con tu consejo.
+          </span>
+        </div>
       </section>
 
       {/* Para leer */}
@@ -174,41 +208,33 @@ export function Resultado({
           Para leer esta semana
         </h2>
         <ul className="mt-4 space-y-3">
-          {articulos.map((articulo) =>
-            articulo.interno ? (
-              <li
-                key={articulo.href}
-                className="rounded-2xl border border-border p-5 transition-colors hover:border-cyan/60 dark:hover:border-sky/60"
-              >
+          {articulos.map((articulo) => (
+            <li
+              key={articulo.href}
+              className="rounded-2xl border border-border p-5 transition-colors hover:border-cyan/60 dark:hover:border-sky/60"
+            >
+              {articulo.interno ? (
                 <Link
                   href={articulo.href}
-                  className="font-display text-[15px] font-semibold text-fg hover:text-cyan dark:hover:text-sky"
+                  className="font-display text-base font-semibold text-fg hover:text-cyan dark:hover:text-sky"
                 >
                   {articulo.titulo}
                 </Link>
-                <p className="mt-1.5 text-[13px] text-fg-subtle">
-                  Porque toca {articulo.etiquetas.slice(0, 2).join(" y ")}.
-                </p>
-              </li>
-            ) : (
-              <li
-                key={articulo.href}
-                className="rounded-2xl border border-border p-5 transition-colors hover:border-cyan/60 dark:hover:border-sky/60"
-              >
+              ) : (
                 <a
                   href={articulo.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-display text-[15px] font-semibold text-fg hover:text-cyan dark:hover:text-sky"
+                  className="font-display text-base font-semibold text-fg hover:text-cyan dark:hover:text-sky"
                 >
                   {articulo.titulo}
                 </a>
-                <p className="mt-1.5 text-[13px] text-fg-subtle">
-                  Porque toca {articulo.etiquetas.slice(0, 2).join(" y ")}.
-                </p>
-              </li>
-            ),
-          )}
+              )}
+              <p className="mt-1.5 text-sm text-fg-subtle">
+                Porque toca {articulo.etiquetas.slice(0, 2).join(" y ")}.
+              </p>
+            </li>
+          ))}
         </ul>
       </section>
 
@@ -225,17 +251,17 @@ export function Resultado({
                   type="checkbox"
                   checked={Boolean(hechos[i])}
                   onChange={(e) => setHechos({ ...hechos, [i]: e.target.checked })}
-                  className="mt-1 h-4 w-4 shrink-0 accent-[#00a1e0]"
+                  className="mt-1 h-5 w-5 shrink-0 accent-[#00a1e0]"
                 />
                 <span>
                   <span
-                    className={`block font-display text-[15px] font-semibold ${
+                    className={`block font-display text-base font-semibold ${
                       hechos[i] ? "text-fg-subtle line-through" : "text-fg"
                     }`}
                   >
                     {ejercicio.titulo}
                   </span>
-                  <span className="mt-1.5 block text-[13px] leading-relaxed text-fg-muted">
+                  <span className="mt-1.5 block text-sm leading-relaxed text-fg-muted">
                     {ejercicio.detalle}
                   </span>
                 </span>
@@ -247,8 +273,10 @@ export function Resultado({
 
       {/* Hablemos */}
       <section className="mt-10 rounded-3xl bg-navy p-7 text-white sm:p-9">
-        <h2 className="font-display text-xl font-bold text-white">Hablemos</h2>
-        <p className="mt-3 max-w-[52ch] text-sm leading-relaxed text-[#c7d2e8]">
+        <h2 className="font-display text-xl font-bold text-white">
+          ¿Lo revisamos juntos?
+        </h2>
+        <p className="mt-3 max-w-[52ch] text-base leading-relaxed text-[#c7d2e8]">
           {perfil.temperaturaEtiqueta === "urgente" || perfil.temperaturaEtiqueta === "caliente"
             ? "Por lo que contestaste, vale la pena una conversación de treinta minutos con un socio de CEDEM. Sin compromiso y sin presentación de por medio."
             : "Si quieres, seguimos platicando: puedes escribirnos o dejar que un socio de CEDEM revise tu caso contigo."}
@@ -256,7 +284,7 @@ export function Resultado({
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <BotonEnlace
             href={`https://api.whatsapp.com/send?phone=523322576343&text=${encodeURIComponent(
-              `Hice el Camino del Dueño y quiero hablar con un socio. Mi lectura: ${titular}`,
+              "Hice el Camino del Dueño y quiero hablar con un socio.",
             )}`}
             externo
             variante="claro"
@@ -280,15 +308,15 @@ export function Resultado({
         <p className="text-sm text-fg-muted">
           Nivel de acompañamiento que te corresponde por tamaño y etapa:{" "}
           <strong className="font-semibold text-fg">{ETIQUETA_NIVEL[perfil.nivel]}</strong>.
-          Esto no es una propuesta: es una lectura.
+          Esto no es una propuesta: es una observación.
         </p>
         {comentario ? (
-          <p className="text-[13px] text-fg-subtle">
+          <p className="text-sm text-fg-subtle">
             Guardamos también lo que nos escribiste. Lo vamos a leer antes de hablar contigo.
           </p>
         ) : null}
-        <p className="text-[12px] leading-relaxed text-fg-subtle">
-          Esta lectura es un apoyo para tu reflexión, no sustituye asesoría legal, fiscal ni
+        <p className="text-xs leading-relaxed text-fg-subtle">
+          Esta observación es un apoyo para tu reflexión, no sustituye asesoría legal, fiscal ni
           financiera. Tus respuestas quedan en tu perfil y puedes pedir que las borremos
           cuando quieras.{" "}
           <Link href="/aviso-de-privacidad" className="underline underline-offset-4">
@@ -296,8 +324,8 @@ export function Resultado({
           </Link>
           .
         </p>
-        <p className="text-[11px] text-fg-subtle">
-          Diagnóstico calculado con el motor {perfil.version}
+        <p className="text-xs text-fg-subtle">
+          Calculado con el motor {perfil.version}
           {segundos > 0 ? ` · ${Math.round(segundos / 60)} min de recorrido` : ""} ·
           confianza {perfil.confianza}.
         </p>

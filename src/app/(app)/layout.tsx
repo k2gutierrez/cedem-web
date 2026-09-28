@@ -81,7 +81,7 @@ export default async function LayoutPlataforma({
             <Link href="/app" aria-label="CEDEM 2.0, ir al panel">
               <Logo alto={28} />
             </Link>
-            <span className="hidden text-[11px] font-semibold uppercase tracking-[0.2em] text-fg-subtle sm:block">
+            <span className="hidden text-xs font-semibold uppercase tracking-[0.2em] text-fg-subtle sm:block">
               CEDEM 2.0
             </span>
           </div>
@@ -89,10 +89,10 @@ export default async function LayoutPlataforma({
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <div className="hidden items-center gap-2 sm:flex">
-              <span className="text-[13px] text-fg-muted">
+              <span className="text-sm text-fg-muted">
                 {nombreDe(sesion)}
                 {sesion.esAdmin ? (
-                  <span className="ml-2 rounded-full bg-sky/20 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-navy dark:text-sky">
+                  <span className="ml-2 rounded-full bg-sky/20 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-navy dark:text-sky">
                     {sesion.perfil?.role === "super_admin" ? "Super admin" : "Admin"}
                   </span>
                 ) : null}
@@ -100,7 +100,7 @@ export default async function LayoutPlataforma({
               <form action={salir}>
                 <button
                   type="submit"
-                  className="rounded-full border border-border px-3.5 py-1.5 text-[13px] font-medium text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
+                  className="rounded-full border border-border px-3.5 py-1.5 text-sm font-medium text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
                 >
                   Salir
                 </button>
@@ -121,20 +121,20 @@ export default async function LayoutPlataforma({
 
       <footer className="border-t border-border bg-bg py-6">
         <Container className="flex flex-wrap items-center justify-between gap-4">
-          <p className="text-[12px] text-fg-subtle">
+          <p className="text-xs text-fg-subtle">
             CEDEM · Centro de Dueñez Empresaria · &ldquo;Dueñez®&rdquo; es una marca
             registrada por Carlos A. Dumois Núñez.
           </p>
           <ul className="flex flex-wrap gap-5">
             {navegacion.slice(1, 4).map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className="text-[12px] text-fg-subtle hover:text-fg">
+                <Link href={item.href} className="text-xs text-fg-subtle hover:text-fg">
                   {item.etiqueta}
                 </Link>
               </li>
             ))}
             <li>
-              <Link href="/aviso-de-privacidad" className="text-[12px] text-fg-subtle hover:text-fg">
+              <Link href="/aviso-de-privacidad" className="text-xs text-fg-subtle hover:text-fg">
                 Aviso de privacidad
               </Link>
             </li>

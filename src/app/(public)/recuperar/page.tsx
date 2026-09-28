@@ -34,7 +34,7 @@ export default async function PaginaRecuperar(props: PageProps<"/recuperar">) {
       titulo="Recuperar tu contraseña"
       entrada="Escribe el correo con el que te registraste y te mandamos un enlace para crear una contraseña nueva."
       pie={
-        <p className="text-[12.5px] leading-relaxed text-fg-subtle">
+        <p className="text-xs leading-relaxed text-fg-subtle">
           Si el correo no llega en unos minutos, revisa la carpeta de no deseados. Y si
           sigue sin aparecer,{" "}
           <Link href="/contacto" className="font-medium text-navy dark:text-sky">
@@ -47,7 +47,7 @@ export default async function PaginaRecuperar(props: PageProps<"/recuperar">) {
       {aviso ? (
         <p
           role="status"
-          className="mb-6 rounded-2xl border border-amber-300/60 bg-amber-50 p-4 text-[13px] leading-relaxed text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200"
+          className="mb-6 rounded-2xl border border-amber-300/60 bg-amber-50 p-4 text-sm leading-relaxed text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200"
         >
           {aviso}
         </p>

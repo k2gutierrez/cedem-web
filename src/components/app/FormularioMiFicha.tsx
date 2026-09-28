@@ -15,8 +15,8 @@ import { Boton } from "@/components/ui/Boton";
  */
 
 const campo =
-  "w-full rounded-xl border border-border bg-bg px-4 py-3 text-[15px] text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
-const etiqueta = "mb-1.5 block text-[13px] font-medium text-fg-muted";
+  "w-full rounded-xl border border-border bg-bg px-4 py-3 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
+const etiqueta = "mb-1.5 block text-sm font-medium text-fg-muted";
 
 export type FichaEditable = {
   id: string;
@@ -110,7 +110,7 @@ export function FormularioMiFicha({ ficha }: { ficha: FichaEditable }) {
             placeholder="nombre@cedem.com.mx"
             className={campo}
           />
-          <p className="mt-1.5 text-[11.5px] text-fg-subtle">
+          <p className="mt-1.5 text-xs text-fg-subtle">
             Aparece en tu ficha. Déjalo vacío si prefieres que te contacten por LinkedIn.
           </p>
         </div>
@@ -167,7 +167,7 @@ export function FormularioMiFicha({ ficha }: { ficha: FichaEditable }) {
           placeholder="De dónde vienes, en qué trabajas con los dueños y qué te distingue. Escribe en párrafos separados por una línea en blanco."
           className={campo}
         />
-        <p className="mt-1.5 text-[11.5px] text-fg-subtle">
+        <p className="mt-1.5 text-xs text-fg-subtle">
           Es lo que lee un dueño antes de decidir si te busca. Dos o tres párrafos bastan.
         </p>
       </div>
@@ -184,7 +184,7 @@ export function FormularioMiFicha({ ficha }: { ficha: FichaEditable }) {
             placeholder="gobierno corporativo, sucesión, estrategia"
             className={campo}
           />
-          <p className="mt-1.5 text-[11.5px] text-fg-subtle">Separadas por comas.</p>
+          <p className="mt-1.5 text-xs text-fg-subtle">Separadas por comas.</p>
         </div>
 
         <div>
@@ -204,7 +204,7 @@ export function FormularioMiFicha({ ficha }: { ficha: FichaEditable }) {
       {estado.error ? (
         <p
           role="alert"
-          className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-[13px] text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200"
+          className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200"
         >
           {estado.error}
         </p>
@@ -213,7 +213,7 @@ export function FormularioMiFicha({ ficha }: { ficha: FichaEditable }) {
       {estado.ok ? (
         <p
           role="status"
-          className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-[13px] text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200"
+          className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-sm text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200"
         >
           {estado.ok}
         </p>

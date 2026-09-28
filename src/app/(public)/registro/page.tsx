@@ -34,7 +34,7 @@ export default async function PaginaRegistro(props: PageProps<"/registro">) {
 
           <ul className="mt-8 space-y-4">
             {beneficios.map((b) => (
-              <li key={b} className="flex gap-3 text-[15px] leading-relaxed text-fg-muted">
+              <li key={b} className="flex gap-3 text-sm leading-relaxed text-fg-muted">
                 <span
                   aria-hidden="true"
                   className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan dark:bg-sky"
@@ -44,7 +44,7 @@ export default async function PaginaRegistro(props: PageProps<"/registro">) {
             ))}
           </ul>
 
-          <p className="mt-8 text-[13px] leading-relaxed text-fg-subtle">
+          <p className="mt-8 text-sm leading-relaxed text-fg-subtle">
             Si ya eres cliente de CEDEM, tu consultor puede darte una invitación con
             acceso completo sin costo.
           </p>

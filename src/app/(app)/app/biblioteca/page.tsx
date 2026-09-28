@@ -72,8 +72,8 @@ export default async function PaginaBiblioteca(props: PageProps<"/app/biblioteca
           role="status"
           className={
             avisoActual.tono === "error"
-              ? "mt-6 rounded-2xl border border-amber-300/60 bg-amber-50 p-4 text-[13.5px] leading-relaxed text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200"
-              : "mt-6 rounded-2xl border border-emerald-300/60 bg-emerald-50 p-4 text-[13.5px] leading-relaxed text-emerald-900 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200"
+              ? "mt-6 rounded-2xl border border-amber-300/60 bg-amber-50 p-4 text-sm leading-relaxed text-amber-900 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200"
+              : "mt-6 rounded-2xl border border-emerald-300/60 bg-emerald-50 p-4 text-sm leading-relaxed text-emerald-900 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200"
           }
         >
           {avisoActual.texto}
@@ -120,7 +120,7 @@ export default async function PaginaBiblioteca(props: PageProps<"/app/biblioteca
           <div className="mt-6 space-y-8">
             {[...ejes.entries()].map(([clave, grupo]) => (
               <div key={clave}>
-                <h3 className="font-display text-[13px] font-bold uppercase tracking-[0.14em] text-cyan dark:text-sky">
+                <h3 className="font-display text-xs font-bold uppercase tracking-[0.14em] text-cyan dark:text-sky">
                   {grupo.label}
                 </h3>
                 <ul className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -131,20 +131,20 @@ export default async function PaginaBiblioteca(props: PageProps<"/app/biblioteca
                     >
                       <Link
                         href={`/app/biblioteca/${doc.slug}`}
-                        className="font-display text-[15px] font-bold leading-snug text-fg hover:text-navy dark:hover:text-sky"
+                        className="font-display text-sm font-bold leading-snug text-fg hover:text-navy dark:hover:text-sky"
                       >
                         {doc.titulo}
                       </Link>
 
                       {doc.resumen ? (
-                        <span className="mt-2 flex-1 text-[13px] leading-relaxed text-fg-muted">
+                        <span className="mt-2 flex-1 text-sm leading-relaxed text-fg-muted">
                           {doc.resumen}
                         </span>
                       ) : (
                         <span className="flex-1" />
                       )}
 
-                      <span className="mt-3 text-[11.5px] text-fg-subtle">
+                      <span className="mt-3 text-xs text-fg-subtle">
                         {[
                           doc.paginas ? `${doc.paginas} páginas` : null,
                           doc.minutos ? `${doc.minutos} min de lectura` : null,
@@ -156,7 +156,7 @@ export default async function PaginaBiblioteca(props: PageProps<"/app/biblioteca
                       <span className="mt-4 flex flex-wrap items-center gap-3">
                         <Link
                           href={`/app/biblioteca/${doc.slug}`}
-                          className="inline-flex items-center gap-1.5 font-display text-[13px] font-semibold text-navy hover:text-cyan dark:text-sky"
+                          className="inline-flex items-center gap-1.5 font-display text-sm font-semibold text-navy hover:text-cyan dark:text-sky"
                         >
                           Leer en línea
                           <IconoFlecha className="h-3.5 w-3.5" />
@@ -167,13 +167,13 @@ export default async function PaginaBiblioteca(props: PageProps<"/app/biblioteca
                             <input type="hidden" name="slug" value={doc.slug} />
                             <button
                               type="submit"
-                              className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 font-display text-[12.5px] font-semibold text-fg-muted transition-colors hover:border-cyan hover:text-navy dark:hover:border-sky dark:hover:text-sky"
+                              className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 font-display text-xs font-semibold text-fg-muted transition-colors hover:border-cyan hover:text-navy dark:hover:border-sky dark:hover:text-sky"
                             >
                               Descargar PDF
                             </button>
                           </form>
                         ) : (
-                          <span className="rounded-full border border-border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-fg-subtle">
+                          <span className="rounded-full border border-border px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-fg-subtle">
                             Con membresía
                           </span>
                         )}
@@ -186,7 +186,7 @@ export default async function PaginaBiblioteca(props: PageProps<"/app/biblioteca
           </div>
         )}
 
-        <p className="mt-6 text-[12.5px] leading-relaxed text-fg-subtle">
+        <p className="mt-6 text-xs leading-relaxed text-fg-subtle">
           &ldquo;Dueñez®&rdquo; es una marca registrada por Carlos A. Dumois Núñez. La
           reproducción total o parcial de este material requiere autorización por escrito.
         </p>
@@ -220,7 +220,7 @@ export default async function PaginaBiblioteca(props: PageProps<"/app/biblioteca
                 >
                   <span className="flex items-center gap-2">
                     {articulo.esPremium ? (
-                      <span className="rounded-full bg-sky/20 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-navy dark:text-sky">
+                      <span className="rounded-full bg-sky/20 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-navy dark:text-sky">
                         {sesion.esPremium ? "Miembros" : "Requiere membresía"}
                       </span>
                     ) : null}
@@ -228,7 +228,7 @@ export default async function PaginaBiblioteca(props: PageProps<"/app/biblioteca
                   <span className="mt-3 font-display text-base font-bold leading-snug text-fg">
                     {articulo.titulo}
                   </span>
-                  <span className="mt-2 flex-1 text-[13px] leading-relaxed text-fg-muted">
+                  <span className="mt-2 flex-1 text-sm leading-relaxed text-fg-muted">
                     {articulo.extracto}
                   </span>
                 </Link>
@@ -263,10 +263,10 @@ export default async function PaginaBiblioteca(props: PageProps<"/app/biblioteca
               key={webinar.titulo}
               className="rounded-2xl border border-border bg-bg p-5"
             >
-              <span className="block text-[14px] font-medium leading-snug text-fg">
+              <span className="block text-sm font-medium leading-snug text-fg">
                 {webinar.titulo}
               </span>
-              <span className="mt-1 block text-[12.5px] text-fg-subtle">
+              <span className="mt-1 block text-xs text-fg-subtle">
                 {webinar.duracion}
               </span>
             </li>

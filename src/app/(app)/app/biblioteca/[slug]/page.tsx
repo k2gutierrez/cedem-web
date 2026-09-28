@@ -36,7 +36,7 @@ export default async function PaginaDocumento(props: PageProps<"/app/biblioteca/
   return (
     <article className="py-14 lg:py-20">
       <Container size="estrecho">
-        <nav aria-label="Ruta" className="text-[13px] text-fg-subtle">
+        <nav aria-label="Ruta" className="text-sm text-fg-subtle">
           <Link href="/app/biblioteca" className="hover:text-cyan dark:hover:text-sky">
             Biblioteca
           </Link>
@@ -47,16 +47,16 @@ export default async function PaginaDocumento(props: PageProps<"/app/biblioteca/
         </nav>
 
         <ul className="mt-8 flex flex-wrap gap-2">
-          <li className="rounded-full bg-sky/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy dark:bg-sky/20 dark:text-sky">
+          <li className="rounded-full bg-sky/15 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-navy dark:bg-sky/20 dark:text-sky">
             {documento.ejeLabel}
           </li>
           {documento.paginas ? (
-            <li className="rounded-full border border-border px-2.5 py-1 text-[11px] font-medium text-fg-subtle">
+            <li className="rounded-full border border-border px-2.5 py-1 text-xs font-medium text-fg-subtle">
               {documento.paginas} páginas
             </li>
           ) : null}
           {documento.minutos ? (
-            <li className="rounded-full border border-border px-2.5 py-1 text-[11px] font-medium text-fg-subtle">
+            <li className="rounded-full border border-border px-2.5 py-1 text-xs font-medium text-fg-subtle">
               {documento.minutos} min de lectura
             </li>
           ) : null}
@@ -68,7 +68,7 @@ export default async function PaginaDocumento(props: PageProps<"/app/biblioteca/
         ) : null}
 
         {documento.autor ? (
-          <p className="mt-6 text-[13px] text-fg-subtle">{documento.autor}</p>
+          <p className="mt-6 text-sm text-fg-subtle">{documento.autor}</p>
         ) : null}
 
         <div className="regla-acento mt-8" />
@@ -109,7 +109,7 @@ export default async function PaginaDocumento(props: PageProps<"/app/biblioteca/
           </div>
         ) : (
           <div className="mt-10 flex flex-wrap items-center gap-4 rounded-2xl border border-border bg-bg-soft p-6">
-            <p className="flex-1 text-[13.5px] leading-relaxed text-fg-muted">
+            <p className="flex-1 text-sm leading-relaxed text-fg-muted">
               Puedes llevarte este documento en PDF para trabajarlo con tu equipo. La
               descarga queda registrada en tu historial de accesos.
             </p>
@@ -125,7 +125,7 @@ export default async function PaginaDocumento(props: PageProps<"/app/biblioteca/
           </div>
         )}
 
-        <p className="mt-12 border-t border-border pt-6 text-[12px] leading-relaxed text-fg-subtle">
+        <p className="mt-12 border-t border-border pt-6 text-xs leading-relaxed text-fg-subtle">
           {documento.derechos ??
             "«Dueñez®» es una marca registrada por Carlos A. Dumois Núñez."}{" "}
           Esta lectura es un apoyo para tu reflexión y no sustituye asesoría legal, fiscal ni

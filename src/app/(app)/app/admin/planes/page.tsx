@@ -87,7 +87,7 @@ export default async function PaginaAdminPlanes() {
         <h2 className="font-display text-xl font-bold text-fg">
           Pagos por confirmar
           {listaPendientes.length > 0 ? (
-            <span className="ml-3 rounded-full bg-amber-100 px-3 py-1 text-[13px] font-bold text-amber-800 dark:bg-amber-500/15 dark:text-amber-300">
+            <span className="ml-3 rounded-full bg-amber-100 px-3 py-1 text-sm font-bold text-amber-800 dark:bg-amber-500/15 dark:text-amber-300">
               {listaPendientes.length}
             </span>
           ) : null}
@@ -110,11 +110,11 @@ export default async function PaginaAdminPlanes() {
                 >
                   <div>
                     <p className="font-display text-base font-bold text-fg">{persona}</p>
-                    <p className="mt-1 text-[13px] text-fg-muted">
+                    <p className="mt-1 text-sm text-fg-muted">
                       {perfil?.email} ·{" "}
                       {formatearImporte(pago.amount_cents, pago.currency)}
                     </p>
-                    <p className="mt-1 font-mono text-[12.5px] text-fg-subtle">
+                    <p className="mt-1 font-mono text-xs text-fg-subtle">
                       {pago.external_reference}
                     </p>
                   </div>
@@ -124,7 +124,7 @@ export default async function PaginaAdminPlanes() {
                       <input type="hidden" name="dias" value="365" />
                       <button
                         type="submit"
-                        className="rounded-full bg-navy px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-[#0b1856] dark:bg-cyan dark:text-[#04102e]"
+                        className="rounded-full bg-navy px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#0b1856] dark:bg-cyan dark:text-[#04102e]"
                       >
                         Confirmar y activar
                       </button>
@@ -138,7 +138,7 @@ export default async function PaginaAdminPlanes() {
                       />
                       <button
                         type="submit"
-                        className="rounded-full border border-border px-4 py-2 text-[13px] font-medium text-fg-muted transition-colors hover:border-red-400 hover:text-red-700 dark:hover:text-red-300"
+                        className="rounded-full border border-border px-4 py-2 text-sm font-medium text-fg-muted transition-colors hover:border-red-400 hover:text-red-700 dark:hover:text-red-300"
                       >
                         Cancelar
                       </button>
@@ -149,7 +149,7 @@ export default async function PaginaAdminPlanes() {
             })}
           </ul>
         )}
-        <p className="mt-4 text-[12.5px] leading-relaxed text-fg-subtle">
+        <p className="mt-4 text-xs leading-relaxed text-fg-subtle">
           Al confirmar, la base crea la suscripción, cambia el rol del dueño y lo deja
           registrado en la auditoría. No hay que hacer nada más.
         </p>
@@ -176,12 +176,12 @@ export default async function PaginaAdminPlanes() {
               <li key={precio.id} className="rounded-2xl border border-border bg-bg p-6">
                 <p className="font-display text-lg font-bold text-fg">
                   {formatearImporte(precio.amount_cents, precio.currency)}{" "}
-                  <span className="text-[15px] font-medium text-fg-muted">
+                  <span className="text-sm font-medium text-fg-muted">
                     {INTERVALO[precio.billing_interval] ?? precio.billing_interval}
                   </span>
                 </p>
                 <details className="mt-4">
-                  <summary className="cursor-pointer text-[13px] font-semibold text-navy dark:text-sky">
+                  <summary className="cursor-pointer text-sm font-semibold text-navy dark:text-sky">
                     Cambiar el precio
                   </summary>
                   <div className="mt-5 border-t border-border pt-5">

@@ -72,7 +72,7 @@ export default async function PaginaPerfil() {
         </div>
       </div>
 
-      <p className="mt-6 text-[12.5px] leading-relaxed text-fg-subtle">
+      <p className="mt-6 text-xs leading-relaxed text-fg-subtle">
         Tus datos son tuyos: puedes pedir que los borremos escribiendo a CEDEM. Lo que
         guardamos y para qué está en el{" "}
         <a href="/aviso-de-privacidad" className="underline underline-offset-4">

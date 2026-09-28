@@ -64,8 +64,8 @@ export function FormularioContacto() {
   }
 
   const campo =
-    "w-full rounded-xl border border-border bg-bg px-4 py-3 text-[15px] text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
-  const etiqueta = "mb-1.5 block text-[13px] font-medium text-fg-muted";
+    "w-full rounded-xl border border-border bg-bg px-4 py-3 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
+  const etiqueta = "mb-1.5 block text-sm font-medium text-fg-muted";
 
   if (enviado) {
     return (
@@ -190,7 +190,7 @@ export function FormularioContacto() {
         <IconoFlecha className="h-4 w-4" />
       </Boton>
 
-      <p className="text-[12.5px] leading-relaxed text-fg-subtle">
+      <p className="text-xs leading-relaxed text-fg-subtle">
         Al enviar aceptas que CEDEM te contacte para dar seguimiento a tu solicitud.
         Tus datos no se comparten con terceros.
       </p>

@@ -1,11 +1,15 @@
 import { Revelar } from "@/components/fx/Efectos";
+import { CicloDelValor } from "@/components/marketing/graficos/CicloDelValor";
 import { Container } from "@/components/ui/Container";
 import { IconoFlecha } from "@/components/ui/Iconos";
 import { metodo } from "@/content/site";
 
 /**
  * El método: los tres verbos.
- * Va sobre fondo navy a sangre porque es el bloque que declara la categoría.
+ *
+ * Va sobre fondo navy a sangre porque es el bloque que declara la categoría, y
+ * abre con el ciclo dibujado: el valor se escapa por el eslabón más débil, y eso
+ * se ve en el diagrama antes de leer una sola línea de las tarjetas.
  */
 export function Metodo() {
   return (
@@ -27,17 +31,22 @@ export function Metodo() {
       </div>
 
       <Container className="relative">
-        <Revelar>
-        <p className="tagline text-sky">La metodología</p>
-        <h2 className="mt-3 max-w-[38rem] text-h2 text-white">
-          Generar, multiplicar y capturar valor
-        </h2>
-        <p className="mt-4 max-w-[52ch] text-lead text-[#c7d2e8]">
-          El valor no se crea de una sola vez. Primero se genera en el mercado, luego se
-          multiplica en la organización y por último se captura. La Dueñez es quien
-          responde por los tres movimientos.
-        </p>
-        </Revelar>
+        <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
+          <Revelar>
+            <p className="tagline text-sky">La metodología</p>
+            <h2 className="mt-3 max-w-[26ch] text-h2 text-white">
+              Generar, multiplicar y capturar valor
+            </h2>
+            <p className="mt-4 max-w-[46ch] text-lead text-[#c7d2e8]">
+              El valor no se crea de una vez. Se genera en el mercado, se multiplica en la
+              organización y se captura en el patrimonio. El dueño responde por los tres.
+            </p>
+          </Revelar>
+
+          <Revelar retraso={0.12} className="justify-self-center lg:justify-self-end">
+            <CicloDelValor className="w-full max-w-[420px]" />
+          </Revelar>
+        </div>
 
         <ol className="mt-14 grid gap-px overflow-hidden rounded-3xl bg-white/15 lg:grid-cols-3">
           {metodo.map((paso, i) => (
@@ -54,7 +63,7 @@ export function Metodo() {
                   {paso.verbo}
                 </h3>
               </div>
-              <p className="mt-2 text-[13px] uppercase tracking-[0.14em] text-sky">
+              <p className="mt-2 text-xs uppercase tracking-[0.14em] text-sky">
                 {paso.marco}
               </p>
 
@@ -74,13 +83,13 @@ export function Metodo() {
               </ul>
 
               <p className="mt-6 border-l-2 border-cyan pl-4 font-display text-sm italic leading-relaxed text-white/90">
-              {paso.idea}
-            </p>
+                {paso.idea}
+              </p>
             </Revelar>
           ))}
         </ol>
 
-        <p className="mt-10 max-w-[60ch] text-sm text-[#a9b8d6]">
+        <p className="mt-10 max-w-[60ch] text-xs text-[#a9b8d6]">
           &ldquo;Dueñez®&rdquo; es una marca registrada por Carlos A. Dumois Núñez.
         </p>
       </Container>

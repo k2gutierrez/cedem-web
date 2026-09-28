@@ -3,6 +3,7 @@ import { Montserrat, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import { ProveedorMovimiento } from "@/components/fx/ProveedorMovimiento";
 import { contacto, redes, sedes } from "@/content/site";
+import { rutaDeArchivo } from "@/lib/fotos-locales";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -42,6 +43,11 @@ export const metadata: Metadata = {
     title: "CEDEM · El valor de ser dueño",
     description:
       "El rol del dueño no se delega: se ejerce. Metodología de Dueñez Empresaria desde 1985.",
+    /* La imagen para compartir se anuncia solo cuando el archivo existe de verdad:
+       un `og:image` que devuelve 404 deja el enlace sin vista previa, y eso se ve
+       peor que no anunciarla. Se deja en `public/og/cedem-og.jpg` (ver
+       docs/21-prompts-de-imagenes.md) y el manifiesto la detecta al compilar. */
+    ...(rutaDeArchivo("cedem-og.jpg", "og") ? { images: ["/og/cedem-og.jpg"] } : {}),
   },
   robots: { index: true, follow: true },
 };

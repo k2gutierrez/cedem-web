@@ -7,7 +7,6 @@ import { Container } from "@/components/ui/Container";
 import { IconoFlecha } from "@/components/ui/Iconos";
 import { nombreDe, obtenerSesion } from "@/lib/auth/sesion";
 import { obtenerMisDiagnosticos } from "@/lib/datos/camino";
-import { NOMBRE_VERBO_CORTO } from "@/components/app/TarjetaDiagnostico";
 
 export const metadata: Metadata = {
   title: "Mi panel",
@@ -46,17 +45,17 @@ export default async function PaginaPanel() {
         {/* Camino del Dueño */}
         <Revelar className="flex lg:col-span-2">
         <article className="borde-vivo flex w-full flex-col rounded-2xl border border-border bg-bg p-7">
-          <p className="tagline text-fg-subtle">Tu diagnóstico</p>
+          <p className="tagline text-fg-subtle">Tu Camino del Dueño</p>
 
           {ultimo ? (
             <>
               <h2 className="mt-3 font-display text-xl font-bold text-fg">
-                Se te atora {NOMBRE_VERBO_CORTO[ultimo.perfil.verboCritico]}
+                {ultimo.lectura.titular}
               </h2>
               <p className="mt-3 flex-1 text-sm leading-relaxed text-fg-muted">
-                {ultimo.lectura.subtitulo}
+                {ultimo.lectura.observacion[0]}
               </p>
-              <p className="mt-3 text-[13px] text-fg-subtle">
+              <p className="mt-3 text-sm text-fg-subtle">
                 {ultimo.completadaEn
                   ? `Lo hiciste el ${new Date(ultimo.completadaEn).toLocaleDateString("es-MX", {
                       day: "2-digit",

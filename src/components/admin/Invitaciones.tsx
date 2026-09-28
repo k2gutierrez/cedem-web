@@ -10,8 +10,8 @@ import {
 } from "@/app/acciones/invitaciones";
 
 const campo =
-  "w-full rounded-xl border border-border bg-bg px-4 py-2.5 text-[15px] text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
-const etiqueta = "mb-1.5 block text-[13px] font-medium text-fg-muted";
+  "w-full rounded-xl border border-border bg-bg px-4 py-2.5 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
+const etiqueta = "mb-1.5 block text-sm font-medium text-fg-muted";
 
 function Enviar({ texto, cargando }: { texto: string; cargando: string }) {
   const { pending } = useFormStatus();
@@ -49,7 +49,7 @@ export function FormularioInvitacion({
             className={campo}
             placeholder="dueno@empresa.com"
           />
-          <p className="mt-1.5 text-[12px] text-fg-subtle">
+          <p className="mt-1.5 text-xs text-fg-subtle">
             Si lo pones, la invitación solo la puede canjear esa persona.
           </p>
         </div>
@@ -106,18 +106,18 @@ export function FormularioInvitacion({
       </div>
 
       {estado.error ? (
-        <p role="alert" className="rounded-xl border border-red-300 bg-red-50 px-4 py-2.5 text-[13px] text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200">
+        <p role="alert" className="rounded-xl border border-red-300 bg-red-50 px-4 py-2.5 text-sm text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200">
           {estado.error}
         </p>
       ) : null}
 
       {estado.codigo ? (
         <div className="rounded-xl border border-cyan/40 bg-sky/10 p-5 dark:border-sky/40">
-          <p className="text-[13px] text-fg-muted">Código generado:</p>
+          <p className="text-sm text-fg-muted">Código generado:</p>
           <p className="mt-1 font-mono text-lg font-bold tracking-wider text-fg">
             {estado.codigo}
           </p>
-          <p className="mt-2 text-[12.5px] text-fg-subtle">
+          <p className="mt-2 text-xs text-fg-subtle">
             Cópialo y mándaselo al cliente. Lo canjea en /invitacion.
           </p>
         </div>
@@ -167,7 +167,7 @@ export function FormularioCanje({ codigoInicial = "" }: { codigoInicial?: string
       </div>
 
       {estado.error ? (
-        <p role="alert" className="rounded-xl border border-red-300 bg-red-50 px-4 py-2.5 text-[13px] text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200">
+        <p role="alert" className="rounded-xl border border-red-300 bg-red-50 px-4 py-2.5 text-sm text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200">
           {estado.error}
         </p>
       ) : null}

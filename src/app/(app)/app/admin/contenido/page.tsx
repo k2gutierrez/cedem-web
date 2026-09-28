@@ -69,7 +69,7 @@ export default async function PaginaAdminContenido(
       {recienCreado ? (
         <p
           role="status"
-          className="mt-8 rounded-xl border border-cyan/40 bg-sky/10 px-4 py-3 text-[13px] text-fg-muted dark:border-sky/40"
+          className="mt-8 rounded-xl border border-cyan/40 bg-sky/10 px-4 py-3 text-sm text-fg-muted dark:border-sky/40"
         >
           Listo. El contenido quedó guardado.
         </p>
@@ -82,7 +82,7 @@ export default async function PaginaAdminContenido(
           { etiqueta: "Solo para miembros", valor: cuenta.premium },
         ].map((dato) => (
           <div key={dato.etiqueta} className="bg-bg p-5">
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+            <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
               {dato.etiqueta}
             </dt>
             <dd className="mt-1.5 font-display text-2xl font-bold text-fg">{dato.valor}</dd>
@@ -107,7 +107,7 @@ export default async function PaginaAdminContenido(
         <div className="mt-8 overflow-hidden rounded-2xl border border-border bg-bg">
           <table className="w-full text-left text-sm">
             <thead className="border-b border-border bg-bg-soft">
-              <tr className="text-[11px] uppercase tracking-wider text-fg-subtle">
+              <tr className="text-xs uppercase tracking-wider text-fg-subtle">
                 <th className="px-5 py-3 font-semibold">Título</th>
                 <th className="px-4 py-3 font-semibold">Estado</th>
                 <th className="hidden px-4 py-3 font-semibold sm:table-cell">Visibilidad</th>
@@ -126,14 +126,14 @@ export default async function PaginaAdminContenido(
                       {contenido.title}
                     </Link>
                     {contenido.is_featured ? (
-                      <span className="ml-2 rounded-full bg-sky/20 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-navy dark:text-sky">
+                      <span className="ml-2 rounded-full bg-sky/20 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-navy dark:text-sky">
                         Destacado
                       </span>
                     ) : null}
                   </td>
                   <td className="px-4 py-4">
                     <span
-                      className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider ${
+                      className={`rounded-full px-2.5 py-1 text-xs font-semibold uppercase tracking-wider ${
                         contenido.status === "publicado"
                           ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300"
                           : "bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300"
@@ -152,7 +152,7 @@ export default async function PaginaAdminContenido(
                     <div className="flex flex-wrap items-center justify-end gap-2">
                       <Link
                         href={`/app/admin/contenido/${contenido.id}`}
-                        className="rounded-full border border-border px-3 py-1.5 text-[12px] font-medium text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
+                        className="rounded-full border border-border px-3 py-1.5 text-xs font-medium text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
                       >
                         Editar
                       </Link>
@@ -165,7 +165,7 @@ export default async function PaginaAdminContenido(
                         />
                         <button
                           type="submit"
-                          className="rounded-full border border-border px-3 py-1.5 text-[12px] font-medium text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
+                          className="rounded-full border border-border px-3 py-1.5 text-xs font-medium text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
                         >
                           {contenido.is_featured ? "Quitar destacado" : "Destacar"}
                         </button>
@@ -179,7 +179,7 @@ export default async function PaginaAdminContenido(
                         />
                         <button
                           type="submit"
-                          className="rounded-full bg-navy px-3 py-1.5 text-[12px] font-semibold text-white transition-colors hover:bg-[#0b1856] dark:bg-cyan dark:text-[#04102e]"
+                          className="rounded-full bg-navy px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-[#0b1856] dark:bg-cyan dark:text-[#04102e]"
                         >
                           {contenido.status === "publicado" ? "Archivar" : "Publicar"}
                         </button>
@@ -193,7 +193,7 @@ export default async function PaginaAdminContenido(
         </div>
       )}
 
-      <p className="mt-6 text-[12.5px] text-fg-subtle">
+      <p className="mt-6 text-xs text-fg-subtle">
         La base de datos no permite publicar sin cuerpo ni artículos sin autoría: si algo
         falta, te lo dirá al guardar.{" "}
         <Link href="/recursos" className="underline underline-offset-4">

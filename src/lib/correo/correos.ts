@@ -1,5 +1,4 @@
 import type { Perfil } from "@/lib/camino/puntuar";
-import { TITULARES } from "@/lib/camino/puntuar";
 import { ETIQUETAS_BASE, EJERCICIOS_BASE, articulosPara } from "@/content/camino/catalogo";
 import { lecturaBase, type Lectura } from "@/lib/ia/lectura";
 import { enviarCorreo } from "@/lib/correo/enviar";
@@ -7,17 +6,16 @@ import { enviarCorreo } from "@/lib/correo/enviar";
 /**
  * El correo que llega después del Camino del Dueño.
  *
- * Es el correo más importante de la plataforma, y hasta hoy no existía: el dueño
- * terminaba el recorrido, dejaba su correo, se le creaba la cuenta y no recibía
- * nada. Ni su lectura, ni la forma de volver.
+ * Es el correo más importante de la plataforma, y hasta hace poco no existía: el
+ * dueño terminaba el recorrido, dejaba su correo, se le creaba la cuenta y no
+ * recibía nada. Ni su lectura, ni la forma de volver.
  *
  * QUÉ LLEVA, Y POR QUÉ ESO Y NO OTRA COSA
  *
- * Lo mismo que vio en pantalla, y nada más: el veredicto, la lectura, tres
- * artículos y tres ejercicios. Sin promociones, sin «descubre todo lo que CEDEM
- * tiene para ti» y sin pedirle que compre nada. Es la promesa del Camino —«cinco
- * minutos y te llevas algo útil»— y el correo tiene que cumplirla igual que la
- * pantalla.
+ * Lo mismo que vio en pantalla, y nada más: la observación, tres artículos y tres
+ * ejercicios. Sin promociones, sin «descubre todo lo que CEDEM tiene para ti» y sin
+ * pedirle que compre nada. Es la promesa del Camino —«cinco minutos y te llevas
+ * algo útil»— y el correo tiene que cumplirla igual que la pantalla.
  *
  * Al final, y en una línea discreta, cómo volver: ya tiene cuenta (se le creó al
  * dejar el correo) y puede pedir su contraseña cuando quiera. Eso es todo el
@@ -27,12 +25,6 @@ import { enviarCorreo } from "@/lib/correo/enviar";
 const NAVY = "#0F206C";
 const CYAN = "#00A1E0";
 const SKY = "#6CC5E9";
-
-const NOMBRE_VERBO: Record<string, string> = {
-  generar: "Generar valor",
-  multiplicar: "Multiplicar valor",
-  capturar: "Capturar valor",
-};
 
 const NOMBRE_DISPERSANTE: Record<string, string> = {
   desenfoque: "el desenfoque",
@@ -77,15 +69,16 @@ export function correoDelCamino(datos: {
 
   const nombrePila = datos.nombre.trim().split(/\s+/)[0] ?? "";
   const saludo = nombrePila ? `${nombrePila}: ` : "";
-  const verbo = NOMBRE_VERBO[perfil.verboCritico]?.toLowerCase() ?? "generar valor";
 
-  const asunto = `${saludo}te atoras en ${verbo}`;
+  /* El asunto ya no anuncia un verbo ni una etiqueta: dice que hay una observación,
+     que es lo que el dueño recibe. Un asunto como «te atoras en multiplicar» ponía
+     el diagnóstico por delante del trabajo, y en la bandeja de entrada eso se lee
+     como un juicio. */
+  const asunto = `${saludo}esto es lo que observamos en tu caso`;
 
-  /* La lectura base usa el titular del arquetipo como subtítulo. Cuando la IA afinó
-     la lectura, el subtítulo es suyo y aporta; cuando no, repetirlo sería decir dos
-     veces lo mismo. Misma regla que en la tarjeta del historial. */
-  const titular = TITULARES[perfil.arquetipo];
-  const subtitulo = lectura.subtitulo.trim() === titular.trim() ? null : lectura.subtitulo;
+  /* La frase de espejo la escribe la IA cuando hay IA; si no, es la del motor. */
+  const titular = lectura.titular;
+  const parrafos = lectura.observacion.filter((p) => p.trim().length > 0);
 
   const html = `<!doctype html>
 <html lang="es-MX"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
@@ -100,11 +93,11 @@ export function correoDelCamino(datos: {
   </td></tr>
 
   <tr><td style="padding:34px 32px 0">
-    <p style="margin:0 0 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:${CYAN}">Tu Camino del Dueño</p>
+    <p style="margin:0 0 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:${CYAN}">Observación de CEDEM</p>
     <h1 style="margin:0 0 16px;font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:25px;line-height:1.25;color:${NAVY}">
       ${titular}
     </h1>
-    ${subtitulo ? `<p style="margin:0;font-size:16px;line-height:1.6;color:#3c4257">${subtitulo}</p>` : ""}
+    <p style="margin:0;font-size:13px;line-height:1.6;color:#7b879e">Camino del Dueño · lectura hecha para tu caso</p>
   </td></tr>
 
   <tr><td style="padding:26px 32px 0">
@@ -119,8 +112,13 @@ export function correoDelCamino(datos: {
   </td></tr>
 
   <tr><td style="padding:24px 32px 0">
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#3c4257">${lectura.verbo}</p>
-    <p style="margin:0;font-size:15px;line-height:1.65;color:#3c4257">${lectura.freno}</p>
+    ${parrafos
+      .map(
+        (parrafo, i) =>
+          `<p style="margin:0 0 ${i === parrafos.length - 1 ? "0" : "14px"};font-size:15px;line-height:1.65;color:#3c4257">${parrafo}</p>`,
+      )
+      .join("")}
+    <p style="margin:16px 0 0;font-size:13px;line-height:1.6;color:#7b879e">— Equipo de consultoría de CEDEM</p>
   </td></tr>
 
   ${

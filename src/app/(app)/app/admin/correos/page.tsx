@@ -88,15 +88,15 @@ export default async function PaginaCorreos() {
             : "border-amber-300/60 bg-amber-50 dark:border-amber-400/30 dark:bg-amber-400/10"
         }`}
       >
-        <p className="font-display text-[15px] font-bold text-fg">
+        <p className="font-display text-sm font-bold text-fg">
           {configurado
             ? "El envío automático está encendido"
             : "El envío automático todavía no está configurado"}
         </p>
-        <p className="mt-2 max-w-[62ch] text-[13px] leading-relaxed text-fg-muted">
+        <p className="mt-2 max-w-[62ch] text-sm leading-relaxed text-fg-muted">
           {configurado ? (
             <>
-              Los correos salen solos desde <code className="font-mono text-[12px]">{remitente()}</code>.
+              Los correos salen solos desde <code className="font-mono text-xs">{remitente()}</code>.
               Lo que quede pendiente o fallido se puede reintentar aquí.
             </>
           ) : (
@@ -112,7 +112,7 @@ export default async function PaginaCorreos() {
           <form action={reintentarCola} className="mt-4">
             <button
               type="submit"
-              className="rounded-full bg-navy px-4 py-2 font-display text-[13px] font-semibold text-white transition-colors hover:bg-cyan dark:bg-sky dark:text-navy"
+              className="rounded-full bg-navy px-4 py-2 font-display text-sm font-semibold text-white transition-colors hover:bg-cyan dark:bg-sky dark:text-navy"
             >
               Reintentar los {pendientes.length + fallidos.length} que faltan
             </button>
@@ -128,7 +128,7 @@ export default async function PaginaCorreos() {
           { etiqueta: "Fallidos", valor: fallidos.length, tono: "text-red-700 dark:text-red-300" },
         ].map((c) => (
           <div key={c.etiqueta} className="rounded-2xl border border-border bg-bg p-5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-fg-subtle">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-fg-subtle">
               {c.etiqueta}
             </p>
             <p className={`mt-2 font-display text-2xl font-bold ${c.tono}`}>{c.valor}</p>
@@ -150,18 +150,18 @@ export default async function PaginaCorreos() {
             <li key={c.id} className="rounded-2xl border border-border bg-bg p-5">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-[240px] flex-1">
-                  <p className="font-display text-[15px] font-bold text-fg">{c.asunto}</p>
-                  <p className="mt-0.5 text-[13px] text-fg-muted">
-                    Para: <span className="font-mono text-[12.5px]">{c.para}</span>
+                  <p className="font-display text-sm font-bold text-fg">{c.asunto}</p>
+                  <p className="mt-0.5 text-sm text-fg-muted">
+                    Para: <span className="font-mono text-xs">{c.para}</span>
                   </p>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="rounded-full bg-sky/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-navy dark:text-sky">
+                  <span className="rounded-full bg-sky/15 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-navy dark:text-sky">
                     {ETIQUETA_TIPO[c.tipo] ?? c.tipo}
                   </span>
                   <span
-                    className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider ${
+                    className={`rounded-full px-2.5 py-1 text-xs font-semibold uppercase tracking-wider ${
                       c.estado === "enviado"
                         ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300"
                         : c.estado === "fallido"
@@ -174,7 +174,7 @@ export default async function PaginaCorreos() {
                 </div>
               </div>
 
-              <p className="mt-2 text-[12px] text-fg-subtle">
+              <p className="mt-2 text-xs text-fg-subtle">
                 {new Date(c.created_at).toLocaleString("es-MX", {
                   day: "2-digit",
                   month: "short",
@@ -189,15 +189,15 @@ export default async function PaginaCorreos() {
 
               {c.estado !== "enviado" ? (
                 <details className="mt-4">
-                  <summary className="cursor-pointer text-[13px] font-semibold text-navy dark:text-sky">
+                  <summary className="cursor-pointer text-sm font-semibold text-navy dark:text-sky">
                     Ver el texto para mandarlo a mano
                   </summary>
 
                   <div className="mt-4 rounded-xl border border-border bg-bg-soft p-4">
-                    <p className="text-[12px] font-semibold uppercase tracking-wider text-fg-subtle">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-fg-subtle">
                       Texto del correo
                     </p>
-                    <pre className="mt-2 max-h-72 overflow-auto whitespace-pre-wrap font-sans text-[13px] leading-relaxed text-fg-muted">
+                    <pre className="mt-2 max-h-72 overflow-auto whitespace-pre-wrap font-sans text-sm leading-relaxed text-fg-muted">
                       {c.cuerpo_texto ?? "(sin texto)"}
                     </pre>
                   </div>
@@ -206,7 +206,7 @@ export default async function PaginaCorreos() {
                     <input type="hidden" name="id" value={c.id} />
                     <button
                       type="submit"
-                      className="rounded-full border border-border px-4 py-2 font-display text-[13px] font-semibold text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
+                      className="rounded-full border border-border px-4 py-2 font-display text-sm font-semibold text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
                     >
                       Ya lo mandé a mano
                     </button>
@@ -218,7 +218,7 @@ export default async function PaginaCorreos() {
         </ul>
       )}
 
-      <p className="mt-10 text-[12.5px] leading-relaxed text-fg-subtle">
+      <p className="mt-10 text-xs leading-relaxed text-fg-subtle">
         Los correos se guardan antes de intentar enviarlos: si el proveedor falla, el aviso no
         se pierde. Es la diferencia entre «no se pudo enviar» y «no se pudo enviar, está en la
         cola».

@@ -25,8 +25,8 @@ export type Consultor = {
 };
 
 const campo =
-  "w-full rounded-xl border border-border bg-bg px-4 py-2.5 text-[14px] text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
-const etiqueta = "mb-1 block text-[12px] font-medium text-fg-muted";
+  "w-full rounded-xl border border-border bg-bg px-4 py-2.5 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
+const etiqueta = "mb-1 block text-xs font-medium text-fg-muted";
 
 function Enviar({ editar }: { editar: boolean }) {
   const { pending } = useFormStatus();
@@ -165,7 +165,7 @@ export function FormularioConsultor({ consultor }: { consultor?: Consultor }) {
       </div>
 
       <div className="flex flex-wrap gap-6">
-        <label className="flex items-center gap-2.5 text-[13px] text-fg-muted">
+        <label className="flex items-center gap-2.5 text-sm text-fg-muted">
           <input
             type="checkbox"
             name="fundador"
@@ -175,7 +175,7 @@ export function FormularioConsultor({ consultor }: { consultor?: Consultor }) {
           Es fundador o socia fundadora
         </label>
         {editar ? (
-          <label className="flex items-center gap-2.5 text-[13px] text-fg-muted">
+          <label className="flex items-center gap-2.5 text-sm text-fg-muted">
             <input
               type="checkbox"
               name="activo"
@@ -188,12 +188,12 @@ export function FormularioConsultor({ consultor }: { consultor?: Consultor }) {
       </div>
 
       {estado.error ? (
-        <p role="alert" className="rounded-xl border border-red-300 bg-red-50 px-4 py-2.5 text-[13px] text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200">
+        <p role="alert" className="rounded-xl border border-red-300 bg-red-50 px-4 py-2.5 text-sm text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200">
           {estado.error}
         </p>
       ) : null}
       {estado.ok ? (
-        <p role="status" className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2.5 text-[13px] text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200">
+        <p role="status" className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2.5 text-sm text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200">
           {estado.ok}
         </p>
       ) : null}

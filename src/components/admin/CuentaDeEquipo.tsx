@@ -32,10 +32,10 @@ function PanelClave({ dato }: { dato: EstadoCuentaEquipo }) {
 
   return (
     <div className="mt-4 rounded-2xl border border-emerald-300/70 bg-emerald-50 p-5 dark:border-emerald-500/40 dark:bg-emerald-500/10">
-      <p className="font-display text-[14px] font-bold text-emerald-900 dark:text-emerald-200">
+      <p className="font-display text-sm font-bold text-emerald-900 dark:text-emerald-200">
         {dato.ok}
       </p>
-      <dl className="mt-3 space-y-1.5 text-[13px]">
+      <dl className="mt-3 space-y-1.5 text-sm">
         {dato.correo ? (
           <div className="flex gap-2">
             <dt className="text-emerald-800/80 dark:text-emerald-300/80">Correo:</dt>
@@ -49,7 +49,7 @@ function PanelClave({ dato }: { dato: EstadoCuentaEquipo }) {
           </dd>
         </div>
       </dl>
-      <p className="mt-3 text-[12px] leading-relaxed text-emerald-800/90 dark:text-emerald-300/90">
+      <p className="mt-3 text-xs leading-relaxed text-emerald-800/90 dark:text-emerald-300/90">
         Cópiala ahora: no se puede volver a consultar. Al entrar, que la cambie en{" "}
         <b>Mi perfil → Tu contraseña</b>.
       </p>
@@ -78,16 +78,16 @@ export function CuentaDeEquipo({
   );
 
   const campo =
-    "w-full rounded-xl border border-border bg-bg px-4 py-3 text-[15px] text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
-  const etiqueta = "mb-1.5 block text-[13px] font-medium text-fg-muted";
+    "w-full rounded-xl border border-border bg-bg px-4 py-3 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
+  const etiqueta = "mb-1.5 block text-sm font-medium text-fg-muted";
 
   if (tieneCuenta) {
     return (
       <div className="rounded-2xl border border-border bg-bg-soft p-5">
-        <p className="text-[13px] font-semibold text-fg">
+        <p className="text-sm font-semibold text-fg">
           {nombre} ya tiene cuenta de acceso
         </p>
-        <p className="mt-1.5 text-[12.5px] leading-relaxed text-fg-muted">
+        <p className="mt-1.5 text-xs leading-relaxed text-fg-muted">
           Puede entrar a la plataforma y editar su propia ficha.
         </p>
 
@@ -97,7 +97,7 @@ export function CuentaDeEquipo({
         </form>
 
         {estadoReset.error ? (
-          <p role="alert" className="mt-3 text-[12.5px] text-red-700 dark:text-red-300">
+          <p role="alert" className="mt-3 text-xs text-red-700 dark:text-red-300">
             {estadoReset.error}
           </p>
         ) : null}
@@ -108,8 +108,8 @@ export function CuentaDeEquipo({
 
   return (
     <div className="rounded-2xl border border-border bg-bg-soft p-5">
-      <p className="text-[13px] font-semibold text-fg">Darle acceso a la plataforma</p>
-      <p className="mt-1.5 text-[12.5px] leading-relaxed text-fg-muted">
+      <p className="text-sm font-semibold text-fg">Darle acceso a la plataforma</p>
+      <p className="mt-1.5 text-xs leading-relaxed text-fg-muted">
         Todavía no tiene cuenta. Al crearla podrá entrar y editar su propia ficha, sin pagar
         membresía.
       </p>
@@ -153,7 +153,7 @@ export function CuentaDeEquipo({
       </form>
 
       {estado.error ? (
-        <p role="alert" className="mt-3 text-[12.5px] text-red-700 dark:text-red-300">
+        <p role="alert" className="mt-3 text-xs text-red-700 dark:text-red-300">
           {estado.error}
         </p>
       ) : null}
@@ -177,7 +177,7 @@ function Restablecer() {
     <button
       type="submit"
       disabled={pending}
-      className="rounded-full border border-border px-4 py-2 font-display text-[13px] font-semibold text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
+      className="rounded-full border border-border px-4 py-2 font-display text-sm font-semibold text-fg-muted transition-colors hover:border-cyan hover:text-fg dark:hover:border-sky"
     >
       {pending ? "Generando…" : "No puede entrar: darle una contraseña nueva"}
     </button>

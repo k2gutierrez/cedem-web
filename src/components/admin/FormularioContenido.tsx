@@ -12,8 +12,8 @@ import {
 const inicial: EstadoContenido = {};
 
 const campo =
-  "w-full rounded-xl border border-border bg-bg px-4 py-3 text-[15px] text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
-const etiqueta = "mb-1.5 block text-[13px] font-medium text-fg-muted";
+  "w-full rounded-xl border border-border bg-bg px-4 py-3 text-sm text-fg outline-none transition-colors placeholder:text-fg-subtle focus:border-cyan dark:focus:border-sky";
+const etiqueta = "mb-1.5 block text-sm font-medium text-fg-muted";
 
 function Botones({ editar = false }: { editar?: boolean }) {
   const { pending } = useFormStatus();
@@ -78,7 +78,7 @@ export function FormularioContenido({
 
       {editar ? (
         <div className="rounded-2xl border border-border bg-bg-soft p-4">
-          <p className="text-[12.5px] leading-relaxed text-fg-muted">
+          <p className="text-xs leading-relaxed text-fg-muted">
             Dirección pública: <code className="font-mono text-fg">/recursos/{contenido!.slug}</code>
             {contenido!.content_type === "documento" ? (
               <>
@@ -88,7 +88,7 @@ export function FormularioContenido({
               </>
             ) : null}
           </p>
-          <p className="mt-1.5 text-[12px] leading-relaxed text-fg-subtle">
+          <p className="mt-1.5 text-xs leading-relaxed text-fg-subtle">
             La dirección no cambia al editar el título: cambiarla rompería los enlaces que
             la gente ya compartió y el posicionamiento en Google.
           </p>
@@ -191,10 +191,10 @@ export function FormularioContenido({
           name="cuerpo"
           rows={14}
           defaultValue={contenido?.body_md ?? ""}
-          className={`${campo} resize-y font-mono text-[14px]`}
+          className={`${campo} resize-y font-mono text-sm`}
           placeholder={"Escribe aquí. Puedes usar markdown:\n\n## Un subtítulo\n\nUn párrafo normal.\n\n- Una lista\n- Otra línea"}
         />
-        <p className="mt-2 text-[12px] text-fg-subtle">
+        <p className="mt-2 text-xs text-fg-subtle">
           El primer párrafo es lo que verá quien no tenga membresía: cuídalo. Los artículos
           migrados de WordPress traen HTML; los nuevos se escriben en markdown.
         </p>
@@ -212,7 +212,7 @@ export function FormularioContenido({
           className={`${campo} resize-y`}
           placeholder="Si lo dejas vacío, se usa el primer párrafo del cuerpo."
         />
-        <p className="mt-2 text-[12px] text-fg-subtle">
+        <p className="mt-2 text-xs text-fg-subtle">
           Es lo único que ve quien no tiene acceso. Si escribes uno a mano, manda sobre el
           primer párrafo.
         </p>
@@ -221,7 +221,7 @@ export function FormularioContenido({
       {estado.error ? (
         <p
           role="alert"
-          className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-[13px] text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200"
+          className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200"
         >
           {estado.error}
         </p>
@@ -230,7 +230,7 @@ export function FormularioContenido({
       {estado.ok ? (
         <p
           role="status"
-          className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-[13px] text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200"
+          className="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-sm text-emerald-800 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-200"
         >
           {estado.ok}
         </p>

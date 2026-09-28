@@ -34,12 +34,12 @@ const roles = [
   {
     titulo: "El dueño",
     texto:
-      "Responde por el patrimonio y por el rumbo. Decide la fórmula de negocio, la fórmula de gobierno y la propiedad. Puede compartir su Dueñez con socios, con el consejo y con la familia, pero no puede delegarla: nadie decide en su lugar.",
+      "Responde por el patrimonio y por el rumbo: decide la fórmula de negocio, la de gobierno y la propiedad. Puede compartir su Dueñez, pero no delegarla.",
   },
   {
     titulo: "El director",
     texto:
-      "Responde por la operación. Ejecuta la estrategia con el equipo, administra los recursos y rinde cuentas. Su rol se contrata, se evalúa y se sustituye sin que la empresa pierda el rumbo.",
+      "Responde por la operación: ejecuta la estrategia, administra los recursos y rinde cuentas. Su rol se contrata y se sustituye sin perder el rumbo.",
   },
 ];
 
@@ -55,36 +55,36 @@ export default function PaginaNosotros() {
         etiqueta="Nosotros"
         antetitulo="La firma"
         titulo="Una escuela de dueños y una firma de consultoría, en la misma casa"
-        entrada="CEDEM es la integración de una escuela de formación de dueños con una firma de consultoría especializada en gestión de valor. Lo que se aprende acompañando empresas se convierte en programa; lo que se enseña se aplica en la empresa."
+        entrada="Aquí se forma y se acompaña al que decide. Lo que aprendemos con las empresas se vuelve programa; lo que enseñamos se aplica en tu empresa al día siguiente."
       >
         <dl className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
           <div className="bg-bg p-5">
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+            <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
               Desde
             </dt>
-            <dd className="mt-1.5 font-display text-[15px] font-semibold text-fg">1985</dd>
+            <dd className="mt-1.5 font-display text-base font-semibold text-fg">1985</dd>
           </div>
           <div className="bg-bg p-5">
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+            <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
               Empresarios acompañados
             </dt>
-            <dd className="mt-1.5 font-display text-[15px] font-semibold text-fg">
+            <dd className="mt-1.5 font-display text-base font-semibold text-fg">
               Más de 3,000
             </dd>
           </div>
           <div className="bg-bg p-5">
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+            <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
               Países
             </dt>
-            <dd className="mt-1.5 font-display text-[15px] font-semibold text-fg">
+            <dd className="mt-1.5 font-display text-base font-semibold text-fg">
               {paises.length} en Iberoamérica
             </dd>
           </div>
           <div className="bg-bg p-5">
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+            <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
               Sedes
             </dt>
-            <dd className="mt-1.5 font-display text-[15px] font-semibold text-fg">
+            <dd className="mt-1.5 font-display text-base font-semibold text-fg">
               Zapopan, Miami y Houston
             </dd>
           </div>
@@ -99,20 +99,19 @@ export default function PaginaNosotros() {
             titulo="Escuela y firma, sin separación"
             entrada="Centro de Dueñez Empresaria. Cuatro décadas formando y acompañando a quien decide."
           />
-          <div className="space-y-4 text-[15px] leading-relaxed text-fg-muted">
+          <div className="space-y-4 text-base leading-relaxed text-fg-muted">
             <p>
               No somos una consultora que además da cursos, ni una escuela que además
-              asesora. Somos las dos cosas integradas: el conocimiento que se produce
-              acompañando empresas se convierte en programa, y lo que se enseña en el aula
-              se aplica en la empresa al día siguiente.
+              asesora. Somos las dos cosas: lo que se produce acompañando empresas se
+              enseña, y lo que se enseña se aplica.
             </p>
             <p>
               Desde 1985 hemos acompañado a más de 3,000 empresarios en Iberoamérica. Ese
-              archivo de casos es el activo de la casa: lo que ya funcionó, lo que ya
-              falló y las condiciones en que cada decisión se sostiene.
+              archivo de casos es el activo de la casa: lo que ya funcionó y lo que ya
+              falló.
             </p>
             <div className="rounded-2xl border border-border bg-bg-soft p-6">
-              <p className="font-display text-[15px] font-bold text-fg">
+              <p className="font-display text-base font-bold text-fg">
                 &ldquo;Dueñez®&rdquo; es una marca registrada por Carlos A. Dumois Núñez.
               </p>
               <p className="mt-2 text-sm leading-relaxed text-fg-muted">
@@ -138,15 +137,15 @@ export default function PaginaNosotros() {
               <article key={rol.titulo} className="borde-vivo rounded-2xl border border-border bg-bg p-7">
                 <h3 className="font-display text-xl font-bold text-fg">{rol.titulo}</h3>
                 <div className="regla-acento mt-5" />
-                <p className="mt-5 text-[15px] leading-relaxed text-fg-muted">{rol.texto}</p>
+                <p className="mt-5 text-base leading-relaxed text-fg-muted">{rol.texto}</p>
               </article>
             ))}
           </div>
 
-          <p className="mt-8 max-w-[62ch] text-[15px] leading-relaxed text-fg-muted">
+          <p className="mt-8 max-w-[62ch] text-base leading-relaxed text-fg-muted">
             El problema de muchas empresas familiares no es el director: es el dueño que
-            nunca ocupó su lugar. Cuando eso pasa, el que manda no es el que responde por
-            el patrimonio, y las decisiones se toman sin criterio de dueño.
+            nunca ocupó su lugar. Cuando eso pasa, manda quien no responde por el
+            patrimonio.
           </p>
         </Container>
       </section>
@@ -169,7 +168,7 @@ export default function PaginaNosotros() {
                   </span>
                   <h3 className="font-display text-2xl font-bold text-fg">{paso.verbo}</h3>
                 </div>
-                <p className="mt-2 text-[13px] uppercase tracking-[0.14em] text-fg-subtle">
+                <p className="mt-2 text-sm uppercase tracking-[0.14em] text-fg-subtle">
                   {paso.marco}
                 </p>
 
@@ -242,7 +241,7 @@ export default function PaginaNosotros() {
               {paises.map((pais) => (
                 <li
                   key={pais}
-                  className="rounded-full bg-sky/15 px-3 py-1.5 text-[13px] font-medium text-navy dark:bg-sky/20 dark:text-sky"
+                  className="rounded-full bg-sky/15 px-3 py-1.5 text-sm font-medium text-navy dark:bg-sky/20 dark:text-sky"
                 >
                   {pais}
                 </li>
@@ -268,10 +267,9 @@ export default function PaginaNosotros() {
                 Doble titulación europea
               </h3>
               <p className="mt-4 flex-1 text-sm leading-relaxed text-fg-muted">
-                El Máster en Innovación y Emprendimiento en la Empresa Familiar se imparte
-                con Euncet Business School, adscrita a la Universitat Politècnica de
-                Catalunya, con doble titulación y semanas presenciales en Terrassa,
-                Barcelona.
+                El Máster se imparte con Euncet Business School, adscrita a la Universitat
+                Politècnica de Catalunya. Doble titulación y semanas presenciales en
+                Terrassa, Barcelona.
               </p>
               <Link
                 href="/master"
@@ -320,7 +318,7 @@ export default function PaginaNosotros() {
                 key={caso.empresa}
                 className="flex flex-col rounded-3xl border border-white/15 bg-white/5 p-7"
               >
-                <blockquote className="flex-1 font-display text-[17px] font-semibold leading-snug text-white">
+                <blockquote className="flex-1 font-display text-lg font-semibold leading-snug text-white">
                   &ldquo;{sinNota(caso.resultado)}&rdquo;
                 </blockquote>
                 <figcaption className="mt-6 border-t border-white/15 pt-5 text-sm">
@@ -333,7 +331,7 @@ export default function PaginaNosotros() {
             ))}
           </div>
 
-          <p className="mt-8 max-w-[70ch] text-[12.5px] leading-relaxed text-white/60">
+          <p className="mt-8 max-w-[70ch] text-sm leading-relaxed text-white/60">
             Declaraciones de CEDEM y de las empresas citadas. Los casos completos, con el
             problema y la solución de cada uno, están en la{" "}
             <Link href="/" className="font-semibold text-sky hover:text-white">

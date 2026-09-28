@@ -78,7 +78,7 @@ export default async function PaginaInvitaciones() {
           { etiqueta: "Canjeadas", valor: canjeadas },
         ].map((dato) => (
           <div key={dato.etiqueta} className="bg-bg p-5">
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
+            <dt className="text-xs uppercase tracking-[0.16em] text-fg-subtle">
               {dato.etiqueta}
             </dt>
             <dd className="mt-1.5 font-display text-2xl font-bold text-fg">{dato.valor}</dd>
@@ -106,7 +106,7 @@ export default async function PaginaInvitaciones() {
         <div className="mt-8 overflow-x-auto rounded-2xl border border-border bg-bg">
           <table className="w-full min-w-[680px] text-left text-sm">
             <thead className="border-b border-border bg-bg-soft">
-              <tr className="text-[11px] uppercase tracking-wider text-fg-subtle">
+              <tr className="text-xs uppercase tracking-wider text-fg-subtle">
                 <th className="px-5 py-3 font-semibold">Código</th>
                 <th className="px-4 py-3 font-semibold">Para</th>
                 <th className="px-4 py-3 font-semibold">Estado</th>
@@ -120,11 +120,11 @@ export default async function PaginaInvitaciones() {
                 return (
                   <tr key={inv.id} className="border-b border-border last:border-0">
                     <td className="px-5 py-3.5">
-                      <span className="font-mono text-[13px] font-semibold tracking-wider text-fg">
+                      <span className="font-mono text-sm font-semibold tracking-wider text-fg">
                         {inv.code}
                       </span>
                       {inv.notes ? (
-                        <span className="mt-0.5 block text-[12px] text-fg-subtle">
+                        <span className="mt-0.5 block text-xs text-fg-subtle">
                           {inv.notes}
                         </span>
                       ) : null}
@@ -132,12 +132,12 @@ export default async function PaginaInvitaciones() {
                     <td className="px-4 py-3.5 text-fg-muted">{inv.email ?? "Cualquiera"}</td>
                     <td className="px-4 py-3.5">
                       <span
-                        className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider ${etiqueta.clase}`}
+                        className={`rounded-full px-2.5 py-1 text-xs font-semibold uppercase tracking-wider ${etiqueta.clase}`}
                       >
                         {etiqueta.texto}
                       </span>
                     </td>
-                    <td className="px-4 py-3.5 text-[12.5px] text-fg-subtle">
+                    <td className="px-4 py-3.5 text-xs text-fg-subtle">
                       {inv.expires_at
                         ? new Date(inv.expires_at).toLocaleDateString("es-MX", {
                             day: "2-digit",
@@ -152,13 +152,13 @@ export default async function PaginaInvitaciones() {
                           <input type="hidden" name="id" value={inv.id} />
                           <button
                             type="submit"
-                            className="rounded-full border border-border px-3 py-1.5 text-[12px] font-medium text-fg-muted transition-colors hover:border-red-400 hover:text-red-700 dark:hover:text-red-300"
+                            className="rounded-full border border-border px-3 py-1.5 text-xs font-medium text-fg-muted transition-colors hover:border-red-400 hover:text-red-700 dark:hover:text-red-300"
                           >
                             Revocar
                           </button>
                         </form>
                       ) : (
-                        <span className="text-[12px] text-fg-subtle">—</span>
+                        <span className="text-xs text-fg-subtle">—</span>
                       )}
                     </td>
                   </tr>
@@ -169,7 +169,7 @@ export default async function PaginaInvitaciones() {
         </div>
       )}
 
-      <p className="mt-6 text-[12.5px] leading-relaxed text-fg-subtle">
+      <p className="mt-6 text-xs leading-relaxed text-fg-subtle">
         El canje lo valida la base de datos: vigencia, uso único y, si la invitación tiene
         correo, que sea esa persona. Nadie puede canjear dos veces el mismo código.
       </p>
