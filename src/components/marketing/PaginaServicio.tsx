@@ -1,20 +1,33 @@
 import Link from "next/link";
 import { BotonEnlace } from "@/components/ui/Boton";
 import { Revelar } from "@/components/fx/Efectos";
+import { MarcoFoto } from "@/components/marketing/MarcoFoto";
 import { Container } from "@/components/ui/Container";
 import { EncabezadoSeccion } from "@/components/ui/EncabezadoSeccion";
 import { IconoFlecha } from "@/components/ui/Iconos";
 import type { Servicio } from "@/content/servicios";
 import { serviciosDetalle } from "@/content/servicios";
+import { hayArchivo } from "@/lib/fotos-locales";
 
 /**
  * Plantilla de las páginas de servicio.
  * Estructura común: para quién es → el problema → la solución → el resultado.
  * El contenido cambia por servicio; la estructura no, para que el visitante
  * reconozca el mismo recorrido en las tres puertas.
+ *
+ * Cada servicio puede traer fotografías (`servicio.imagenes`, definidas en
+ * `src/content/servicios.ts`). Se muestran sólo si el archivo existe en
+ * `public/fotos/`: agregar una foto no requiere tocar este componente, y una foto
+ * que falta no deja un hueco. Ver docs/21-prompts-de-imagenes.md.
  */
 export function PaginaServicio({ servicio }: { servicio: Servicio }) {
   const otros = Object.values(serviciosDetalle).filter((s) => s.slug !== servicio.slug);
+  const fotoParaQuien = servicio.imagenes?.find(
+    (imagen) => imagen.en === "para_quien" && hayArchivo(imagen.archivo),
+  );
+  const fotoSolucion = servicio.imagenes?.find(
+    (imagen) => imagen.en === "solucion" && hayArchivo(imagen.archivo),
+  );
 
   return (
     <>
@@ -114,6 +127,16 @@ export function PaginaServicio({ servicio }: { servicio: Servicio }) {
                 </ul>
               </div>
             ) : null}
+
+            {fotoParaQuien ? (
+              <MarcoFoto
+                archivo={fotoParaQuien.archivo}
+                alt={fotoParaQuien.alt}
+                proporcion={fotoParaQuien.proporcion ?? "aspect-[3/2]"}
+                sizes="(max-width: 1024px) 100vw, 55vw"
+                className="mt-8"
+              />
+            ) : null}
           </div>
         </Container>
       </section>
@@ -177,6 +200,18 @@ export function PaginaServicio({ servicio }: { servicio: Servicio }) {
               </Revelar>
             ))}
           </ol>
+
+          {fotoSolucion ? (
+            <Revelar retraso={0.1}>
+              <MarcoFoto
+                archivo={fotoSolucion.archivo}
+                alt={fotoSolucion.alt}
+                proporcion={fotoSolucion.proporcion ?? "aspect-[3/2]"}
+                sizes="(max-width: 1024px) 100vw, 80vw"
+                className="mt-10"
+              />
+            </Revelar>
+          ) : null}
         </Container>
       </section>
 

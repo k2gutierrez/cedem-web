@@ -478,7 +478,7 @@ export function Recorrido({ catalogo = {} }: { catalogo?: Record<string, string>
   /* --- Revelado ------------------------------------------------------- */
 
   return (
-    <Marco progreso={1} etiqueta="Tu lectura" alVolver={null} ancho="ancho">
+    <Marco progreso={1} etiqueta="Tu observación" alVolver={null} ancho="ancho">
       <Resultado
         perfil={perfil}
         catalogo={catalogo}

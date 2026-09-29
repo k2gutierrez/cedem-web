@@ -66,7 +66,7 @@ export default async function PaginaPanel() {
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <BotonEnlace href="/app/camino" tamano="lg">
-                  Ver mi lectura
+                  Ver mi observación
                   <IconoFlecha className="h-4 w-4" />
                 </BotonEnlace>
                 <BotonEnlace href="/camino" variante="secundario" tamano="lg">

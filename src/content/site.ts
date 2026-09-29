@@ -53,23 +53,30 @@ export const contacto = {
 
 /** Los cuatro momentos del Viaje del Dueño (narrativa propia de CEDEM).
     Regla de esta sección: una línea por momento. El dueño se reconoce o no se
-    reconoce; no hay nada que explicarle. */
+    reconoce; no hay nada que explicarle.
+    `foto` es el archivo dentro de `public/fotos/`. El bloque entero muestra las
+    cuatro o ninguna: con tres fotos y un hueco en medio se ve peor que sin fotos
+    (lo decide `estanTodas()` en el componente). */
 export const viajeDelDueno = [
   {
     titulo: "Cuando necesita crecer",
     texto: "Y no sabe cómo, sin perder el control de lo que le costó años construir.",
+    foto: "viaje-crecer.jpg",
   },
   {
     titulo: "Cuando quiere soltar",
     texto: "Pero todavía no confía en la siguiente generación.",
+    foto: "viaje-soltar.jpg",
   },
   {
     titulo: "Cuando quiere profesionalizar",
     texto: "Sin que la empresa deje de ser, en el fondo, la empresa de la familia.",
+    foto: "viaje-profesionalizar.jpg",
   },
   {
     titulo: "Cuando el negocio va bien",
     texto: "Pero la Dueñez está mal ejercida, y nadie se atreve a decírselo.",
+    foto: "viaje-va-bien.jpg",
   },
 ] as const;
 
@@ -155,6 +162,7 @@ export const casos = [
     solucion: "Rediseño de la Fórmula de Gobierno.",
     resultado: "Cuadruplicaron las ventas en 10 años y el dueño ejerció su rol.",
     crecimiento: { inicio: 1, fin: 4, unidad: "veces las ventas", nota: "en 10 años" },
+    foto: "caso-dportenis.jpg",
   },
   {
     empresa: "Grupo Caffenio",
@@ -164,6 +172,7 @@ export const casos = [
     solucion: "Compartir la Dueñez y priorizar la creación de valor.",
     resultado: "Pasaron de empresa familiar a familia empresaria.",
     crecimiento: { inicio: 20, fin: 250, unidad: "MDD", nota: "en 21 años" },
+    foto: "caso-caffenio.jpg",
   },
   {
     empresa: "Grupo Coppel",
@@ -172,6 +181,7 @@ export const casos = [
     problema: "Formar dueños y gestionar el valor del grupo, al mismo tiempo.",
     solucion: "Consultoría en gestión de valor y patrimonio familiar.",
     resultado: "Crecimiento del grupo y patrimonio familiar fortalecido. *",
+    foto: "caso-coppel.jpg",
   },
 ] as const;
 

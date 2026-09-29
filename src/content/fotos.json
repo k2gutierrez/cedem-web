@@ -1,6 +1,24 @@
 {
   "_nota": "Generado por scripts/generar-manifiesto-fotos.mjs. No se edita a mano: agrega las imágenes en public/ y vuelve a compilar.",
-  "fotos": [],
+  "fotos": [
+    "camino-cafe.jpg",
+    "camino-laptop.jpg",
+    "caso-caffenio.jpg",
+    "caso-coppel.jpg",
+    "caso-dportenis.jpg",
+    "consulting-consejo.jpg",
+    "consulting-socios.jpg",
+    "hero-consejo.jpg",
+    "master-generacion.jpg",
+    "master-miami.jpg",
+    "nosotros-oficina.jpg",
+    "nosotros-origen.jpg",
+    "pce-taller.jpg",
+    "viaje-crecer.jpg",
+    "viaje-profesionalizar.jpg",
+    "viaje-soltar.jpg",
+    "viaje-va-bien.jpg"
+  ],
   "logos": [],
   "og": [],
   "graficos": []

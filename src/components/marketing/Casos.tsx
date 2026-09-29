@@ -1,8 +1,10 @@
 import { Revelar } from "@/components/fx/Efectos";
 import { BarraDeCrecimiento } from "@/components/marketing/graficos/BarraDeCrecimiento";
+import { MarcoFoto } from "@/components/marketing/MarcoFoto";
 import { Container } from "@/components/ui/Container";
 import { EncabezadoSeccion } from "@/components/ui/EncabezadoSeccion";
 import { casos } from "@/content/site";
+import { estanTodas } from "@/lib/fotos-locales";
 
 /**
  * Casos en la estructura problema → solución → resultado.
@@ -14,6 +16,10 @@ import { casos } from "@/content/site";
  * El gráfico de barras aparece únicamente cuando el caso tiene cifras públicas.
  */
 export function Casos() {
+  /* Las tres fotos entran juntas o no entra ninguna: son del mismo bloque y una
+     sola faltante dejaría un caso con imagen y dos sin ella. */
+  const conFotos = estanTodas(casos.map((caso) => caso.foto));
+
   return (
     <section className="py-16 lg:py-24">
       <Container>
@@ -31,6 +37,15 @@ export function Casos() {
               <Revelar key={caso.empresa} retraso={i * 0.08}>
                 <article className="borde-vivo grid gap-6 rounded-3xl border border-border bg-bg p-7 lg:grid-cols-[1fr_1.6fr] lg:gap-10 lg:p-9">
                   <header className="lg:border-r lg:border-border lg:pr-8">
+                    {conFotos ? (
+                      <MarcoFoto
+                        archivo={caso.foto}
+                        alt={`${caso.empresa}: ${caso.problema}`}
+                        proporcion="aspect-[16/10]"
+                        sizes="(max-width: 1024px) 100vw, 30vw"
+                        className="mb-6"
+                      />
+                    ) : null}
                     <h3 className="font-display text-xl font-bold text-fg">
                       {caso.empresa}
                     </h3>

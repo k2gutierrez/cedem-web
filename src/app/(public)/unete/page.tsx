@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { MarcoFoto } from "@/components/marketing/MarcoFoto";
 import { BotonEnlace } from "@/components/ui/Boton";
 import { Container } from "@/components/ui/Container";
 import { EncabezadoSeccion } from "@/components/ui/EncabezadoSeccion";
 import { IconoFlecha } from "@/components/ui/Iconos";
 import { contacto } from "@/content/site";
+import { hayArchivo } from "@/lib/fotos-locales";
 
 export const metadata: Metadata = {
   title: "Únete a CEDEM 2.0",
@@ -16,7 +18,7 @@ const beneficios = [
   {
     titulo: "El Camino del Dueño",
     texto:
-      "Cinco minutos para saber en qué verbo se te atora el valor: generar, multiplicar o capturar. Sales con tus primeros pasos.",
+      "Cinco minutos para ver dónde se te está quedando el valor: generar, multiplicar o capturar. Sales con una observación escrita y tus primeros pasos.",
   },
   {
     titulo: "La biblioteca completa",
@@ -66,6 +68,11 @@ const preguntas = [
 ];
 
 export default function PaginaUnete() {
+  /* La foto de la comunidad se mira al compilar: hoy `membresia-comunidad.jpg`
+     todavía no está en `public/fotos/`, así que la sección se ve como siempre y
+     el día que se deje el archivo aparece sola, sin tocar código. */
+  const fotoComunidad = hayArchivo("membresia-comunidad.jpg");
+
   return (
     <>
       {/* Hero */}
@@ -160,7 +167,23 @@ export default function PaginaUnete() {
             titulo="Por suscripción o por invitación"
             entrada="Los clientes actuales de la firma entran por invitación, sin costo. Quien llega por primera vez puede suscribirse a la plataforma."
           />
-          <div className="mt-12 grid gap-6 lg:grid-cols-2">
+          <div
+            className={`mt-12 grid gap-6 ${
+              fotoComunidad ? "lg:grid-cols-3" : "lg:grid-cols-2"
+            }`}
+          >
+            {/* La foto va pegada a la tarjeta de Suscripción, que es lo que
+                ilustra: otros dueños con los que hablar. Se centra en vertical
+                porque la tarjeta es más alta que la imagen. */}
+            {fotoComunidad ? (
+              <MarcoFoto
+                archivo="membresia-comunidad.jpg"
+                alt="Grupo de dueños y dueñas de empresa conversando de pie con un café después de un taller"
+                proporcion="aspect-[3/2]"
+                sizes="(max-width: 1024px) 100vw, 33vw"
+                className="lg:self-center"
+              />
+            ) : null}
             <article className="flex flex-col rounded-3xl border border-border bg-bg p-8">
               <p className="tagline text-cyan dark:text-sky">Suscripción</p>
               <h3 className="mt-3 font-display text-2xl font-bold text-fg">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { MarcoFoto } from "@/components/marketing/MarcoFoto";
 import { MapaClientes } from "@/components/marketing/MapaClientes";
 import { EncabezadoPagina } from "@/components/marketing/EncabezadoPagina";
 import { BotonEnlace } from "@/components/ui/Boton";
@@ -7,6 +8,7 @@ import { Container } from "@/components/ui/Container";
 import { EncabezadoSeccion } from "@/components/ui/EncabezadoSeccion";
 import { IconoFlecha, IconoPin } from "@/components/ui/Iconos";
 import { casos, metodo, sedes } from "@/content/site";
+import { hayArchivo } from "@/lib/fotos-locales";
 
 export const metadata: Metadata = {
   title: "Nosotros · Escuela de dueños y firma de consultoría desde 1985",
@@ -49,6 +51,13 @@ function sinNota(texto: string): string {
 }
 
 export default function PaginaNosotros() {
+  /* Las dos fotos se miran al compilar: si el archivo no está en `public/fotos/`,
+     no se dibuja nada y la sección queda exactamente como estaba. Es la regla de
+     `docs/21-prompts-de-imagenes.md`: el hueco de marca sólo tiene sentido donde
+     la foto ya está decidida, no aquí. */
+  const fotoOrigen = hayArchivo("nosotros-origen.jpg");
+  const fotoOficina = hayArchivo("nosotros-oficina.jpg");
+
   return (
     <>
       <EncabezadoPagina
@@ -94,11 +103,26 @@ export default function PaginaNosotros() {
       {/* Qué es CEDEM */}
       <section className="py-14 lg:py-20">
         <Container className="grid gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
-          <EncabezadoSeccion
-            antetitulo="Qué es CEDEM"
-            titulo="Escuela y firma, sin separación"
-            entrada="Centro de Dueñez Empresaria. Cuatro décadas formando y acompañando a quien decide."
-          />
+          <div>
+            <EncabezadoSeccion
+              antetitulo="Qué es CEDEM"
+              titulo="Escuela y firma, sin separación"
+              entrada="Centro de Dueñez Empresaria. Cuatro décadas formando y acompañando a quien decide."
+            />
+            {/* La foto va bajo el encabezado y no dentro del texto: la columna de
+                la izquierda es la más corta, así que aquí equilibra la rejilla en
+                lugar de alargar la lectura. Es una escena de época, no una foto de
+                una persona de la firma (ver docs/07 y docs/21). */}
+            {fotoOrigen ? (
+              <MarcoFoto
+                archivo="nosotros-origen.jpg"
+                alt="Escritorio de una oficina mexicana de los años ochenta, con un libro de cuentas, una máquina de escribir y un teléfono de disco"
+                proporcion="aspect-[3/2]"
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                className="mt-10"
+              />
+            ) : null}
+          </div>
           <div className="space-y-4 text-base leading-relaxed text-fg-muted">
             <p>
               No somos una consultora que además da cursos, ni una escuela que además
@@ -206,11 +230,30 @@ export default function PaginaNosotros() {
       {/* Presencia */}
       <section className="border-y border-border bg-bg-soft py-14 lg:py-20">
         <Container>
-          <EncabezadoSeccion
-            antetitulo="Dónde estamos"
-            titulo="Tres sedes y doce países"
-            entrada="La firma opera desde Zapopan, Miami y Houston, y acompaña empresas en doce países de Iberoamérica y América del Norte."
-          />
+          {/* Encabezado y foto comparten renglón cuando la foto existe; cuando no,
+              la rejilla se queda con un solo hijo y la sección se ve como antes. */}
+          <div
+            className={`grid gap-8 ${
+              fotoOficina ? "lg:grid-cols-[1.15fr_1fr] lg:items-center" : ""
+            }`}
+          >
+            <EncabezadoSeccion
+              antetitulo="Dónde estamos"
+              titulo="Tres sedes y doce países"
+              entrada="La firma opera desde Zapopan, Miami y Houston, y acompaña empresas en doce países de Iberoamérica y América del Norte."
+            />
+            {/* Ambiente de una casa de consultoría, no un retrato de la sede: la
+                advertencia está en docs/21-prompts-de-imagenes.md §3.6, y el `alt`
+                la respeta a propósito. */}
+            {fotoOficina ? (
+              <MarcoFoto
+                archivo="nosotros-oficina.jpg"
+                alt="Oficina de consultoría con tres personas trabajando en escritorios de madera y una mesa de juntas al fondo"
+                proporcion="aspect-[3/2]"
+                sizes="(max-width: 1024px) 100vw, 44vw"
+              />
+            ) : null}
+          </div>
 
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {sedes.map((sede) => (

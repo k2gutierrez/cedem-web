@@ -158,7 +158,7 @@ export function correoDelCamino(datos: {
   <tr><td style="padding:30px 32px 0">
     <a href="${(process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.cedem.com.mx").replace(/\/$/, "")}/app"
        style="display:inline-block;background:${NAVY};color:#ffffff;font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:15px;font-weight:700;text-decoration:none;padding:13px 24px;border-radius:999px">
-      Ver mi lectura completa
+      Ver mi observación completa
     </a>
   </td></tr>
 

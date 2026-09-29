@@ -43,3 +43,15 @@ export function rutaDeArchivo(
 export function archivosDe(carpeta: CarpetaPublica): string[] {
   return [...LISTAS[carpeta]];
 }
+
+/**
+ * ¿Están TODAS las fotos de un grupo?
+ *
+ * Se usa donde las fotos se ven juntas y una sola faltante dejaría el bloque a
+ * medias: los cuatro momentos del viaje, los tres casos de la home. Ahí es mejor
+ * no mostrar ninguna que mostrar tres fotos y un hueco de marca en medio. Para una
+ * foto suelta (una sección, una página de servicio) se usa `hayArchivo()`.
+ */
+export function estanTodas(nombres: string[], carpeta: CarpetaPublica = "fotos"): boolean {
+  return nombres.length > 0 && nombres.every((nombre) => hayArchivo(nombre, carpeta));
+}

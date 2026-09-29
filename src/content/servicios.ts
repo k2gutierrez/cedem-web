@@ -26,6 +26,18 @@ export type Servicio = {
   testimonio?: { texto: string; autor: string; cargo: string };
   ctaTitulo: string;
   ctaTexto: string;
+  /**
+   * Fotografías de la página, una por sección. El archivo vive en `public/fotos/`
+   * y sólo se muestra si existe: si falta, la sección se queda como estaba. El
+   * `alt` se escribe aquí y no en el componente para que viaje con el contenido.
+   */
+  imagenes?: {
+    archivo: string;
+    en: "para_quien" | "solucion";
+    alt: string;
+    /** Proporción del archivo. Por defecto 3:2. */
+    proporcion?: string;
+  }[];
 };
 
 export const serviciosDetalle: Record<string, Servicio> = {
@@ -109,6 +121,20 @@ export const serviciosDetalle: Record<string, Servicio> = {
     ctaTitulo: "¿Es Consulting el nivel que tu empresa necesita?",
     ctaTexto:
       "El pre-diagnóstico es el primer paso. En seis a ocho semanas sabrás dónde está el valor que no estás capturando.",
+    imagenes: [
+      {
+        archivo: "consulting-socios.jpg",
+        en: "para_quien",
+        alt: "Un socio de CEDEM y una consultora revisando números con el dueño de la empresa",
+        proporcion: "aspect-[5/4]",
+      },
+      {
+        archivo: "consulting-consejo.jpg",
+        en: "solucion",
+        alt: "Sesión de consejo de administración revisando la estrategia de la empresa",
+        proporcion: "aspect-[4/3]",
+      },
+    ],
   },
 
   pce: {
@@ -186,6 +212,14 @@ export const serviciosDetalle: Record<string, Servicio> = {
     ctaTitulo: "Deja de atender más frentes de los que puedes ganar",
     ctaTexto:
       "Empezamos identificando cuál es tu mejor oportunidad vigente y qué hay que abandonar para perseguirla en serio.",
+    imagenes: [
+      {
+        archivo: "pce-taller.jpg",
+        en: "solucion",
+        alt: "Dueño dirigiendo un taller de concentración estratégica con su equipo de dirección",
+        proporcion: "aspect-[4/3]",
+      },
+    ],
   },
 
   master: {
@@ -272,5 +306,18 @@ export const serviciosDetalle: Record<string, Servicio> = {
     ctaTitulo: "Forma a tu sucesor antes de que sea urgente",
     ctaTexto:
       "El programa abre en septiembre y las plazas son limitadas. Admisiones te orienta sobre el proceso y las facilidades de pago.",
+    imagenes: [
+      {
+        archivo: "master-generacion.jpg",
+        en: "para_quien",
+        alt: "Miembros de la siguiente generación trabajando en equipo durante una sesión del programa",
+      },
+      {
+        archivo: "master-miami.jpg",
+        en: "solucion",
+        alt: "Sesión académica presencial de la semana en Miami, con participantes del programa",
+        proporcion: "aspect-[16/9]",
+      },
+    ],
   },
 };
